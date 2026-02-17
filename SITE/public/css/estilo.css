@@ -41,7 +41,6 @@ header a{
 }
 #home{
   display: flex;
-  height: 32%;
 }
 #funcionalidades{
   display: flex;
@@ -153,4 +152,61 @@ hr{
   justify-content: center;
   align-items: flex-start; 
   padding-left: 10%;
+}
+
+
+#funcionalidades {
+  background-color: #062243;
+  height: 7%;
+}
+
+.container-funcionalidades{ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.container-funcionalidades h2 {
+  color: #ffff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+}
+.card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  width: 500px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 5%;
+}
+
+.container-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 50px;
+  align-items: flex-start; 
+}
+
+summary {
+  padding: 20px;
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  color: #022036;
+}
+
+.content {
+  padding: 0 20px 20px 20px;
+  color: #555;
+  line-height: 1.6;
+  border-top: 1px solid #eee;
 }
