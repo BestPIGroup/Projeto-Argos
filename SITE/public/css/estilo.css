@@ -93,3 +93,64 @@ hr{
 .sociais img{
   width: 20%;
 }
+
+
+/*
+  Aqui começa a home
+*/
+
+.banner{
+  width: 100%;
+  height: 100vh; 
+  background-image: linear-gradient(rgba(2, 34, 70, 0.7), rgba(2, 34, 70, 0.7)),
+  url('../assets/imagem-banner-home.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;    
+  justify-content: flex-start; 
+}
+
+.banner-text {
+  font-family: "Poppins", sans-serif;
+  color: #ffff;
+  font-size: 40px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+ .banner-button {
+  background-color: #ffff;
+  color: #022036;
+  font-family: "Poppins", sans-serif;
+  border: none;
+  padding: 20px;
+  width: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 20px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.banner-button:hover{ 
+  background-color: #031929;
+  color: #ffff;
+  transition: 0.2s;
+}
+
+.banner-img {
+  width: 52%;
+  align-self: center; 
+}
+
+.container-banner {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  justify-content: center;
+  align-items: flex-start; 
+  padding-left: 10%;
+}
