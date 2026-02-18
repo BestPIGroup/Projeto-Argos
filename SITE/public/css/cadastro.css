@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
+.login{
+    flex-direction: row;
+    display: flex;
+}
 body{
   background-color: #01163d;
   color: white;
@@ -61,4 +66,54 @@ input{
     height: 1px;
     margin-top: 40px;
     background-color: #EAEAEA;
+}
+
+.effect-text{
+    background-image: url(../assets/img_cadastro_3.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 50%;
+    height: 1080px;
+    align-content: center;
+}
+
+.effect-text h2{
+    justify-self: center;
+    font-size: 40px;
+    font-family: 'poppins', sans-serif;
+}
+
+.effect-text .logo{
+    display: flex;
+    justify-self: center;
+    height: 250px;
+    width: 50%;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.logo img{
+    width: 300px;
+}
+
+.effect-text p{
+    justify-self: center;
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    margin: 0px;
+}
+
+.effect-text span{
+    display: flex;
+    justify-self: center;
+    font-family: 'Sora', sans-serif;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.effect-text a{
+    text-decoration: none;
+    color: white;
 }
