@@ -6,79 +6,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>AquaTech | Login</title>
+    <title>Argos | Login</title>
 
     <script src="./js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/estilo.css">
-    <link rel="icon" href="./assets/icon/favicon2.ico">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="icon" href="./assets/favicon.png">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
-
-    <!--Header-->
-
-    <div class="header">
-        <div class="container">
-            <h1 class="titulo">AquaTech</h1>
-            <ul class="navbar">
-                <li>
-                    <a href="index.html">Inicial</a>
-                </li>
-                <li>
-                    <a href="simulador.html">Simulador</a>
-                </li>
-                <li>|</li>
-                <li class="agora">
-                    <a href="#">Login</a>
-                </li>
-                <li>
-                    <a href="cadastro.html">Cadastro</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-
     <div class="login">
-        <div class="alerta_erro">
+        <div class="alerta_erro", style="display: none;">
             <div class="card_erro" id="cardErro">
                 <span id="mensagem_erro"></span>
             </div>
         </div>
-        <div class="container">
-            <div class="card card-login">
-                <h2>Olá de volta!</h2>
+        <div class="containers">
+            <div class="cardsLogin card-login1">
+                <h2>LOGIN</h2>
                 <div class="formulario">
                     <div class="campo">
-                        <span>E-mail:</span>
-                        <input id="email_input" type="text" placeholder="Login">
+                        <span>E-mail <b style="color: red;">*</b></span> <br>
+                        <input id="email_input" type="email" placeholder="example@gmail.com">
                     </div>
                     <div class="campo">
-                        <span>Senha:</span>
+                        <span>Senha <b style="color: red;">*</b></span> <br>
                         <input id="senha_input" type="password" placeholder="******">
                     </div>
-                    <button class="botao" onclick="entrar()">Entrar</button>
+                    <button class="botao" onclick="entrar()">LOGAR</button>
                 </div>
+                <hr>
 
-                <div id="div_aguardar" class="loading-div">
-                    <img src="./assets/circle-loading.gif" id="loading-gif">
-                </div>
-
-                <div id="div_erros_login"></div>
+            </div>
+            <div class="cardsLogin card-login2">
+                <h2>BEM-VINDO DE VOLTA</h2>
+                <img style="width: 400px;" src="./assets/logo.png" alt="">
+                <p>Entre para garantir a estabilidade do seu sistema.</p>
+                <a href="cadastro.html">Ainda não possui uma conta? Cadastre aqui</a>
             </div>
         </div>
+        <div id="div_aguardar" class="loading-div" style="display: none;">
+            <img src="./assets/circle-loading.gif" id="loading-gif">
+        </div>
+
+        <div style="display: none;" id="div_erros_login"></div>
     </div>
 
-    <!--footer inicio-->
-    <div class="footer">
-        <div class="container">
-            <h4>Feito com amor por aluno &hearts; SPTech &copy; 2023</h4>
-            <span class="version">v1.0.0</span>
-        </div>
-    </div>
-    <!--footer fim-->
+
 
 </body>
 
@@ -88,36 +63,47 @@
 
 
     function entrar() {
+        // Ativa função aguardar
         aguardar();
 
+        // Recolhe os valores dos campos
         var emailVar = email_input.value;
         var senhaVar = senha_input.value;
 
+        // Se um dos campos estiver vazio, ativa
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
             finalizarAguardar();
             return false;
+            // Termina função aguardar e retorna valor falso dessa função
         }
         else {
+            // Se não for aquilo encima, vai colocar intervalo de 5s pra sumir a mensagem
             setInterval(sumirMensagem, 5000)
         }
 
+        // Mostra o Login e Senha no terminal
         console.log("FORM LOGIN: ", emailVar);
         console.log("FORM SENHA: ", senhaVar);
 
+        // Faz uma requisição HTTP via JS
+        // Método POST (enviar/criar dados)
         fetch("/usuarios/autenticar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
+                // Defini no server as variáveis email e senha
                 emailServer: emailVar,
                 senhaServer: senhaVar
             })
         }).then(function (resposta) {
+            // Então, após isso, executa a função com resposta
             console.log("ESTOU NO THEN DO entrar()!")
 
+            // Se estiver tudo bem, executa no console.log a resposta
             if (resposta.ok) {
                 console.log(resposta);
 
