@@ -210,3 +210,88 @@ summary {
   line-height: 1.6;
   border-top: 1px solid #eee;
 }
+
+/*
+  Aqui começa a pagina sobre nós
+*/
+
+.container{
+  padding: 10%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+  align-items: center;
+  background-color: #132542;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+}
+
+#imagem-div{
+  background-image: url(https://lenscope.com.br/blog/wp-content/uploads/2021/11/banner-luz-azul-computador-764x350-1.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 7%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+}
+
+.texto-meio{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.container-servicos{
+  padding: 80px 20px;
+  text-align: center;
+  background-color: #0f1c33;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+}
+
+.alinhamento-box{
+  display: grid; /* Organiza os boxes em grades */
+  grid-template-columns: repeat(2, 1fr); /* Define que terá 2 colunas e cada um ocupa 1 fração da coluna (1fr) */
+  gap: 30px;
+  max-width: 900px;
+  margin: 40px auto 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+.mini-box{
+  background-color: #132542;
+  padding: 35px 25px;
+  border-radius: 16px;
+  text-align: center;
+  transition: 0.3s;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 200;
+  font-size: 15px;
+}
+
+img{
+  width: 100px;
+}
+
+#imagem-div2{
+  background-image: url(https://img.freepik.com/fotos-premium/close-up-de-hacker-em-oculos-olhando-para-a-tela_380164-224342.jpg?semt=ais_user_personalization&w=740&q=80);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 7%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 26px;
+}
