@@ -5,8 +5,9 @@ body{
   overflow-x: hidden;
   margin: 0;
   width: 100%;
-  height: 700vh;
+  max-height: 700vh;
   flex-direction: column;
+  text-align: justify;
 }
 
 header{
@@ -39,21 +40,10 @@ header a{
   font-family: "Poppins", sans-serif;
   font-weight: 500;
 }
-#home{
-  display: flex;
-}
-#funcionalidades{
-  display: flex;
-  height: 32%;
-}
-#pilares{
-  display: flex;
-  height: 32%;
-}
 footer{
   display: flex;
   width: 100%;
-  height: 4%;
+  min-height: 180px;
   background-color: #00375D;
   color: white;
   font-size: 18px;
@@ -72,7 +62,7 @@ footer{
   width: 10%;
 }
 hr{
-  height: 80%;
+  min-height: 130px;
 }
 .sociais{
   display: flex;
@@ -140,7 +130,7 @@ hr{
 }
 
 .banner-img {
-  width: 52%;
+  width: 50%;
   align-self: center; 
 }
 
@@ -157,7 +147,7 @@ hr{
 
 #funcionalidades {
   background-color: #062243;
-  height: 7%;
+  height: 9%;
 }
 
 .container-funcionalidades{ 
@@ -165,7 +155,7 @@ hr{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: auto;
+  margin: 2%;
 }
 
 .container-funcionalidades h2 {
@@ -178,19 +168,22 @@ hr{
   background-color: #f9f9f9;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  width: 500px;
   overflow: hidden;
   transition: all 0.3s ease;
   font-family: 'Poppins', sans-serif;
   margin-top: 5%;
+  width: 33%;
 }
-
+.card .icon{
+  font-size: 20px;
+}
 .container-cards {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 50px;
-  align-items: flex-start; 
+  align-items: flex-start;
+  width: 100%;
 }
 
 summary {
@@ -209,14 +202,135 @@ summary {
   color: #555;
   line-height: 1.6;
   border-top: 1px solid #eee;
+  text-align: justify;
+  height: 140px;
 }
 
+.chamada{
+  display: flex;
+  height: 50vh;
+  justify-content: end;
+  align-items: center;
+  background-image: linear-gradient(to right, rgba(2, 34, 70, 0.7) 70%, rgba(2, 34, 70, 0.7) 100%), url(../assets/img-Chamada.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  font-size: 25px;
+  font-weight: 200;
+}
+.container-chamada{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.container-chamada span{
+  font-weight: 500;
+}
+.container-chamada button{
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  background-color: white;
+  width: 25%;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+.container-chamada button:hover{ 
+  background-color: #031929;
+  color: #ffff;
+  transition: 0.2s;
+}
+#pilares{
+  display: flex;
+  background-color: #081F3A;
+  width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 20px;
+  color: white;
+}
+.pilares-texto{
+  font-size: 32px;
+  text-align: center;
+  height: 20%;
+}
+#pilares span{
+  color: #C4F4FF;
+  font-weight: 600;
+}
+.pilares-card{
+  display: flex;
+  width: 80%;
+  height: 40%;
+}
+.pilares-card1{
+  border: 4px solid white;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+  width: 50%;
+  height: 70%;
+}
+.pilares-card2{
+  border: 4px solid #4594B5;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+  text-align: center;
+  width: 50%;
+  height: 70%;
+}
+.chamada2{
+  display: flex;
+  height: 50vh;
+  justify-content: start;
+  align-items: center;
+  background-image: linear-gradient(to right, rgba(2, 34, 70, 0.7) 70%, rgba(2, 34, 70, 0.7) 100%), url(../assets/img-Chamada2.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 200;
+}
+.container-chamada2{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+.container-chamada2 span{
+  font-weight: 500;
+  font-size: 26px;
+}
+.container-chamada2 button{
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  background-color: white;
+  width: 30%;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+}
+.container-chamada2 button:hover{ 
+  background-color: #031929;
+  color: #ffff;
+  transition: 0.2s;
+}
 /*
   Aqui começa a pagina sobre nós
 */
 
 .container{
-  padding: 10%;
+  padding: 4%;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -248,6 +362,12 @@ summary {
   font-family: 'Poppins', sans-serif;
   font-weight: 300;
   font-size: 20px;
+  width: 65%;
+}
+
+.texto-meio span{
+  color: #C4F4FF;
+  font-weight: 600;
 }
 
 .container-servicos{
@@ -281,7 +401,7 @@ summary {
 }
 
 img{
-  width: 100px;
+  width: 30%;
 }
 
 #imagem-div2{
