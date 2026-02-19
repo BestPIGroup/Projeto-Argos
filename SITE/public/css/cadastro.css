@@ -6,6 +6,7 @@
 .login{
     flex-direction: row;
     display: flex;
+    height: 130vh;
 }
 body{
   background-color: #01163d;
@@ -15,6 +16,16 @@ body{
     display: flex;
     width: 50%;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.formulario{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    flex-direction: column;
+    height: 80%;
 }
 
 h2{
@@ -59,22 +70,16 @@ input{
     font-family: 'Work Sans', sans-serif;
 }
 
-.bar{
-    display: flex;
-    align-self: center;
-    width: 80%;
-    height: 1px;
-    margin-top: 40px;
-    background-color: #EAEAEA;
-}
-
 .effect-text{
+    display: flex;
     background-image: url(../assets/img_cadastro_3.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     width: 50%;
-    height: 1080px;
-    align-content: center;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .effect-text h2{
