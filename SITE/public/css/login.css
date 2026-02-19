@@ -3,7 +3,6 @@
 body {
   margin: 0;
   height: 100vh;
-  background-image: url(../assets/fundo-login1.jpeg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -85,7 +84,7 @@ hr{
 
 .login {
     width: 100%;
-    height: 90%;
+    height: 80%;
     display: flex;
 }
 
@@ -96,6 +95,10 @@ hr{
     justify-content: space-between;
     gap: 0px;
     flex-direction: row;
+    background-image: url(../assets/fundo-login1.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .cardsLogin {
@@ -123,7 +126,11 @@ hr{
 }
 
 .card-login1 h2 {
-    font-size: 56px;
+    align-self: center;
+    font-weight: bold;
+    font-family: 'poppins', sans-serif;
+    font-size: 50px;
+    margin: 0;
 }
 
 .card-login1 span {
@@ -194,12 +201,17 @@ hr{
 }
 
 .card-login2 {
+    display: flex;
+    height: 100%;
     background-color: #022246a5;
 }
 
 .card-login2 h2 {
+    align-self: center;
+    font-weight: bold;
+    font-family: 'poppins', sans-serif;
     font-size: 48px;
-    text-align: center;
+    margin: 0;
 }
 
 .card-login2 p {
@@ -216,6 +228,7 @@ hr{
     text-decoration: none;
     font-family: "Sora";
     transition: all 0.8s ease;
+    margin-top: 3%;
 }
 
 .card-login2 a:hover {

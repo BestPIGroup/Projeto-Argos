@@ -111,6 +111,7 @@ hr{
   font-size: 40px;
   font-weight: bold;
   text-transform: uppercase;
+  margin: 20px;
 }
 
  .banner-button {
@@ -133,18 +134,17 @@ hr{
   transition: 0.2s;
 }
 
-.banner-img {
-  width: 50%;
-  align-self: center; 
+.banner img{
+  display: flex;
+  width: 300px;
 }
 
 .container-banner {
   display: flex;
   flex-direction: column;
   gap: 30px;
-  align-items: center;
   justify-content: center;
-  align-items: flex-start; 
+  align-items: center; 
   padding-left: 10%;
 }
 
