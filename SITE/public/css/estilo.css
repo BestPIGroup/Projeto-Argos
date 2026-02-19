@@ -385,15 +385,15 @@ summary {
 }
 
 .alinhamento-box{
-  display: grid; /* Organiza os boxes em grades */
-  grid-template-columns: repeat(2, 1fr); /* Define que terá 2 colunas e cada um ocupa 1 fração da coluna (1fr) */
+  display: flex;
   gap: 30px;
-  max-width: 900px;
-  margin: 40px auto 0;
+  justify-content: center;
   font-family: 'Poppins', sans-serif;
+
 }
 
 .mini-box{
+  width: 25%;
   background-color: #132542;
   padding: 35px 25px;
   border-radius: 16px;
