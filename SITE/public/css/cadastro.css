@@ -75,8 +75,13 @@ input{
     font-size: 24px;
     font-weight: 500;
     font-family: 'Work Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.5s ease;
 }
-
+.formulario button:hover{
+    background-color: rgb(159, 159, 159);
+    transform: scale(1.05);
+}
 .effect-text{
     display: flex;
     background-image: url(../assets/img_cadastro_3.jpg);
@@ -116,16 +121,21 @@ input{
     margin: 0px;
 }
 
-.effect-text span{
+
+
+.effect-text a{
     display: flex;
     justify-self: center;
     font-family: 'Sora', sans-serif;
     font-weight: 600;
     font-size: 18px;
-    margin-top: 20px;
-}
-
-.effect-text a{
     text-decoration: none;
     color: white;
+    transition: all 0.8s ease;
+    margin-top: 3%;
+}
+
+.effect-text a:hover {
+    transform: scale(1.1);
+    text-decoration: underline;
 }
