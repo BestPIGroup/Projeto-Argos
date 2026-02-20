@@ -419,3 +419,168 @@ img{
   font-weight: 500;
   font-size: 26px;
 }
+
+/* __________________________________________ */
+/* ========================================== */
+/* Responsividade do Home - Incluirá Footer e Header */
+
+@media screen and (max-width: 800px) {
+
+  /* Header */
+  header {
+    display: flex;
+    max-width: 100%;
+    height: 70px;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0px !important;
+    padding-left: 20px;
+    padding-right: 80px;
+
+    font-size: 16px;
+  }
+
+  header .nav, header .nav2 {
+    text-align: center;
+    align-items: center;
+    margin: 0;
+  }
+
+  header .nav {
+    display: flex;
+    max-width: 200px;
+    width: 400px;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 40px;
+
+    margin: 0px;
+  }
+
+  header .nav2 {
+    max-width: 100px;
+    margin-right: 20px;
+  }
+
+  /* _______________________________ */
+  /* =============================== */
+  /* Banner */
+
+  .banner {
+    display: flex;
+    justify-content: center;
+    height: 800px;
+  }
+
+  .container-banner {
+    max-height: 100%;
+    margin: 0px;
+    padding: 0px;
+    max-width: 80%;
+    text-align: center;
+  }
+
+  /* _______________________________ */
+  /* =============================== */
+  /* Funcionalidades */
+
+  .container-funcionalidades {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+
+  .card {
+    max-width: 90%;
+    width: 100%;
+  }
+
+  /* _______________________________ */
+  /* =============================== */
+  /* Chamada */
+
+  .chamada {
+    padding: 0px;
+    max-width: 100%;
+    justify-content: center;
+    font-size: 32px;
+    height: 100%;
+  }
+
+  .container-chamada {
+    height: 100%;
+    width: 90%;
+    padding-bottom: 40px;
+  }
+
+  .container-chamada a {
+    width: 100%;
+  }
+
+  .container-chamada a button {
+    width: 90%;
+    height: 50px;
+    font-weight: 700;
+  }
+
+  /* ________________________________ */
+  /* ================================ */
+  /* Pilares */
+
+  #pilares {
+    max-height: 100%;
+    height: 100%;
+  }
+
+  .pilares-texto {
+    font-size: 25px;
+  }
+
+  .pilares-card {
+    width: 100%;
+  }
+
+  .pilares-card h4 {
+    font-size: 18px;
+  }
+
+  .pilares-card p {
+    font-size: 16px;
+  }
+
+  .pilares-card1, .pilares-card2 {
+    min-height: 350px;
+  }
+
+  /* _______________________________ */
+  /* =============================== */
+  /* Chamada */
+
+  .chamada2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+
+  .container-chamada2 {
+    width: 90%;
+    gap: 10px;
+  }
+
+  /* _______________________________ */
+  /* =============================== */
+  /* Footer */
+
+  .footer {
+
+  }
+}
