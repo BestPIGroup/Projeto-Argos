@@ -68,31 +68,31 @@
 
         <div class="campo">
           <span>Nome Completo <span style="color: red;">*</span></span>
-          <input id="nome_input" type="text" />
+          <input id="nome_input" type="text" value="Ana Lima"/>
         </div>
         <div class="campo">
           <span>Email<span style="color: red;">*</span></span>
-          <input id="email_input" type="text" />
+          <input id="email_input" type="text" value="ana.lima@email.com"/>
         </div>
         <div class="campo">
           <span>Telefone<span style="color: red;">*</span></span>
-          <input id="telefone_input" type="text" maxlength="15" oninput="validarTelefone()" />
+          <input id="telefone_input" type="text" maxlength="15" oninput="validarTelefone()" value="(11)98765-4320"/>
         </div>
         <div class="campo">
           <span>Função<span style="color: red;">*</span></span>
-          <input id="funcao_input" type="text" />
+          <input id="funcao_input" type="text" value="Gestor"/>
         </div>
         <div class="campo">
           <span>Identificador<span style="color: red;">*</span></span>
-          <input id="matricula_input" type="text" />
+          <input id="matricula_input" type="text" value="9010"/>
         </div>
         <div class="campo">
           <span>Senha<span style="color: red;">*</span></span>
-          <input id="senha_input" type="password" />
+          <input id="senha_input" type="password" value="senha123"/>
         </div>
         <div class="campo">
           <span>Confirmar Senha<span style="color: red;">*</span></span>
-          <input id="confirmacao_senha_input" type="password" />
+          <input id="confirmacao_senha_input" type="password" value="senha123"/>
         </div>
         <div id="cardErro" style="display: none; color: red; text-align: center;" class="campo">
           <span id="mensagem_erro"></span>
@@ -360,6 +360,15 @@
   } */
 
   function cadastrar() {
+
+  nome_input.value = "Ana Lima"
+  email_input.value = "ana.lima@email.com"
+  telefone_input.value = "(11) 98765-4320"
+  funcao_input.value =  "Gestor"
+  matricula_input.value = 9005
+  senha_input.value =  "senha123"
+  confirmacao_senha_input.value = "senha123"
+
     // aguardar();
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
@@ -535,4 +544,7 @@
     }
 
   }
+
+
+
 </script>
