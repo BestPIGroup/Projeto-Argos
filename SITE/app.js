@@ -18,7 +18,8 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuarios");
 var unidadeRouter = require("./src/routes/unidade");
-var servidorRouter = require("./src/routes/servidores")
+var servidorRouter = require("./src/routes/servidores");
+var conexaoS3Router = require("./src/routes/conexaoS3");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +31,7 @@ app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
+app.use("/conexaoS3", conexaoS3Router);
 
 app.listen(PORTA_APP, function () {
     console.log(`
