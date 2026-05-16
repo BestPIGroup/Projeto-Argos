@@ -16,7 +16,7 @@ function buscarRegistros(req,res){
 
                 function(resultado){
 
-                    res.send(resultado)
+                    res.send(resultado);
 
                 }
 

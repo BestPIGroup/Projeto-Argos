@@ -36,9 +36,12 @@
                 })
             }).then(function (resposta){
 
+                return resposta.json();
+                
+            }).then(function(dados){
+                
                 div = document.getElementById("div_resposta");
-
-                div.innerHTML = resposta.body[0];
+                div.innerHTML = dados;
 
             })
         
