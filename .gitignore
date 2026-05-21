@@ -6,3 +6,4 @@ package-lock.json
 .monitoramento.csv
 .env
 .env.dev
+SITE/.env.dev

@@ -11,6 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1045.0",
+    "aws": "^0.0.3-2",
+    "aws-sdk": "^2.1693.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.17.1",
