@@ -25,7 +25,7 @@ async function buscarRegistros(mac,linhas){
         }).promise();
 
         const conteudo = resposta.Body.toString("utf-8");
-
+        
         var rows = conteudo.split('\n');
         
         var respostaLista = []
@@ -34,7 +34,7 @@ async function buscarRegistros(mac,linhas){
 
         for (var i = rows.length - 1; i >= 0 ; i --){
 
-            rowSep = rows[i].split(",");
+            rowSep = rows[i].split(";");
 
             if(rowSep[0] == mac){
 
