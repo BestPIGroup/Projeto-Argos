@@ -90,13 +90,13 @@
 
                             <div class="kpi-info">
                                 <h4>Uso de CPU</h4>
-                                <h2 id="kpi-cpu-now">0%</h2>
+                                <h2 id="kpi_cpu">0%</h2>
                             </div>
 
                         </div>
 
                         <div class="kpi-obs">
-                            <p id="obs-cpu">
+                            <p id="diferenca_cpu">
                                 <span>0</span>% acima do normal
                             </p>
                         </div>
@@ -112,13 +112,13 @@
 
                             <div class="kpi-info">
                                 <h4>Uso de RAM</h4>
-                                <h2 id="kpi-ram-now">0%</h2>
+                                <h2 id="kpi_ram">0%</h2>
                             </div>
 
                         </div>
 
                         <div class="kpi-obs">
-                            <p id="obs-ram">
+                            <p id="diferenca_ram">
                                 <span>0</span>% acima do normal
                             </p>
                         </div>
@@ -134,13 +134,13 @@
 
                             <div class="kpi-info">
                                 <h4>Taxa de escrita em disco</h4>
-                                <h2 id="kpi-disk-write-now">0 KB/s</h2>
+                                <h2 id="kpi_escrita">0 KB/s</h2>
                             </div>
 
                         </div>
 
                         <div class="kpi-obs">
-                            <p id="obs-disk">
+                            <p id="aumento_escrita">
                                 + <span>0</span> nos últimos 10 min
                             </p>
                         </div>
@@ -156,13 +156,13 @@
 
                             <div class="kpi-info">
                                 <h4>Arquivos abertos</h4>
-                                <h2 id="kpi-files-now">0</h2>
+                                <h2 id="kpi_arquivos_abertos">0</h2>
                             </div>
 
                         </div>
 
                         <div class="kpi-obs">
-                            <p id="obs-files">
+                            <p id="aumento_arquivos">
                                 + <span>0</span> nos últimos 10 min
                             </p>
                         </div>
@@ -178,13 +178,13 @@
 
                             <div class="kpi-info">
                                 <h4>Processos ativos</h4>
-                                <h2 id="kpi-process-now">0</h2>
+                                <h2 id="kpi_processos">0</h2>
                             </div>
 
                         </div>
 
                         <div class="kpi-obs">
-                            <p id="obs-process">
+                            <p id="aumento_processos">
                                 + <span>0</span> nos últimos 10 min
                             </p>
                         </div>
@@ -195,12 +195,10 @@
                 <div class="retangulo">
 
                     <p>PERÍODO SELECIONADO: </p>
-                    <select id="select_tempo" onchange="carregarGraficos()">
+                    <select id="selectTempo" onchange="carregarGraficos()">
                         <option value="30">Últimos 30 min</option>
                         <option value="60">Última 1h</option>
-                        <option value="180">Últimas 6h</option>
-                        <option value="720">Últimas 12h</option>
-                        <option value="1440">Últimas 24h</option>
+                        <option value="180">Últimas 3h</option>
                     </select>
 
                 </div>
@@ -269,6 +267,7 @@
 
 <script>
 
+
     var recomendacoesRansomware = [
         {
             status: "critico",
@@ -333,29 +332,102 @@
 
         renderizarRecomendacoes();
 
-        fetch("/dashboard/ransomware")
+        //var macServidor = sessionStorage.MAC_SERVIDOR;
+        var macServidor = "bc:cd:99:c2:86:34";
+
+        var qtdLinhas = document.getElementById("selectTempo").value;
+
+        console.log("MAC:", macServidor);
+
+        fetch("/conexaoS3/buscar_registros", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+
+                MacServer: macServidor,
+                QtdLinhas: qtdLinhas
+
+            })
+
+        })
+
             .then(function (resposta) {
 
                 return resposta.json();
 
             })
-            .then(function (dadosJson) {
 
-                console.log(dadosJson);
+            .then(function (dados) {
 
-                var servidor = dadosJson.servidor;
+                console.log("Dados recebidos:", dados);
 
-                var limites = dadosJson.limites;
+                if (!dados || dados.length == 0) {
 
-                var historico = dadosJson.historico;
+                    console.log("Nenhum dado encontrado");
+                    return;
 
-                atualizarKPIs(servidor, limites);
+                }
 
-                renderizarTabelaProcessos(servidor.top_3_processos_disco);
+                var historico = [];
 
-                criarGraficos(historico, limites);
+                for (var i = dados.length - 1; i >= 0; i--) {
+
+                    var linha = dados[i];
+
+                    
+
+                    console.log(linha);
+
+                    historico.push({
+
+                        mac: linha[0],
+                        user: linha[1],
+                        timestamp: linha[2],
+                        hourStamp: linha[2].slice(12, 16),
+
+                        cpu_percent: Number(linha[3]) || 0,
+
+                        virtual_memory_usage: Number(linha[9]) || 0,
+
+                        disk_percent: Number(linha[11]) || 0,
+
+                        disk_read_kbps: Number(linha[10]) || 0,
+
+                        disk_write_kbps: Number(linha[12]) || 0,
+
+                        total_arquivos_abertos: Number(linha[24]) || 0,
+
+                        total_processos: Number(linha[8]) || 0,
+
+                        top_3_processos_disco: linha[7] || "",
+
+                        limite_cpu: 40,
+                        limite_ram: 80,
+                        limite_disco: 80,
+                        limite_leitura: 1200,
+                        limite_escrita: 7000
+
+                    });
+
+                }
+
+                var servidor = historico[historico.length - 1];
+
+                atualizarKPIs(servidor);
+
+                renderizarTabelaProcessos(
+                    servidor.top_3_processos_disco
+                );
+
+                criarGraficos(historico, servidor);
 
             })
+
             .catch(function (erro) {
 
                 console.log("Erro ao carregar dashboard:", erro);
@@ -364,93 +436,135 @@
 
     }
 
-    function atualizarKPIs(servidor, limites) {
+    function atualizarKPIs(servidor) {
 
-        document.getElementById("kpi-servidor").innerHTML = servidor.user;
+        document.getElementById("kpi-servidor").innerHTML =
+            servidor.user;
 
-        document.getElementById("ultimaAtualizacao").innerHTML = servidor.timestamp;
+        document.getElementById("ultimaAtualizacao").innerHTML =
+            servidor.timestamp;
 
-        document.getElementById("kpi-cpu-now").innerHTML =
-            Number(servidor.cpu_percent).toFixed(1) + "%";
+        document.getElementById("kpi_cpu").innerHTML =
+            servidor.cpu_percent.toFixed(1) + "%";
 
-        document.getElementById("kpi-ram-now").innerHTML =
-            Number(servidor.virtual_memory_usage).toFixed(1) + "%";
+        document.getElementById("kpi_ram").innerHTML =
+            servidor.virtual_memory_usage.toFixed(1) + "%";
 
-        document.getElementById("kpi-disk-write-now").innerHTML =
-            Number(servidor.disk_write_kbps).toFixed(1) + " KB/s";
+        document.getElementById("kpi_escrita").innerHTML =
+            servidor.disk_write_kbps.toFixed(1) + " KB/s";
 
-        document.getElementById("kpi-files-now").innerHTML =
+        document.getElementById("kpi_arquivos_abertos").innerHTML =
             servidor.total_arquivos_abertos;
 
-        document.getElementById("kpi-process-now").innerHTML =
+        document.getElementById("kpi_processos").innerHTML =
             servidor.total_processos;
 
         var cpuAcima =
-            ((servidor.cpu_percent - limites.cpu_percent) / limites.cpu_percent) * 100;
+            ((servidor.cpu_percent - servidor.limite_cpu)
+                / servidor.limite_cpu) * 100;
 
         var ramAcima =
-            ((servidor.virtual_memory_usage - limites.virtual_memory_usage) / limites.virtual_memory_usage) * 100;
+            ((servidor.virtual_memory_usage - servidor.limite_ram)
+                / servidor.limite_ram) * 100;
 
-        document.getElementById("obs-cpu").innerHTML =
-            "<span>" + Math.max(0, cpuAcima).toFixed(1) + "</span>% acima do normal";
+        document.getElementById("diferenca_cpu").innerHTML =
+            "<span>" +
+            Math.max(0, cpuAcima).toFixed(1) +
+            "</span>% acima do normal";
 
-        document.getElementById("obs-ram").innerHTML =
-            "<span>" + Math.max(0, ramAcima).toFixed(1) + "</span>% acima do normal";
+        document.getElementById("diferenca_ram").innerHTML =
+            "<span>" +
+            Math.max(0, ramAcima).toFixed(1) +
+            "</span>% acima do normal";
+
+        document.getElementById("aumento_escrita").innerHTML =
+            "+ <span>" +
+            servidor.disk_write_kbps.toFixed(0) +
+            "</span> nos últimos 10 min";
+
+        document.getElementById("aumento_arquivos").innerHTML =
+            "+ <span>" +
+            servidor.total_arquivos_abertos +
+            "</span> nos últimos 10 min";
+
+        document.getElementById("aumento_processos").innerHTML =
+            "+ <span>" +
+            servidor.total_processos +
+            "</span> nos últimos 10 min";
 
         var risco = "BAIXO";
 
         if (
-            servidor.cpu_percent > limites.cpu_percent ||
-            servidor.virtual_memory_usage > limites.virtual_memory_usage ||
-            servidor.disk_percent > limites.disk_percent
+            servidor.cpu_percent > servidor.limite_cpu ||
+            servidor.virtual_memory_usage > servidor.limite_ram ||
+            servidor.disk_percent > servidor.limite_disco
         ) {
+
             risco = "ALTO";
+
         }
 
         document.getElementById("kpi-risco").innerHTML = risco;
+
     }
 
-    function renderizarTabelaProcessos(processosTexto) {
+function renderizarTabelaProcessos(processosTexto) {
 
-        var corpo = document.getElementById("corpoTabelaProcessos");
+    var corpo = document.getElementById("corpoTabelaProcessos");
 
-        corpo.innerHTML = "";
+    corpo.innerHTML = "";
 
-        if (!processosTexto) {
-            return;
+    if (!processosTexto) {
+        return;
+    }
+
+    var linhas = processosTexto.split("],");
+
+    var contador = 0;
+
+    for (var i = linhas.length - 1; i >= 0; i--) {
+
+        if (contador >= 3) {
+            break;
         }
 
-        var linhas = processosTexto.split("],");
+        var processo = linhas[i];
 
-        linhas.forEach(function (processo) {
+        processo = processo
+            .replaceAll("[", "")
+            .replaceAll("]", "")
+            .replaceAll("'", "")
+            .trim();
 
-            processo = processo
-                .replaceAll("[", "")
-                .replaceAll("]", "")
-                .replaceAll("'", "");
+        var dados = processo.split(",");
 
-            var dados = processo.split(",");
+        if (dados.length >= 3) {
 
-            if (dados.length >= 3) {
+            corpo.innerHTML += `
+                <div class="tabela-row">
 
-                corpo.innerHTML += `
-                    <div class="tabela-row">
+                    <span class="col-pid">
+                        ${dados[0]}
+                    </span>
 
-                        <span class="col-pid">${dados[0]}</span>
+                    <span class="col-proc">
+                        ${dados[1]}
+                    </span>
 
-                        <span class="col-proc">${dados[1]}</span>
+                    <span class="col-escrita">
+                        ${Number(dados[2]).toFixed(0)}
+                    </span>
 
-                        <span class="col-escrita">
-                            ${Number(dados[2]).toFixed(0)}
-                        </span>
+                </div>
+            `;
 
-                    </div>
-                `;
-            }
-        });
+            contador++;
+
+        }
     }
+}
 
-    function criarGraficos(historico, limites) {
+    function criarGraficos(historico, servidor) {
 
         graficosCriados.forEach(function (grafico) {
             grafico.destroy();
@@ -468,32 +582,28 @@
                 nome: "CPU",
                 campo: "cpu_percent",
                 cor: "#ff3b3b",
-                limite: limites.cpu_percent,
-                unidade: "%"
+                limite: servidor.limite_cpu
             },
 
             {
                 nome: "RAM",
                 campo: "virtual_memory_usage",
                 cor: "#00c853",
-                limite: limites.virtual_memory_usage,
-                unidade: "%"
+                limite: servidor.limite_ram
             },
 
             {
                 nome: "Leitura Disco",
                 campo: "disk_read_kbps",
                 cor: "#00b0ff",
-                limite: limites.disk_read_kbps,
-                unidade: "KB/s"
+                limite: servidor.limite_leitura
             },
 
             {
                 nome: "Escrita Disco",
                 campo: "disk_write_kbps",
                 cor: "#f5a623",
-                limite: limites.disk_write_kbps,
-                unidade: "KB/s"
+                limite: servidor.limite_escrita
             }
 
         ];
@@ -518,7 +628,7 @@
 
             historico.forEach(function (linha) {
 
-                labels.push(linha.timestamp);
+                labels.push(linha.hourStamp);
 
                 valores.push(linha[componente.campo]);
 
@@ -613,5 +723,6 @@
         carregarGraficos();
 
     }, 10000);
+
 
 </script>
