@@ -339,7 +339,7 @@
 
         console.log("MAC:", macServidor);
 
-        fetch("/conexaoS3/buscar_registros", {
+        fetch("/ransomware/dados", {
 
             method: "POST",
 
@@ -638,13 +638,9 @@ function renderizarTabelaProcessos(processosTexto) {
                 document.getElementById(`grafico-${indice}`).getContext("2d");
 
             var grafico = new Chart(contexto, {
-
                 type: "line",
-
                 data: {
-
                     labels: labels,
-
                     datasets: [
                         {
                             label: componente.nome,
@@ -662,9 +658,7 @@ function renderizarTabelaProcessos(processosTexto) {
                 options: {
 
                     responsive: true,
-
                     maintainAspectRatio: false,
-
                     plugins: {
 
                         legend: {
@@ -672,21 +666,13 @@ function renderizarTabelaProcessos(processosTexto) {
                         },
 
                         annotation: {
-
                             annotations: {
-
                                 limite: {
-
                                     type: "line",
-
                                     yMin: componente.limite,
-
                                     yMax: componente.limite,
-
                                     borderColor: "#ff0000",
-
                                     borderWidth: 2,
-
                                     borderDash: [5, 5]
                                 }
                             }
@@ -694,16 +680,13 @@ function renderizarTabelaProcessos(processosTexto) {
                     },
 
                     scales: {
-
                         x: {
-
                             ticks: {
                                 color: "#ffffff"
                             }
                         },
 
                         y: {
-
                             ticks: {
                                 color: "#ffffff"
                             }
