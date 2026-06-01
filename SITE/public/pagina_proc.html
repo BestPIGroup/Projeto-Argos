@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="./assets/LogoArgos.png">
+    <title>Dashboard Servidor</title>
+
+    <link rel="stylesheet" href="./css/pagina_proc.css">
+</head>
+
+<body>
+
+    <div class="pagina-dashboard">
+
+        <!-- TOPO -->
+        <div class="topo-dashboard">
+
+            <!-- SERVIDOR -->
+            <div class="card-servidor-topo">
+
+                <img src="./assets/server.png">
+
+                <div class="servidor-topo-info">
+                    <h2>Servidor 3</h2>
+                    <span class="status-topo">Atenção</span>
+                </div>
+
+            </div>
+
+            <!-- KPIS -->
+            <div class="kpis-dashboard">
+
+                <div class="kpi-card critico">
+                    <p>Servidores Críticos</p>
+                    <h3>3</h3>
+                </div>
+
+                <div class="kpi-card alerta">
+                    <p>Servidores em Alerta</p>
+                    <h3>3</h3>
+                </div>
+
+                <div class="kpi-card">
+                    <p>Total de Processos</p>
+                    <h3>402</h3>
+                </div>
+
+                <div class="kpi-card">
+                    <p>Máximo de Processos</p>
+                    <h3>530</h3>
+                </div>
+
+                <div class="kpi-card">
+                    <p>Usuários Logados</p>
+                    <h3>2</h3>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- GRID -->
+        <div class="dashboard-grid">
+
+            <!-- GRÁFICO -->
+            <div class="grafico-box">
+
+                <h3>PROCESSOS</h3>
+
+
+                <div>
+                    <canvas id="myChart"></canvas>
+                </div>
+
+            </div>
+
+            <!-- GRÁFICO -->
+            <div class="grafico-box">
+
+                <h3>TROCAS DE CONTEXTO</h3>
+
+
+                <div>
+                    <canvas id="myChart2"></canvas>
+                </div>
+
+
+            </div>
+
+            <!-- TABELA -->
+            <div class="tabela-box">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>PID</th>
+                            <th>Descrição</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>80</td>
+                            <td>python</td>
+                            <td>210</td>
+                        </tr>
+
+                        <tr>
+                            <td>54</td>
+                            <td>chrome</td>
+                            <td>120</td>
+                        </tr>
+
+                        <tr>
+                            <td>23</td>
+                            <td>InstallService</td>
+                            <td>53</td>
+                        </tr>
+
+                        <tr>
+                            <td>23</td>
+                            <td>mpssvc</td>
+                            <td>42</td>
+                        </tr>
+
+                        <tr>
+                            <td>23</td>
+                            <td>MySQL80</td>
+                            <td>31</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="processos-arquivos">
+
+    <h3>PROCESSOS E ARQUIVOS ACESSADOS</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Processo</th>
+                <th>Arquivo Acessado</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>chrome.exe</td>
+                <td>C:\Users\Admin\Downloads\relatorio.pdf</td>
+            </tr>
+
+            <tr>
+                <td>python.exe</td>
+                <td>C:\Projetos\Argos\monitoramento.py</td>
+            </tr>
+
+            <tr>
+                <td>mysqld.exe</td>
+                <td>C:\ProgramData\MySQL\data\argos.ibd</td>
+            </tr>
+
+            <tr>
+                <td>java.exe</td>
+                <td>C:\SPTech\ProjetoArgos\app.jar</td>
+            </tr>
+        </tbody>
+    </table>
+
+        </div>
+
+
+</div>  
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+
+        const ctx = document.getElementById('myChart');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+                datasets: [{
+                    label: 'Processos',
+                    data: [12, 19, 3, 5, 2, 3, 8],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctx2 = document.getElementById('myChart2');
+
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+                datasets: [{
+                    label: 'Troca de Contexto',
+                    data: [12, 19, 3, 5, 2, 3, 6],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+
+                    }
+                }
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>
