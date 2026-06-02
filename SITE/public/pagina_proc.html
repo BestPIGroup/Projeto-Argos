@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/pagina_proc.css">
 </head>
 
-<body>
+<body onload="carregarGraficos()">
 
     <div class="pagina-dashboard">
 
@@ -31,30 +31,38 @@
 
             <!-- KPIS -->
             <div class="kpis-dashboard">
+<<<<<<< HEAD
+                
+=======
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+                <div class="kpi-card">
+                    <p>Usuário</p>
+                    <h3 id="server-user">_</h3>
+                </div>
 
                 <div class="kpi-card critico">
                     <p>Servidores Críticos</p>
-                    <h3>3</h3>
+                    <h3 id="server-critico">3</h3>
                 </div>
 
                 <div class="kpi-card alerta">
                     <p>Servidores em Alerta</p>
-                    <h3>3</h3>
+                    <h3 id="server-alerta">3</h3>
                 </div>
 
                 <div class="kpi-card">
                     <p>Total de Processos</p>
-                    <h3>402</h3>
+                    <h3 id="kpi-total-processos">402</h3>
                 </div>
 
                 <div class="kpi-card">
                     <p>Máximo de Processos</p>
-                    <h3>530</h3>
+                    <h3 id="kpi-maximo-processos">530</h3>
                 </div>
 
                 <div class="kpi-card">
                     <p>Usuários Logados</p>
-                    <h3>2</h3>
+                    <h3 id="kpi-usuarios-logados">2</h3>
                 </div>
 
             </div>
@@ -79,12 +87,20 @@
             <!-- GRÁFICO -->
             <div class="grafico-box">
 
-                <h3>TROCAS DE CONTEXTO</h3>
+
+                <div class="graficos"></div>
+                <!-- <h3>TROCAS DE CONTEXTO</h3>
 
 
-                <div>
-                    <canvas id="myChart2"></canvas>
-                </div>
+<<<<<<< HEAD
+                <div class="tabela-body" id="corpo-tabrla">
+                     <canvas id="myChart2"></canvas> 
+                </div> -->
+=======
+<div class="tabela-body" id="corpo-tabrla">
+<canvas id="myChart2"></canvas>
+</div> -->
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
 
             </div>
@@ -141,94 +157,371 @@
 
             <div class="processos-arquivos">
 
-    <h3>PROCESSOS E ARQUIVOS ACESSADOS</h3>
+                <h3>PROCESSOS E ARQUIVOS ACESSADOS</h3>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Processo</th>
-                <th>Arquivo Acessado</th>
-            </tr>
-        </thead>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Processo</th>
+                            <th>Arquivo Acessado</th>
+                        </tr>
+                    </thead>
 
-        <tbody>
-            <tr>
-                <td>chrome.exe</td>
-                <td>C:\Users\Admin\Downloads\relatorio.pdf</td>
-            </tr>
+                    <tbody>
+                        <tr>
+                            <td>chrome.exe</td>
+                            <td>C:\Users\Admin\Downloads\relatorio.pdf</td>
+                        </tr>
 
-            <tr>
-                <td>python.exe</td>
-                <td>C:\Projetos\Argos\monitoramento.py</td>
-            </tr>
+                        <tr>
+                            <td>python.exe</td>
+                            <td>C:\Projetos\Argos\monitoramento.py</td>
+                        </tr>
 
-            <tr>
-                <td>mysqld.exe</td>
-                <td>C:\ProgramData\MySQL\data\argos.ibd</td>
-            </tr>
+                        <tr>
+                            <td>mysqld.exe</td>
+                            <td>C:\ProgramData\MySQL\data\argos.ibd</td>
+                        </tr>
 
-            <tr>
-                <td>java.exe</td>
-                <td>C:\SPTech\ProjetoArgos\app.jar</td>
-            </tr>
-        </tbody>
-    </table>
+                        <tr>
+                            <td>java.exe</td>
+                            <td>C:\SPTech\ProjetoArgos\app.jar</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
 
         </div>
-
-
-</div>  
     </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-
-        const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
-                datasets: [{
-                    label: 'Processos',
-                    data: [12, 19, 3, 5, 2, 3, 8],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        const ctx2 = document.getElementById('myChart2');
-
-        new Chart(ctx2, {
-            type: 'line',
-            data: {
-                labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
-                datasets: [{
-                    label: 'Troca de Contexto',
-                    data: [12, 19, 3, 5, 2, 3, 6],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-
-                    }
-                }
-            }
-        });
-    </script>
-
 
 </body>
 
 </html>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+            datasets: [{
+                label: 'Processos',
+                data: [12, 19, 3, 5, 2, 3, 8],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const ctx2 = document.getElementById('myChart2');
+
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+            datasets: [{
+                label: 'Troca de Contexto',
+                data: [12, 19, 3, 5, 2, 3, 6],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+
+                }
+            }
+        }
+    });
+
+    function carregarGraficos() {
+
+        fetch("/dashboard/processos")
+            .then(function (resposta) {
+
+                return resposta.json();
+            })
+            .then(function (dadosJson) {
+
+                console.log(dadosJson);
+
+                var servidor = dadosJson.servidor;
+
+                var limites = dadosJson.limites;
+
+                var historico = dadosJson.historico;
+
+                atualizarKPI(servidor, limites);
+
+                renderizarTabelaProcessos(servidor, total_processos);
+
+                criarGraficos(historico, limites);
+            })
+            .catch(function (erro) {
+
+                console.log("Erro ao carregar dashboard: ", erro);
+            })
+    }
+
+    function atualizarKPI(servidor, limites) {
+
+        document.getElementById("server-user").innerHTML = servidor.user;
+    }
+
+<<<<<<< HEAD
+    function renderizarTabelaProcessos(processosTexto){
+=======
+    function renderizarTabelaProcessos(processosTexto) {
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+
+        var corpo = document.getElementById("corpo-tabela");
+
+        corpo.innerHTML = "";
+
+<<<<<<< HEAD
+        if(!processosTexto){
+=======
+        if (!processosTexto) {
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+            return;
+        }
+
+        var linhas = processosTexto.split("],");
+
+<<<<<<< HEAD
+        linhas.forEach(function (processo){
+
+            processo = processo
+            .replaceAll("[", "")
+            .replaceAll("]", "")
+            .replaceAll("'", "");
+
+            var dados = processo.split(",");
+
+             if (dados.length >= 3) {
+
+                corpo.innerHTML += `
+                    <div class="tabela-row">
+
+                        <span class="col-pid">${dados[0]}</span>
+
+                        <span class="col-proc">${dados[1]}</span>
+
+                        <span class="col-escrita">
+                            ${Number(dados[2]).toFixed(0)}
+                        </span>
+
+                    </div>
+                `;
+=======
+        linhas.forEach(function (processo) {
+
+            processo = processo
+                .replaceAll("[", "")
+                .replaceAll("]", "")
+                .replaceAll("'", "");
+
+            var dados = processo.split(",");
+
+            if (dados.length >= 3) {
+
+                corpo.innerHTML += `
+<div class="tabela-row">
+
+<span class="col-pid">${dados[0]}</span>
+
+<span class="col-proc">${dados[1]}</span>
+
+<span class="col-escrita">
+${Number(dados[2]).toFixed(0)}
+</span>
+
+</div>
+`;
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+            }
+        });
+    }
+
+<<<<<<< HEAD
+    function criarGraficos(historico, limites){
+=======
+    function criarGraficos(historico, limites) {
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+
+        graficosCriados.forEach(function (grafico) {
+            grafico.destroy();
+        });
+
+        graficosCriados = [];
+
+        var container = document.querySelector(".graficos");
+
+        container.innerHTML = "";
+
+        var componentes = [
+
+            {
+                nome: "Processos",
+                campo: "total_processos",
+                cor: "#ff3b3b",
+                limite: limites.cpu_percent,
+                unidade: "Quantidade"
+            },
+
+            {
+                nome: "Troca de Contexto",
+                campo: "cpu_ctx_switches",
+                cor: "#00c853",
+                limite: limites.cpu_ctx_switches,
+                unidade: "Quantidade"
+            }
+        ];
+
+        componentes.forEach(function (componente, indice) {
+
+            var card = document.createElement("div");
+
+            card.className = "card-componente";
+
+            card.innerHTML = `
+<<<<<<< HEAD
+                <div class="card-grafico">
+                    <canvas id="grafico-${indice}"></canvas>
+                </div>`;
+=======
+<div class="card-grafico">
+<canvas id="grafico-${indice}"></canvas>
+</div>`;
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+
+            container.appendChild(card);
+
+            var labels = [];
+
+            var valores = [];
+
+<<<<<<< HEAD
+            historico.forEach(function (linha){
+=======
+            historico.forEach(function (linha) {
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+
+                labels.push(linha.timestamp);
+
+                valores.push(linha[componente.campo]);
+            });
+
+            var contexto = document.getElementById(`grafico-${indice}`).getContext("2d");
+
+            var grafico = new Chart(contexto, {
+
+                type: "line",
+
+                data: {
+
+                    labels: labels,
+
+                    datasets: [
+                        {
+<<<<<<< HEAD
+                        label: componente.nome,
+=======
+                            label: componente.nome,
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+                            data: valores,
+                            borderColor: componente.cor,
+                            backgroundColor: "rgba(255,255,255,0.05)",
+                            fill: true,
+                            tension: 0.3,
+                            borderWidth: 2,
+                            pointRadius: 1
+                        }
+                    ]
+                },
+
+                options: {
+
+                    responsive: true,
+<<<<<<< HEAD
+                    maintainAspectRatio: false
+                }
+            })
+        })
+    }
+=======
+                    
+                    maintainAspectRatio: false,
+                    
+                    plugins: {
+
+                        legend: {
+                            display: true
+                        },
+
+                        annotations: {
+
+                            annotations: {
+
+                                limite: {
+
+                                    type: "line",
+
+                                    yMin: componente.limite,
+
+                                    yMax: componente.limite,
+
+                                    borderColor: "#ff0000",
+
+                                    borderWidth: 2,
+
+                                    borderDash: [5, 5]
+                                }
+                            }
+
+                        }
+                    },
+
+                    scales: {
+
+                        x: {
+
+                            ticks: {
+                                color: "#ffffff"
+                            }
+                        },
+
+                        
+                        y: {
+
+                            ticks: {
+                                color: "#ffffff"
+                            }
+                        }
+                    }
+                }
+            });
+
+            graficosCriados.push(grafico);
+        });
+    }
+
+    setInterval(function () {
+
+        carregarGraficos();
+    }, 10000);
+>>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
+</script>
