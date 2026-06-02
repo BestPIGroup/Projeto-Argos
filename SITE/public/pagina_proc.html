@@ -31,10 +31,7 @@
 
             <!-- KPIS -->
             <div class="kpis-dashboard">
-<<<<<<< HEAD
                 
-=======
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
                 <div class="kpi-card">
                     <p>Usuário</p>
                     <h3 id="server-user">_</h3>
@@ -92,15 +89,9 @@
                 <!-- <h3>TROCAS DE CONTEXTO</h3>
 
 
-<<<<<<< HEAD
                 <div class="tabela-body" id="corpo-tabrla">
                      <canvas id="myChart2"></canvas> 
                 </div> -->
-=======
-<div class="tabela-body" id="corpo-tabrla">
-<canvas id="myChart2"></canvas>
-</div> -->
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
 
             </div>
@@ -281,27 +272,18 @@
         document.getElementById("server-user").innerHTML = servidor.user;
     }
 
-<<<<<<< HEAD
     function renderizarTabelaProcessos(processosTexto){
-=======
-    function renderizarTabelaProcessos(processosTexto) {
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
         var corpo = document.getElementById("corpo-tabela");
 
         corpo.innerHTML = "";
 
-<<<<<<< HEAD
         if(!processosTexto){
-=======
-        if (!processosTexto) {
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
             return;
         }
 
         var linhas = processosTexto.split("],");
 
-<<<<<<< HEAD
         linhas.forEach(function (processo){
 
             processo = processo
@@ -326,41 +308,11 @@
 
                     </div>
                 `;
-=======
-        linhas.forEach(function (processo) {
-
-            processo = processo
-                .replaceAll("[", "")
-                .replaceAll("]", "")
-                .replaceAll("'", "");
-
-            var dados = processo.split(",");
-
-            if (dados.length >= 3) {
-
-                corpo.innerHTML += `
-<div class="tabela-row">
-
-<span class="col-pid">${dados[0]}</span>
-
-<span class="col-proc">${dados[1]}</span>
-
-<span class="col-escrita">
-${Number(dados[2]).toFixed(0)}
-</span>
-
-</div>
-`;
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
             }
         });
     }
 
-<<<<<<< HEAD
     function criarGraficos(historico, limites){
-=======
-    function criarGraficos(historico, limites) {
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
         graficosCriados.forEach(function (grafico) {
             grafico.destroy();
@@ -398,15 +350,9 @@ ${Number(dados[2]).toFixed(0)}
             card.className = "card-componente";
 
             card.innerHTML = `
-<<<<<<< HEAD
                 <div class="card-grafico">
                     <canvas id="grafico-${indice}"></canvas>
                 </div>`;
-=======
-<div class="card-grafico">
-<canvas id="grafico-${indice}"></canvas>
-</div>`;
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
             container.appendChild(card);
 
@@ -414,11 +360,7 @@ ${Number(dados[2]).toFixed(0)}
 
             var valores = [];
 
-<<<<<<< HEAD
             historico.forEach(function (linha){
-=======
-            historico.forEach(function (linha) {
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 
                 labels.push(linha.timestamp);
 
@@ -437,11 +379,7 @@ ${Number(dados[2]).toFixed(0)}
 
                     datasets: [
                         {
-<<<<<<< HEAD
                         label: componente.nome,
-=======
-                            label: componente.nome,
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
                             data: valores,
                             borderColor: componente.cor,
                             backgroundColor: "rgba(255,255,255,0.05)",
@@ -456,72 +394,9 @@ ${Number(dados[2]).toFixed(0)}
                 options: {
 
                     responsive: true,
-<<<<<<< HEAD
                     maintainAspectRatio: false
                 }
             })
         })
     }
-=======
-                    
-                    maintainAspectRatio: false,
-                    
-                    plugins: {
-
-                        legend: {
-                            display: true
-                        },
-
-                        annotations: {
-
-                            annotations: {
-
-                                limite: {
-
-                                    type: "line",
-
-                                    yMin: componente.limite,
-
-                                    yMax: componente.limite,
-
-                                    borderColor: "#ff0000",
-
-                                    borderWidth: 2,
-
-                                    borderDash: [5, 5]
-                                }
-                            }
-
-                        }
-                    },
-
-                    scales: {
-
-                        x: {
-
-                            ticks: {
-                                color: "#ffffff"
-                            }
-                        },
-
-                        
-                        y: {
-
-                            ticks: {
-                                color: "#ffffff"
-                            }
-                        }
-                    }
-                }
-            });
-
-            graficosCriados.push(grafico);
-        });
-    }
-
-    setInterval(function () {
-
-        carregarGraficos();
-    }, 10000);
->>>>>>> c9a8b50571a57b808c5a287eef0fe329f46b10f2
 </script>
