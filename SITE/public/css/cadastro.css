@@ -1,12 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap');
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: 'Poppins' !important;
 }
 
 html {
@@ -160,6 +158,7 @@ header a:hover { color: #3ed64b; }
     gap: 10px;
     width: 100%;
     overflow: hidden;
+    max-height: fit-content;
 }
 
 /* linha 1: blocos de info pessoal lado a lado */
@@ -191,6 +190,12 @@ header a:hover { color: #3ed64b; }
 /* como não há wrapper rows no HTML, uso nth-child nos .bloco-info */
 
 /* blocos 1 e 2: info pessoal, lado a lado */
+
+.bloco-info{
+
+    font-size: 24px !important;
+}
+
 .bloco-info:nth-child(1),
 .bloco-info:nth-child(2) {
     flex: 1 1 0;
@@ -202,6 +207,8 @@ header a:hover { color: #3ed64b; }
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     overflow: hidden;
     min-width: 0;
+    max-height: fit-content;
+    align-self: center;
 }
 
 /* bloco 3: plataformas — ocupa linha inteira abaixo */
@@ -227,15 +234,14 @@ header a:hover { color: #3ed64b; }
 .bloco-info:nth-child(3) > h3 {
     width: 100%;
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: 18px;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
-    color: #3ed64b;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     margin-top: 4px;
     margin-bottom: 0;
-    border-bottom: 1px solid #1c2e5a;
+    border-bottom: none;
     padding-bottom: 3px;
 }
 
@@ -272,7 +278,7 @@ header a:hover { color: #3ed64b; }
 
 .campo > span,
 .campo > label {
-    font-size: 10px;
+    font-size: 15px;
     font-weight: bold;
     color: #86929b;
     margin-bottom: 3px;
@@ -288,7 +294,7 @@ header a:hover { color: #3ed64b; }
 
 /* h2 dentro de .campo */
 .campo > h2 {
-    font-size: 12px;
+    font-size: 20px;
     color: #c8d6e5;
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
@@ -299,7 +305,7 @@ header a:hover { color: #3ed64b; }
 
 /* ─── h2 global ─── */
 h2 {
-    font-size: 12px;
+    font-size: 19px;
     color: #c8d6e5;
     font-weight: 600;
     font-family: 'Poppins', sans-serif;
@@ -311,11 +317,11 @@ h2 {
 /* ─── INPUTS ─── */
 input {
     background-color: #0b1a35;
-    border: 1px solid #1c2e5a;
+    border: none;
     padding: 7px 11px;
     border-radius: 5px;
     color: white;
-    font-size: 12px;
+    font-size: 15px;
     outline: none;
     width: 100%;
     height: auto;
@@ -353,12 +359,13 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 9px;
     border-radius: 5px;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 20px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    width: 100%;
-    font-family: 'Work Sans', sans-serif;
+    width: 50%;
+    font-family: 'Poppins';
     display: flex;
+    justify-self: center;
     justify-content: center;
     align-items: center;
 }
@@ -510,46 +517,128 @@ input[type="number"]::-webkit-outer-spin-button {
 /* ─── FOOTER — logo abaixo da viewport ─── */
 footer {
     background-color: #162447;
-    padding: 14px 5%;
-    border-top: 1px solid #1c2e5a;
+    border-top: none;
     flex-shrink: 0;
+    font-family: 'Poppins', sans-serif;
 }
 
-.footer {
+.footer-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px 8%;
     display: flex;
     align-items: center;
-    gap: 14px;
-}
-
-.footer img { height: 28px; }
-
-.footer p, footer p {
-    color: #86929b;
-    font-size: 12px;
-}
-
-footer hr {
-    border-color: #1c2e5a;
-    margin: 10px 0;
-}
-
-.sociais {
-    display: flex;
     justify-content: space-between;
+    gap: 48px;
+}
+
+.footer-brand {
+    display: flex;
     align-items: center;
+    gap: 20px;
 }
 
-.sociais-img { display: flex; gap: 10px; }
-
-.sociais-img img {
-    height: 20px;
-    opacity: 0.65;
-    transition: opacity 0.2s;
+.footer-brand img {
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+    opacity: 0.9;
 }
 
-.sociais-img img:hover { opacity: 1; }
+.footer-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
 
-/* ─── RESPONSIVE ─── */
+.footer-brand-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.footer-copy {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    color: #5a7a9a;
+}
+
+.footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-weight: 200;
+    gap: 6px;
+}
+
+.footer-contact-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #5a7a9a;
+}
+
+.footer-contact a {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    color: #8ab4d4;
+    font-weight: 200;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-contact a:hover {
+    color: #3ed64b;
+}
+
+.footer-social {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-social a {
+    display: flex;
+    align-items: center;
+    opacity: 0.55;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.footer-social a:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.footer-social img {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+        padding: 28px 6%;
+    }
+
+    .footer-contact {
+        width: 100%;
+    }
+
+    .footer-social {
+        gap: 28px;
+    }
+}
+
+/* ─── RESPONSIVIDADE ─── */
 
 /* tablet landscape / telas médias */
 @media screen and (max-width: 1100px) {
@@ -597,7 +686,7 @@ footer hr {
     .nav2 {
         width: 100%;
         justify-content: center;
-        border-top: 1px solid #1c2e5a;
+        border-top: none;
         padding-top: 10px;
     }
 

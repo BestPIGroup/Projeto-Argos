@@ -107,16 +107,20 @@
               </div>
               <h3>Jira</h3>
               <div class="campo">
+                <span>Email associado a organização no Jira<span style="color: red;">*</span></span>
+                <input id="email_jira_input" type="email" oninput="this.value = this.value.toUpperCase()" placeholder="SCRUM"/>
+              </div>
+              <div class="campo">
                 <span>Chave Token da API Jira<span style="color: red;">*</span></span>
-                <input id="token_jira_input" type="text" value=""/>
+                <input id="token_jira_input" type="text" placeholder="ASwe123wqASDsadqdDwQHgd234..."/>
               </div>
               <div class="campo">
                 <span>Link da equipe no Jira<span style="color: red;">*</span></span>
-                <input id="url_jira_input" type="text" value=""/>
+                <input id="url_jira_input" type="text" placeholder="https://nome-da-sua-empresa.atlassian.net/people/team/ID-da-equipe"/>
               </div>
               <div class="campo">
                 <span>Chave da url da equipe<span style="color: red;">*</span></span>
-                <input id="url_key_input" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="SCRUM"/>
+                <input id="url_key_jira_input" type="text" oninput="this.value = this.value.toUpperCase()" placeholder="SCRUM"/>
               </div>
             </div>
             
@@ -178,17 +182,22 @@
       </div>
 
       <footer>
-        <div class="footer">
-          <img src="./assets/LogoArgosW.png" alt="Logo">
-          <p>2026 Argos. Todos os direitos reservados.</p>
-        </div>
-        <hr>
-        <div class="sociais">
-          <p>Entre em contato conosco: <br>argos@argos.com.br</p>
-          <div class="sociais-img">
-            <img src="./assets/instagram.png" alt="Instagram">
-            <img src="./assets/whatsapp.png" alt="WhatsApp">
-            <img src="./assets/linkedin.png" alt="Linkedin">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <img src="./assets/LogoArgosW.png" alt="Logo Argos">
+            <div class="footer-brand-text">
+              <span class="footer-brand-name">Argos</span>
+              <span class="footer-copy">© 2026 Argos. Todos os direitos reservados.</span>
+            </div>
+          </div>
+          <div class="footer-contact">
+            <span class="footer-contact-label">Contato</span>
+            <a href="mailto:argos@argos.com.br">argos@argos.com.br</a>
+          </div>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram"><img src="./assets/instagram.png" alt="Instagram"></a>
+            <a href="#" aria-label="WhatsApp"><img src="./assets/whatsapp.png" alt="WhatsApp"></a>
+            <a href="#" aria-label="LinkedIn"><img src="./assets/linkedin.png" alt="LinkedIn"></a>
           </div>
         </div>
       </footer>
@@ -401,6 +410,12 @@
         var matricula = matricula_input.value;
         var senha = senha_input.value;
         var confirmacaoSenha = confirmacao_senha_input.value;
+        var webHookSlack = link_webhook_input.value;
+        var tokenApiJira = token_jira_input.value;
+        var urlEquipeJira = url_jira_input.value;
+        var chaveUrlJira = url_key_jira_input.value;
+        var emailJira = email_jira_input.value;
+
 
 
         // Verificando se há algum campo em branco
@@ -411,7 +426,12 @@
           matricula == "" ||
           funcao == "" ||
           senha == "" ||
-          confirmacaoSenha == ""
+          confirmacaoSenha == "" ||
+          webHookSlack == "" || 
+          tokenApiJira == "" ||
+          urlEquipeJira == "" ||
+          chaveUrlJira == "" ||
+          emailJira == ""
         ) {
           cardErro.style.display = "flex";
           mensagem_erro.innerHTML = "Preencha todos os campos!";
@@ -453,8 +473,13 @@
             telefoneServer: telefone,
             funcaoServer: funcao,
             matriculaServer: matricula,
-            fk_unidadeServer: sessionStorage.getItem("ID_UNIDADE")
-
+            fk_unidadeServer: sessionStorage.getItem("ID_UNIDADE"),
+            id_unidade_slackJira: sessionStorage.getItem("ID_UNIDADE"),
+            token_api: tokenApiJira,
+            email_jira: emailJira,
+            url_jira: urlEquipeJira,
+            key_url_jira: chaveUrlJira,
+            webhook_slack: webHookSlack
           }),
         })
           .then(function (resposta) {
