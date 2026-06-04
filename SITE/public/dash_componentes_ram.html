@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Argos | Componentes</title>
     <script src="./js/sessao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <link rel="stylesheet" href="./css/dash_componentes_ram.css">
     <link rel="stylesheet" href="./css/dash_componentes.css">
@@ -44,23 +45,46 @@
                             <h2>95%</h2>
                         </div>
                         <div class="kpi-detecta">
-                        <p>Coleta detectada às: <span>22:00</span></p>
+                            <p>Coleta detectada às: <span>22:00</span></p>
                         </div>
                     </div>
 
                     <div class="kpi-grafico">
-                        <div class="titulo-servidor">
+                        <div class="info-memoria">
+                            <h3>Uso da Memória</h3>
 
+                            <div class="percentual-ram">
+                                75%
+                            </div>
+
+                            <div class="legenda-ram">
+                                <div>
+                                    <span class="cor-uso"></span>
+                                    Em uso
+                                </div>
+
+                                <div>
+                                    <span class="cor-livre"></span>
+                                    Livre
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grafico-memoria">
+                            <canvas id="usoMemoria"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <div class="grafico-monitoramento">
+                <div class="alerta-grafico">
+                    <div class="grafico-monitoramento">
+                        <canvas id="monitoramentoRam"></canvas>
+                    </div>
 
-                </div>
-
-                <div class="alertas-ram">
-
+                    <div class="alertas-ram">
+                        <img src="./assets/warningRed.png">
+                        <p>Alertas de Componente RAM</p>
+                    </div>
                 </div>
 
             </div>
@@ -325,9 +349,22 @@
             const canvasElemento = document.getElementById(idCanvas);
 
             // Criado por conta de estar recursivo a criação do canvas id
+            let graficoMemoria = null;
+            let monitorRam = null;
+
             if (componente.nome == "RAM") {
                 canvasElemento.addEventListener('click', function () {
                     modal.style.display = 'flex';
+
+                    if (!graficoMemoria) {
+                        const ctx = document.getElementById('usoMemoria').getContext('2d');
+                        graficoMemoria = new Chart(ctx, config);
+                    }
+
+                    if (!monitoRam) {
+                        const ctz = document.getElementById('monitoramentoRam').getContext('2d');
+                        monitorRam = new Chart(ctz, configu);
+                    }
                 });
             }
 
@@ -504,6 +541,93 @@
         }
 
     }
-    document.getElementById("nomeUser").innerHTML = sessionStorage.NOME_USUARIO
+    document.getElementById("nome_usuario").innerHTML = sessionStorage.NOME_USUARIO
+
+    // gráfico donuts uso de memória
+    const ctx = document.getElementById('usoMemoria').getContext('2d');
+    const data = {
+        labels: [
+            'Em uso',
+            'Livre'
+        ],
+        datasets: [{
+            label: 'Uso de memória',
+            data: [75, 25],
+            backgroundColor: [
+                '#FFFFFF',
+                '#8AC3FF'
+            ],
+            hoverOffset: 4
+        }]
+    };
+
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            cutout: '80%',
+
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: false
+                }
+            }
+        }
+    };
+
+    new Chart(ctx, config);
+
+    // gráfico de monitoramento de ram
+    const ctz = document.getElementById('monitoramentoRam').getContext('2d');
+    const meuGrafico = new Chart(ctz, {
+        type: 'line',
+        data: {
+            labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00'],
+            datasets: [{
+                label: 'Pico de utilização da RAM',
+                data: [0, 20, 50, 100],
+                borderColor: '#8AC3FF',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#ffffff' 
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Monitoramento de Ram',
+                    color: '#ffffff'
+                }
+
+            },
+            scales: {
+                y: {
+                    ticks: {
+                        color: '#ffffff'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#ffffff'
+                    }
+                }
+            }
+        }
+    });
 
 </script>
