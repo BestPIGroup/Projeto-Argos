@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> Argos | Dashboards</title>
     <script src="./js/sessao.js"></script>
-    <link rel="stylesheet" href="./css/gestor_servidores.css">
+    <link rel="stylesheet" href="./css/gestor_servidores_arthur.css">
     <link rel="icon" href="./assets/LogoArgos.png">
 </head>
 
-<body>
+<body onload="verificarSessao()">
     <header class="sidebar">
 
         <div class="logo" href="index.html">
@@ -64,7 +64,7 @@
         </div>
     </header>
 
-    <div class="conteudo">
+    <div class="conteudo" onload="atualizarKPIs()">
         <div class="box">
             <div class="kpis">
                 <div class="kpi card-erro">
@@ -284,7 +284,7 @@
 
     <div class="modal-overlay" id="modal-alertas" style="display: flex;">
         <div class="modal-alertas-dashboard">
-            <button class="btn-fechar-alerta" onclick="document.querySelector('.modal-alertas-dashboard').style.display='none'">✕</button>
+            <button class="btn-fechar-alerta" style="color: red;" onclick="document.getElementById('modal-alertas').style.display='none'">✕</button>
             <div class="navegacao-modal">
                 <div class="identificacao-servidor">
                     <img src="./assets/server2.png" class="modal-server-icon" alt="Server">
@@ -460,6 +460,41 @@
 <script>
 
     nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`
+
+    function verificarSessao() {
+        if (!sessionStorage.NOME_USUARIO) {
+            window.location.href = 'login.html';
+        }else {
+            nome_usuario.textContent = sessionStorage.NOME_USUARIO;
+            
+            try
+
+            // CONTINUAR AQUI, FALTA BUSCAR LISTA DE MAC ADRESSESS E MONTAR BUSCA DE ALERTAS POR SERVIDOR, ALÉM DE BUSCAR OS DADOS PARA OS KPIs
+             {
+                // Simulação de dados para os KPIs
+                document.getElementById('crit').textContent = '1';
+                document.getElementById('atencao').textContent = '1';
+                document.getElementById('alert').textContent = '3';
+                document.getElementById('threats').textContent = '7';
+            } catch (error) {
+                console.error('Erro ao atualizar KPIs:', error);
+            }
+        }
+    }
+
+
+
+    function logout() {
+        sessionStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    function atualizarKPIs() {
+        document.getElementById('crit').textContent = '1';
+        document.getElementById('atencao').textContent = '1';
+        document.getElementById('alert').textContent = '3';
+        document.getElementById('threats').textContent = '7';
+    }
 
     function abrirModalEditar(nome, badge) {
         document.getElementById('modal-server-nome').textContent = nome;

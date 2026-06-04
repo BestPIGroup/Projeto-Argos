@@ -84,6 +84,7 @@ header {
     height: 56px;
     flex-shrink: 0;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+    transition: 0.4s ease;
 }
 
 header a {
@@ -91,9 +92,12 @@ header a {
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
+    transition: 0.4s ease;
 }
 
-header a:hover { color: #3ed64b; }
+header a:hover { color: #3ed64b;
+    transition: 0.4s ease; 
+}
 
 .nav-desktop { display: flex; gap: 28px; }
 .nav-mobile  { display: none;  gap: 20px; }
@@ -161,7 +165,6 @@ header a:hover { color: #3ed64b; }
     max-height: fit-content;
 }
 
-/* linha 1: blocos de info pessoal lado a lado */
 .formulario-row-top {
     display: flex;
     flex-direction: row;
@@ -170,7 +173,6 @@ header a:hover { color: #3ed64b; }
     min-height: 0;
 }
 
-/* linha 2: plataformas */
 .formulario-row-bottom {
     display: flex;
     flex-direction: row;
@@ -179,7 +181,6 @@ header a:hover { color: #3ed64b; }
     min-height: 0;
 }
 
-/* linha 3: botão + link */
 .formulario-row-actions {
     display: flex;
     flex-direction: column;
@@ -187,9 +188,6 @@ header a:hover { color: #3ed64b; }
     flex-shrink: 0;
 }
 
-/* como não há wrapper rows no HTML, uso nth-child nos .bloco-info */
-
-/* blocos 1 e 2: info pessoal, lado a lado */
 
 .bloco-info{
 
@@ -211,7 +209,6 @@ header a:hover { color: #3ed64b; }
     align-self: center;
 }
 
-/* bloco 3: plataformas — ocupa linha inteira abaixo */
 .bloco-info:nth-child(3) {
     flex: 0 0 auto;
     display: flex;
@@ -362,7 +359,7 @@ input[type="number"]::-webkit-outer-spin-button {
     font-size: 20px;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    width: 50%;
+    width: 55%;
     font-family: 'Poppins';
     display: flex;
     justify-self: center;
@@ -372,10 +369,11 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .botao:hover,
 .formulario button:hover {
-    background-color: #12921c;
-    color: white;
-    box-shadow: none;
-    transform: none;
+    color: #0b1a35;
+    background-color: #2ac436;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
 }
 
 /* ─── CARD ERRO INLINE ─── */
@@ -481,6 +479,9 @@ input[type="number"]::-webkit-outer-spin-button {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
     overflow: hidden;
     padding: 20px 36px 16px 5%;
 }
@@ -492,10 +493,11 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-bottom: 4px;
 }
 
-.cadastroUni > h2 {
+.cadastroUni h2 {
     font-size: 16px;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
+    text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     color: white;
@@ -512,6 +514,12 @@ input[type="number"]::-webkit-outer-spin-button {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
     max-width: 440px;
     overflow: hidden;
+}
+
+.cadastroUni .formulario .botao{
+    align-self: center;
+    justify-self: center;
+    margin-top: 15px;
 }
 
 /* ─── FOOTER — logo abaixo da viewport ─── */
