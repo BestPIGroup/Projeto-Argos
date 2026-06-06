@@ -20,6 +20,7 @@ var usuarioRouter = require("./src/routes/usuarios");
 var unidadeRouter = require("./src/routes/unidade");
 var servidorRouter = require("./src/routes/servidores");
 var conexaoS3Router = require("./src/routes/conexaoS3");
+var dashProcessosRouter = require("./src/routes/dashProcessos");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +33,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dashProcessos", dashProcessosRouter);
 
 app.listen(PORTA_APP, function () {
     console.log(`
