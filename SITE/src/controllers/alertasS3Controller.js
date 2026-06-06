@@ -1,17 +1,13 @@
-var conexaoS3Model = require("../models/conexaoS3Model");
+var conexaoS3Model = require("../models/alertasS3Model");
 
-function buscarRegistros(req,res){
-
-    var mac = req.body.MacServer;
-    var linhas = req.body.QtdLinhas;
+function buscarRegistrosAlertas(req,res){ 
+    var mac = req.body.MacServers;
 
     if (mac == undefined){
         res.status(400).send("Mac indefinido");
-    }else if(linhas == undefined){
-        res.status(400).send("Quantidade de linhas indefinida");
     }else{
 
-        conexaoS3Model.buscarRegistros(mac,linhas)
+        conexaoS3Model.buscarRegistrosAlertas(mac)
             .then(
 
                 function(resultado){
@@ -37,5 +33,5 @@ function buscarRegistros(req,res){
 }
 
 module.exports = {
-    buscarRegistros
+    buscarRegistrosAlertas
 }   

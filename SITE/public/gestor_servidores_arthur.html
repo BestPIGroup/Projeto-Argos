@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Argos | Dashboards</title>
-    <script src="./js/sessao.js"></script>
+    <title>Argos | Painéis</title>
     <link rel="stylesheet" href="./css/gestor_servidores_arthur.css">
     <link rel="icon" href="./assets/LogoArgos.png">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body onload="verificarSessao()">
     <header class="sidebar">
-
         <div class="logo" href="index.html">
             <img src="./assets/LogoArgosIcon.png">
         </div>
-
         <ul class="listaOpcoes">
             <li>
                 <a href="./gestor_servidores.html">
@@ -27,7 +23,6 @@
                     </div>
                 </a>
             </li>
-
             <li>
                 <a href="./relatorios.html">
                     <div class="item">
@@ -36,7 +31,6 @@
                     </div>
                 </a>
             </li>
-
             <li>
                 <a href="./funcionarios.html">
                     <div class="item">
@@ -45,7 +39,6 @@
                     </div>
                 </a>
             </li>
-
         </ul>
         <div class="saida">
             <div class="item">
@@ -64,31 +57,29 @@
         </div>
     </header>
 
-    <div class="conteudo" onload="atualizarKPIs()">
+    <div class="conteudo">
         <div class="box">
             <div class="kpis">
                 <div class="kpi card-erro">
                     <img src="./assets/warningRed.png" alt="">
-                    Servidores Críticos<h2 id="crit">1</h2>
+                    Servidores Críticos<h2 id="crit">--</h2>
                 </div>
                 <div class="kpi card-atencao">
                     <img src="./assets/warningOrange.png" alt="">
-                    Servidores em Atenção<h2 id="atencao">1</h2>
+                    Servidores em Atenção<h2 id="atencao">--</h2>
                 </div>
                 <div class="kpi">
                     <img src="./assets/hardwareWhite.png" alt="">
-                    Alertas de Hardware<h2 id="alert">3</h2>
+                    Alertas de Hardware<h2 id="alert">--</h2>
                 </div>
                 <div class="kpi">
                     <img src="./assets/unlockWhite.png" alt="">
-                    Ciberameaças<h2 id="threats">7</h2>
+                    Ciberameaças<h2 id="threats">--</h2>
                 </div>
-
                 <div class="kpi kpi-alerta-sino" id="card-alerta-sino">
-                    <button class="btn-fechar-alerta"
-                        onclick="document.getElementById('card-alerta-sino').style.display='none'">✕</button>
+                    <button class="btn-fechar-alerta" onclick="fecharAlertaNovo()">X</button>
                     <img src="./assets/bellWhite.png" alt="">
-                    Alerta novo!<h2 id="kpi-sino">Servidor 2</h2>
+                    Alerta novo!<h2 id="kpi-sino">--</h2>
                 </div>
             </div>
             <div class="retangulo">
@@ -98,443 +89,707 @@
                 </button>
             </div>
         </div>
-        <div class="campo">
-            <div class="card">
-                <div class="card-top">
-
-                    <div class="div-esquerda">
-                        <img src="./assets/server2.png" class="img-main-server" alt="Server">
-                    </div>
-
-                    <div class="div-direita">
-                        <div class="header-row">
-                            <span class="server-title"><span class="dot-critico">●</span> Servidor 2</span>
-                            <span class="badge-critico">CRÍTICO</span>
-                        </div>
-
-                        <ul class="info-list">
-                            <li>
-                                <img src="./assets/hardwareWhite.png" class="mini-icon" alt="Hardware">
-                                Alertas de Hardware: 3
-                            </li>
-                            <li>
-                                <img src="./assets/shield.png" class="mini-icon" alt="Cyber">
-                                Ciberataques Detectados: 5
-                            </li>
-                            <li>
-                                <img src="./assets/lock.png" class="mini-icon" alt="Security">
-                                Segurança: <span class="status-alert">Comprometida</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="div-inferior">
-
-                    <a href="./assets/relatorio_hardware.pdf" target="_blank">
-                        <button class="btn btn-left">
-                            <img src="./assets/pdf.png" class="btn-icon" alt="Download">
-                            Download de Relatório
-                        </button>
-                    </a>
-                    <button class="btn btn-right" onclick="abrirModalEditar('Servidor 2', 'CRÍTICO')">
-                        <img src="./assets/edit.png" class="btn-icon" alt="Edit">
-                        Editar Servidor
-                    </button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-top">
-
-                    <div class="div-esquerda">
-                        <img src="./assets/server2.png" class="img-main-server" alt="Server">
-                    </div>
-
-                    <div class="div-direita">
-                        <div class="header-row">
-                            <span class="server-title"><span class="dot">●</span> Servidor 3</span>
-                            <span class="badge">ATENÇÃO</span>
-                        </div>
-
-                        <ul class="info-list">
-                            <li>
-                                <img src="./assets/hardwareWhite.png" class="mini-icon" alt="Hardware">
-                                Alertas de Hardware: 0
-                            </li>
-                            <li>
-                                <img src="./assets/shield.png" class="mini-icon" alt="Cyber">
-                                Ciberataques Detectados: 2
-                            </li>
-                            <li>
-                                <img src="./assets/lock.png" class="mini-icon" alt="Security">
-                                Segurança: <span class="status-alert">Comprometida</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="div-inferior">
-                    <a href="./assets/relatorio_hardware.pdf" target="_blank">
-                        <button class="btn btn-left">
-                            <img src="./assets/pdf.png" class="btn-icon" alt="Download">
-                            Download de Relatório
-                        </button>
-                    </a>
-                    <button class="btn btn-right" onclick="abrirModalEditar('Servidor 3', 'ATENÇÃO')">
-                        <img src="./assets/edit.png" class="btn-icon" alt="Edit">
-                        Editar Servidor
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-top">
-
-                    <div class="div-esquerda">
-                        <img src="./assets/server2.png" class="img-main-server" alt="Server">
-                    </div>
-
-                    <div class="div-direita">
-                        <div class="header-row">
-                            <span class="server-title"><span class="dot-normal">●</span> Servidor 1</span>
-                            <span class="badge-normal">NORMAL</span>
-                        </div>
-
-                        <ul class="info-list">
-                            <li>
-                                <img src="./assets/hardwareWhite.png" class="mini-icon" alt="Hardware">
-                                Alertas de Hardware: 0
-                            </li>
-                            <li>
-                                <img src="./assets/shield.png" class="mini-icon" alt="Cyber">
-                                Ciberataques Detectados: 0
-                            </li>
-                            <li>
-                                <img src="./assets/lock.png" class="mini-icon" alt="Security">
-                                Segurança: <span class="status-normal">Íntegro</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="div-inferior">
-                    <a href="./assets/relatorio_hardware.pdf" target="_blank">
-                        <button class="btn btn-left">
-                            <img src="./assets/pdf.png" class="btn-icon" alt="Download">
-                            Download de Relatório
-                        </button>
-                    </a>
-                    <button class="btn btn-right" onclick="abrirModalEditar('Servidor 1', 'NORMAL')">
-                        <img src="./assets/edit.png" class="btn-icon" alt="Edit">
-                        Editar Servidor
-                    </button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-top">
-
-                    <div class="div-esquerda">
-                        <img src="./assets/server2.png" class="img-main-server" alt="Server">
-                    </div>
-
-                    <div class="div-direita">
-                        <div class="header-row">
-                            <span class="server-title"><span class="dot-normal">●</span> Servidor 4</span>
-                            <span class="badge-normal">NORMAL</span>
-                        </div>
-
-                        <ul class="info-list">
-                            <li>
-                                <img src="./assets/hardwareWhite.png" class="mini-icon" alt="Hardware">
-                                Alertas de Hardware: 0
-                            </li>
-                            <li>
-                                <img src="./assets/shield.png" class="mini-icon" alt="Cyber">
-                                Ciberataques Detectados: 0
-                            </li>
-                            <li>
-                                <img src="./assets/lock.png" class="mini-icon" alt="Security">
-                                Segurança: <span class="status-normal">Íntegro</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="div-inferior">
-                    <a href="./assets/relatorio_hardware.pdf" target="_blank">
-                        <button class="btn btn-left">
-                            <img src="./assets/pdf.png" class="btn-icon" alt="Download">
-                            Download de Relatório
-                        </button>
-                    </a>
-                    <button class="btn btn-right" onclick="abrirModalEditar('Servidor 4', 'NORMAL')">
-                        <img src="./assets/edit.png" class="btn-icon" alt="Edit">
-                        Editar Servidor
-                    </button>
-                </div>
-            </div>
-
-
-
-
-        </div>
-
-
-    </div>
-
-    <div class="modal-overlay" id="modal-alertas" style="display: flex;">
-        <div class="modal-alertas-dashboard">
-            <button class="btn-fechar-alerta" style="color: red;" onclick="document.getElementById('modal-alertas').style.display='none'">✕</button>
-            <div class="navegacao-modal">
-                <div class="identificacao-servidor">
-                    <img src="./assets/server2.png" class="modal-server-icon" alt="Server">
-                    <div>
-                        <h2>Servidor 2</h2>
-                        <div class="linha-status">
-                            <span class="modal-server-badge modal-badge-critico">CRÍTICO</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="barra-navegacao">
-                    <h2>Painel de alertas</h2>
-                    <select name="periodo-tempo" id="periodo-de-tempo">
-                        <option value="hoje">Hoje</option>
-                        <option value="ontem">Ontem</option>
-                        <option value="7dias">Últimos 7 dias</option>
-                        <option value="30dias">Últimos 30 dias</option>
-                        <option value="120dias">Últimos 120 dias</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="grids-modal">
-                <div class="grid-cima">
-                    <div class="card-percentual-alertas">
-                        <div>
-                            <h2>Percentual de Alertas</h2>
-                            <span>do dia</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid-baixo">
-
-                </div>
-            </div>    
-        
-        </div>
+        <div class="campo" id="campoServidores"></div>
     </div>
 
     <div class="modal-overlay" id="modal-editar" onclick="fecharModalEditar(event)">
         <div class="modal-editar-conteudo">
-
             <div class="modal-editar-header">
-                <div class="modal-editar-titulo-grupo">
-                    <img src="./assets/server2.png" class="modal-server-icon" alt="Server">
-                    <div>
-                        <h2 id="modal-server-nome">Servidor</h2>
-                        <span class="modal-server-badge" id="modal-server-badge"></span>
-                    </div>
-                </div>
-                <button class="modal-fechar-btn" onclick="fecharModalEditar()">✕</button>
+                <div class="modal-editar-titulo-grupo"><img src="./assets/server2.png" class="modal-server-icon"><div><h2 id="modal-server-nome">Servidor</h2><span class="modal-server-badge" id="modal-server-badge"></span></div></div>
+                <button class="modal-fechar-btn" onclick="fecharModalEditar()">X</button>
             </div>
-
             <div class="modal-editar-body">
-
                 <p class="modal-secao-titulo">Componentes Monitorados</p>
                 <p class="modal-secao-sub">Ative ou desative os componentes que serão monitorados neste servidor.</p>
-
                 <div class="modal-componentes">
-                    <div class="comp-item">
-                        <div class="comp-info">
-                            <img src="./assets/hardwareWhite.png" class="comp-icon" alt="">
-                            <div>
-                                <p class="comp-nome">CPU</p>
-                                <p class="comp-desc">Porcentagem de uso</p>
-                            </div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="comp-item">
-                        <div class="comp-info">
-                            <img src="./assets/hardwareWhite.png" class="comp-icon" alt="">
-                            <div>
-                                <p class="comp-nome">Processos</p>
-                                <p class="comp-desc">Número de processos em execução</p>
-                            </div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="comp-item">
-                        <div class="comp-info">
-                            <img src="./assets/hardwareWhite.png" class="comp-icon" alt="">
-                            <div>
-                                <p class="comp-nome">Memória RAM</p>
-                                <p class="comp-desc">Porcentagem de uso</p>
-                            </div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="comp-item">
-                        <div class="comp-info">
-                            <img src="./assets/hardwareWhite.png" class="comp-icon" alt="">
-                            <div>
-                                <p class="comp-nome">Disco</p>
-                                <p class="comp-desc">Uso de armazenamento em porcentagem</p>
-                            </div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="comp-item">
-                        <div class="comp-info">
-                            <img src="./assets/hardwareWhite.png" class="comp-icon" alt="">
-                            <div>
-                                <p class="comp-nome">Rede</p>
-                                <p class="comp-desc">Tráfego de entrada e saída</p>
-                            </div>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-
-                    <div class="modal-limiar-secao">
-                        <p class="modal-secao-titulo">Limiar de Alerta</p>
-                        <p class="modal-secao-sub">Defina a partir de qual percentual cada componente dispara um alerta.
-                        </p>
-                        <div class="modal-limiares">
-                            <div class="limiar-item">
-                                <label>CPU <span class="limiar-valor" id="val-cpu">70%</span></label>
-                                <input type="range" min="10" max="100" value="70" class="limiar-range"
-                                    oninput="document.getElementById('val-cpu').textContent=this.value+'%'">
-                            </div>
-                            <div class="limiar-item">
-                                <label>Processos <span class="limiar-valor" id="val-processos">1000</span></label>
-                                <input type="range" min="10" max="3000" value="1000" class="limiar-range"
-                                    oninput="document.getElementById('val-processos').textContent=this.value">
-                            </div>
-                            <div class="limiar-item">
-                                <label>RAM <span class="limiar-valor" id="val-ram">70%</span></label>
-                                <input type="range" min="10" max="100" value="70" class="limiar-range"
-                                    oninput="document.getElementById('val-ram').textContent=this.value+'%'">
-                            </div>
-                            <div class="limiar-item">
-                                <label>Disco <span class="limiar-valor" id="val-disco">80%</span></label>
-                                <input type="range" min="10" max="100" value="80" class="limiar-range"
-                                    oninput="document.getElementById('val-disco').textContent=this.value+'%'">
-                            </div>
-                            <div class="limiar-item">
-                                <label>Rede <span class="limiar-valor" id="val-rede">300Mbps</span></label>
-                                <input type="range" min="10" max="4000" value="300" class="limiar-range"
-                                    oninput="document.getElementById('val-rede').textContent=this.value+'Mbps'">
-                            </div>
-                        </div>
-                    </div>
-
+                    <div class="comp-item"><div class="comp-info"><img src="./assets/hardwareWhite.png" class="comp-icon"><div><p class="comp-nome">CPU</p><p class="comp-desc">Porcentagem de uso</p></div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <div class="comp-item"><div class="comp-info"><img src="./assets/hardwareWhite.png" class="comp-icon"><div><p class="comp-nome">Processos</p><p class="comp-desc">Número de processos em execução</p></div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                    <div class="comp-item"><div class="comp-info"><img src="./assets/hardwareWhite.png" class="comp-icon"><div><p class="comp-nome">Memória RAM</p><p class="comp-desc">Porcentagem de uso</p></div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <div class="comp-item"><div class="comp-info"><img src="./assets/hardwareWhite.png" class="comp-icon"><div><p class="comp-nome">Disco</p><p class="comp-desc">Uso de armazenamento em porcentagem</p></div></div><label class="toggle"><input type="checkbox" checked><span class="toggle-slider"></span></label></div>
+                    <div class="comp-item"><div class="comp-info"><img src="./assets/hardwareWhite.png" class="comp-icon"><div><p class="comp-nome">Rede</p><p class="comp-desc">Tráfego de entrada e saída</p></div></div><label class="toggle"><input type="checkbox"><span class="toggle-slider"></span></label></div>
+                    <div class="modal-limiar-secao"><p class="modal-secao-titulo">Limiar de Alerta</p><p class="modal-secao-sub">Defina a partir de qual percentual cada componente dispara um alerta.</p><div class="modal-limiares"><div class="limiar-item"><label>CPU <span class="limiar-valor" id="val-cpu">70%</span></label><input type="range" min="10" max="100" value="70" class="limiar-range" oninput="atualizarLimiar('val-cpu', this.value, '%')"></div><div class="limiar-item"><label>Processos <span class="limiar-valor" id="val-processos">1000</span></label><input type="range" min="10" max="3000" value="1000" class="limiar-range" oninput="atualizarLimiar('val-processos', this.value)"></div><div class="limiar-item"><label>RAM <span class="limiar-valor" id="val-ram">70%</span></label><input type="range" min="10" max="100" value="70" class="limiar-range" oninput="atualizarLimiar('val-ram', this.value, '%')"></div><div class="limiar-item"><label>Disco <span class="limiar-valor" id="val-disco">80%</span></label><input type="range" min="10" max="100" value="80" class="limiar-range" oninput="atualizarLimiar('val-disco', this.value, '%')"></div><div class="limiar-item"><label>Rede <span class="limiar-valor" id="val-rede">300Mbps</span></label><input type="range" min="10" max="4000" value="300" class="limiar-range" oninput="atualizarLimiar('val-rede', this.value, 'Mbps')"></div></div></div>
                 </div>
-
-                <div class="modal-editar-footer">
-                    <button class="btn-modal-cancelar" onclick="fecharModalEditar()">Cancelar</button>
-                    <button class="btn-modal-salvar" onclick="salvarConfiguracoes()">Salvar Configurações</button>
-                </div>
-
+                <div class="modal-editar-footer"><button class="btn-modal-cancelar" onclick="fecharModalEditar()">Cancelar</button><button class="btn-modal-salvar" onclick="salvarConfiguracoes()">Salvar Configurações</button></div>
             </div>
         </div>
     </div>
 
-</body>
+    <div class="modal-overlay" id="modal-painel-alertas" onclick="fecharModalAlertasOverlay(event)">
+        <div class="modal-alertas-layout">
+            <div class="modal-alertas-kpis" onclick="event.stopPropagation()">
+                <div class="kpi card-erro">
+                    <img src="./assets/warningRed.png" alt="">
+                    Servidores Críticos<h2 id="modalCriticos">--</h2>
+                </div>
+                <div class="kpi card-atencao">
+                    <img src="./assets/warningOrange.png" alt="">
+                    Servidores em Alerta<h2 id="modalAtencao">--</h2>
+                </div>
+            </div>
+            <div class="modal-painel-alertas" onclick="event.stopPropagation()">
+            <div class="modal-header-alertas">
+                <div class="header-info-servidor">
+                    <img src="./assets/server2.png" alt="server">
+                    <div class="header-status">
+                        <h2 id="modalAlertasNome"></h2>
+                        <span id="modalAlertasInfo" class="info-status"></span>
+                    </div>
+                </div>
+                <div class="modal-alertas-titulo">
+                    <h2>Painel de alertas</h2>
+                    <span id="ultimaAtualizacaoModal">Última atualização: --</span>
+                    <label for="periodoTempoSelect">Ordenar por:</label>
+                    <select id="periodoTempoSelect" class="select-periodo">
+                    </select>
+                    <button class="btn-fechar-modal-x" type="button" onclick="fecharModalAlertas()">X</button>
+                </div>
+            </div>
+            <div class="modal-body-alertas">
+                <div class="linha-superior">
+                    <section class="alert-card rosquinha-card">
+                        <div class="rosquinha-copy">
+                            <h3>Percentual de Alertas</h3>
+                            <span>do dia</span>
+                            <div class="rosquinha-wrap">
+                                <canvas id="graficoMedidor"></canvas>
+                                <strong id="labelPercentualAlertas"></strong>
+                            </div>
+                        </div>
+                        <div class="rosquinha-stats" id="resumoMedidor"></div>
+                    </section>
+                    <section class="alert-card timeline-card">
+                        <div class="alert-card-header">
+                            <h3>Número de alertas ao longo do dia</h3>
+                            <span class="alert-icon calendar-icon"></span>
+                        </div>
+                        <div class="trend-grid" id="trendResumo"></div>
+                        <div class="line-chart-wrap">
+                            <canvas id="graficoLinha"></canvas>
+                        </div>
+                    </section>
+                    <section class="alert-card components-card">
+                        <div class="alert-card-header">
+                            <h3>Alertas por componente</h3>
+                            <span class="alert-icon component-icon"></span>
+                        </div>
+                        <div class="component-feature">
+                            <div>
+                                <span>Maior número de leituras:</span>
+                                <strong id="componenteDestaqueNome"></strong>
+                            </div>
+                            <div>
+                                <span>Número de Alertas:</span>
+                                <strong id="componenteDestaqueValor"></strong>
+                            </div>
+                        </div>
+                        <div class="component-chart-wrap">
+                            <canvas id="graficoComponentes"></canvas>
+                        </div>
+                    </section>
+                </div>
+                <div class="linha-inferior">
+                    <section class="alert-card daily-card">
+                        <div class="alert-card-header">
+                            <h3 id="tituloAlertasDia"></h3>
+                            <span class="alert-icon calendar-icon"></span>
+                        </div>
+                        <div class="daily-bars" id="dailyBars"></div>
+                        <div class="daily-summary" id="dailySummary"></div>
+                    </section>
+                    <section class="alert-card feed-card">
+                        <div class="alert-card-header">
+                            <h3>Alertas da última hora:</h3>
+                            <span class="alert-icon bell-icon"></span>
+                        </div>
+                        <ul class="feed-list" id="listaAlertas"></ul>
+                    </section>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 
-</html>
 <script>
+    let dadosDosServidores = {};
+    let metricasDosServidores = {};
 
-    nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`
+    const graficos = {
+        linha: null,
+        medidor: null,
+        componentes: null
+    };
 
-    function verificarSessao() {
-        if (!sessionStorage.NOME_USUARIO) {
-            window.location.href = 'login.html';
-        }else {
-            nome_usuario.textContent = sessionStorage.NOME_USUARIO;
-            
-            try
+    let ultimaAtualizacaoModal = null;
 
-            // CONTINUAR AQUI, FALTA BUSCAR LISTA DE MAC ADRESSESS E MONTAR BUSCA DE ALERTAS POR SERVIDOR, ALÉM DE BUSCAR OS DADOS PARA OS KPIs
-             {
-                // Simulação de dados para os KPIs
-                document.getElementById('crit').textContent = '1';
-                document.getElementById('atencao').textContent = '1';
-                document.getElementById('alert').textContent = '3';
-                document.getElementById('threats').textContent = '7';
-            } catch (error) {
-                console.error('Erro ao atualizar KPIs:', error);
-            }
+    const visualPorStatus = {
+        "CRÍTICO": {
+            ponto: "dot-critico",
+            etiqueta: "badge-critico",
+            modal: "modal-badge-critico",
+            info: "info-critico",
+            seguranca: "Comprometida",
+            segurancaClasse: "status-alert"
+        },
+        "ATENÇÃO": {
+            ponto: "dot",
+            etiqueta: "badge",
+            modal: "modal-badge-atencao",
+            info: "info-atencao",
+            seguranca: "Comprometida",
+            segurancaClasse: "status-alert"
+        },
+        "NORMAL": {
+            ponto: "dot-normal",
+            etiqueta: "badge-normal",
+            modal: "modal-badge-normal",
+            info: "info-normal",
+            seguranca: "Íntegro",
+            segurancaClasse: "status-normal"
+        },
+        "SEM DADOS": {
+            ponto: "dot-normal",
+            etiqueta: "badge-normal",
+            modal: "modal-badge-normal",
+            info: "info-normal",
+            seguranca: "--",
+            segurancaClasse: "status-normal"
+        }
+    };
+
+    function pegar(id) {
+        return document.getElementById(id);
+    }
+
+    function colocarTexto(id, texto) {
+        const elemento = pegar(id);
+        if (elemento) elemento.textContent = texto;
+    }
+
+    function criarElemento(tag, classe, html = '') {
+        const elemento = document.createElement(tag);
+        if (classe) elemento.className = classe;
+        if (html) elemento.innerHTML = html;
+        return elemento;
+    }
+
+    function visualDoStatus(status) {
+        return visualPorStatus[status] || visualPorStatus.NORMAL;
+    }
+
+    function limitarNumero(valor, minimo, maximo) {
+        return Math.max(minimo, Math.min(maximo, valor));
+    }
+
+    function valorTela(valor) {
+        return valor === null || valor === undefined || valor === '' ? '--' : valor;
+    }
+
+    function formatarDataHora(data) {
+        const doisDigitos = valor => String(valor).padStart(2, '0');
+        const dia = doisDigitos(data.getDate());
+        const mes = doisDigitos(data.getMonth() + 1);
+        const ano = data.getFullYear();
+        const hora = doisDigitos(data.getHours());
+        const minuto = doisDigitos(data.getMinutes());
+        const segundo = doisDigitos(data.getSeconds());
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+    }
+
+    function atualizarTextoUltimaAtualizacao() {
+        const data = ultimaAtualizacaoModal ? formatarDataHora(ultimaAtualizacaoModal) : '--';
+        colocarTexto('ultimaAtualizacaoModal', `Última atualização: ${data}`);
+    }
+
+    function destruirGrafico(nome) {
+        if (graficos[nome]) {
+            graficos[nome].destroy();
+            graficos[nome] = null;
         }
     }
 
+    function gerarCards() {
+        const container = pegar('campoServidores');
+        container.innerHTML = '';
 
+        const ordemDosStatus = { 'CRÍTICO': 0, 'ATENÇÃO': 1, 'NORMAL': 2, 'SEM DADOS': 3 };
+        Object.entries(dadosDosServidores).sort(([nomeA], [nomeB]) => {
+            const statusServidorA = metricasDosServidores[nomeA]?.status || 'NORMAL';
+            const statusServidorB = metricasDosServidores[nomeB]?.status || 'NORMAL';
+            return ordemDosStatus[statusServidorA] - ordemDosStatus[statusServidorB];
+        }).forEach(([nomeServidor]) => {
+            const metricas = metricasDosServidores[nomeServidor] || {};
+            const status = metricas.status || "SEM DADOS";
+            const visual = visualDoStatus(status);
+            const card = criarElemento('div', 'card');
+            card.dataset.servidor = nomeServidor;
 
-    function logout() {
-        sessionStorage.clear();
-        window.location.href = 'login.html';
+            card.innerHTML = `
+                <div class="card-top">
+                    <div class="div-esquerda"><img src="./assets/server2.png" class="img-main-server" alt="Server"></div>
+                    <div class="div-direita">
+                        <div class="header-row" onclick="abrirModalAlertasPorCard(this.closest('.card'))">
+                            <span class="server-title"><span class="${visual.ponto}">●</span> ${nomeServidor}</span>
+                            <span class="${visual.etiqueta}">${status}</span>
+                        </div>
+                        <ul class="info-list">
+                            <li><img src="./assets/hardwareWhite.png" class="mini-icon">Alertas de Hardware: ${valorTela(metricas.hardware)}</li>
+                            <li><img src="./assets/shield.png" class="mini-icon">Ciberataques Detectados: ${valorTela(metricas.cyber)}</li>
+                            <li><img src="./assets/lock.png" class="mini-icon">Segurança: <span class="${visual.segurancaClasse}">${visual.seguranca}</span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="div-inferior">
+                    <a href="./assets/relatorio_hardware.pdf" target="_blank">
+                        <button class="btn btn-left">
+                            <img src="./assets/pdf.png" class="btn-icon">Download de Relatório
+                        </button>
+                    </a>
+                    <button class="btn btn-right editar-btn" onclick="event.stopPropagation(); abrirModalEditar('${nomeServidor}', '${status}')">
+                        <img src="./assets/edit.png" class="btn-icon">Editar Servidor
+                    </button>
+                </div>
+            `;
+
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('.editar-btn')) return;
+                abrirModalAlertasPorCard(card);
+            });
+
+            container.appendChild(card);
+        });
     }
 
-    function atualizarKPIs() {
-        document.getElementById('crit').textContent = '1';
-        document.getElementById('atencao').textContent = '1';
-        document.getElementById('alert').textContent = '3';
-        document.getElementById('threats').textContent = '7';
+    const nomeDoUsuario = pegar('nome_usuario');
+    function verificarSessao() {
+        if (!sessionStorage.NOME_USUARIO) {
+            // window.location.href = 'login.html';
+        }
+        else { nomeDoUsuario.textContent = sessionStorage.NOME_USUARIO; }
+        atualizarKpisPagina();
+        fecharAlertaNovo();
+        atualizarKpisModalAlertas();
     }
+
+    function atualizarKpisPagina() {
+        const metricas = Object.values(metricasDosServidores);
+        if (metricas.length === 0) {
+            Object.entries({ crit: '--', atencao: '--', alert: '--', threats: '--' }).forEach(([id, valor]) => colocarTexto(id, valor));
+            return;
+        }
+        colocarTexto('crit', metricas.filter(item => item.status === 'CRÍTICO').length);
+        colocarTexto('atencao', metricas.filter(item => item.status === 'ATENÇÃO').length);
+        colocarTexto('alert', metricas.reduce((soma, item) => soma + Number(item.hardware || 0), 0));
+        colocarTexto('threats', metricas.reduce((soma, item) => soma + Number(item.cyber || 0), 0));
+    }
+
+    function atualizarKpisModalAlertas() {
+        colocarTexto('modalCriticos', pegar('crit')?.textContent || '0');
+        colocarTexto('modalAtencao', pegar('atencao')?.textContent || '0');
+    }
+
+    function atualizarLimiar(id, valor, sufixo = '') {
+        colocarTexto(id, `${valor}${sufixo}`);
+    }
+
+    function fecharAlertaNovo() {
+        const alerta = pegar('card-alerta-sino');
+        if (alerta) alerta.style.display = 'none';
+    }
+
+    function logout() { sessionStorage.clear(); window.location.href = 'login.html'; }
 
     function abrirModalEditar(nome, badge) {
-        document.getElementById('modal-server-nome').textContent = nome;
-        var badgeEl = document.getElementById('modal-server-badge');
-        badgeEl.textContent = badge;
-        badgeEl.className = 'modal-server-badge';
-        if (badge === 'CRÍTICO') badgeEl.classList.add('modal-badge-critico');
-        else if (badge === 'ATENÇÃO') badgeEl.classList.add('modal-badge-atencao');
-        else badgeEl.classList.add('modal-badge-normal');
-        document.getElementById('modal-editar').style.display = 'flex';
+        colocarTexto('modal-server-nome', nome);
+        const etiquetaModal = pegar('modal-server-badge');
+        etiquetaModal.textContent = badge;
+        etiquetaModal.className = 'modal-server-badge';
+        etiquetaModal.classList.add(visualDoStatus(badge).modal);
+        pegar('modal-editar').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
 
     function fecharModalEditar(event) {
-        if (event && event.target !== document.getElementById('modal-editar')) return;
-        document.getElementById('modal-editar').style.display = 'none';
-        document.body.style.overflow = '';
-    }
-
-    function abrirModalAlertas(nomeServidor = 'Servidor 3') {
-        document.getElementById('modal-alertas-titulo').textContent = 'Painel de Alertas';
-        document.getElementById('modal-alertas-dashboard').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-    }
- 
-    function fecharModalAlertas(event) {
-        if (event && event.target !== document.getElementById('modal-alertas-dashboard')) return;
-        document.getElementById('modal-alertas-dashboard').style.display = 'none';
+        if (event && event.target !== pegar('modal-editar')) return;
+        pegar('modal-editar').style.display = 'none';
         document.body.style.overflow = '';
     }
 
     function salvarConfiguracoes() {
-        var btn = document.querySelector('.btn-modal-salvar');
-        btn.textContent = '✓ Salvo!';
-        btn.style.backgroundColor = '#12921c';
-        setTimeout(function () {
-            btn.textContent = 'Salvar Configurações';
-            btn.style.backgroundColor = '';
-            document.getElementById('modal-editar').style.display = 'none';
+        const botao = document.querySelector('.btn-modal-salvar');
+        botao.textContent = '✓ Salvo!';
+        botao.style.backgroundColor = '#12921c';
+        setTimeout(() => {
+            botao.textContent = 'Salvar Configurações';
+            botao.style.backgroundColor = '';
+            pegar('modal-editar').style.display = 'none';
             document.body.style.overflow = '';
         }, 1500);
     }
+
+    const opcoesPeriodo = [
+        { valor: 'hoje', rotulo: 'Hoje' },
+        { valor: 'ontem', rotulo: 'Ontem' },
+        { valor: 'semana', rotulo: 'Última semana' },
+        { valor: 'mes', rotulo: 'Último mês' },
+        { valor: 'trimestre', rotulo: 'Últimos três meses' }
+    ];
+
+    const dadosPainelAlertas = {
+        padrao: {
+            tituloDia: '',
+            medidor: { percentual: null, alertas: null, leituras: null },
+            tendencias: [],
+            linha: { labels: [], valores: [] },
+            componentes: [],
+            dias: [],
+            resumoDia: [],
+            alertas: []
+        },
+        servidores: {}
+    };
+
+    function copiarDados(base) {
+        return JSON.parse(JSON.stringify(base));
+    }
+
+    function corPorAlerta(percentual) {
+        if (percentual > 25) return '#ff3b3b';
+        if (percentual > 10) return '#ff9d00';
+        return '#dddddd';
+    }
+
+    function montarDadosPorServidor(nomeServidor, dadosBaseServidor, metricasInformadas) {
+        const metricas = metricasInformadas || metricasDosServidores[nomeServidor] || {};
+
+        return {
+            ...dadosBaseServidor,
+            nome: nomeServidor,
+            status: metricas.status || dadosBaseServidor.status || null,
+            medidor: dadosBaseServidor.medidor || { percentual: null, alertas: null, leituras: null },
+            tendencias: Array.isArray(dadosBaseServidor.tendencias) ? dadosBaseServidor.tendencias : [],
+            linha: dadosBaseServidor.linha || { labels: [], valores: [] },
+            componentes: Array.isArray(dadosBaseServidor.componentes) ? dadosBaseServidor.componentes : [],
+            dias: Array.isArray(dadosBaseServidor.dias) ? dadosBaseServidor.dias : [],
+            resumoDia: Array.isArray(dadosBaseServidor.resumoDia) ? dadosBaseServidor.resumoDia : [],
+            alertas: Array.isArray(dadosBaseServidor.alertas) ? dadosBaseServidor.alertas : []
+        };
+    }
+
+    function prepararSelectPeriodo() {
+        const select = pegar('periodoTempoSelect');
+        if (!select || select.dataset.renderizado === 'true') return;
+        select.innerHTML = '';
+        opcoesPeriodo.forEach(opcao => {
+            const option = criarElemento('option');
+            option.value = opcao.valor;
+            option.textContent = opcao.rotulo;
+            select.appendChild(option);
+        });
+        select.dataset.renderizado = 'true';
+        select.addEventListener('change', () => {
+            const servidorSelecionado = select.dataset.servidorSelecionado;
+            if (servidorSelecionado) renderizarPainelAlertas(pegarDadosDoPainel(servidorSelecionado));
+        });
+    }
+
+    function pegarDadosDoPainel(nomeServidor) {
+        const select = pegar('periodoTempoSelect');
+        const periodoAtual = select?.value || 'hoje';
+        const dadosConfiguradosServidor = dadosPainelAlertas.servidores[nomeServidor] || {};
+        const dadosDoPeriodo = dadosConfiguradosServidor.periodos?.[periodoAtual] || dadosConfiguradosServidor.base || dadosPainelAlertas.padrao;
+        const metricas = dadosConfiguradosServidor.metricas || metricasDosServidores[nomeServidor] || {};
+        const dadosMontadosServidor = montarDadosPorServidor(nomeServidor, copiarDados(dadosDoPeriodo), metricas);
+        return dadosMontadosServidor;
+    }
+
+    function renderizarResumoMedidor(resumo) {
+        const container = pegar('resumoMedidor');
+        container.innerHTML = '';
+        [
+            { rotulo: 'Número de alertas', valor: resumo.alertas },
+            { rotulo: 'Total de leituras', valor: resumo.leituras }
+        ].forEach(item => {
+            container.appendChild(criarElemento('div', 'rosquinha-stat', `<span>${item.rotulo}</span><strong>${valorTela(item.valor)}</strong>`));
+        });
+    }
+
+    function renderizarTendencias(tendencias) {
+        const container = pegar('trendResumo');
+        container.innerHTML = '';
+        tendencias.forEach(item => {
+            const nome = item.nome ? `<strong>${item.nome}</strong>` : '';
+            const seta = item.direcao === 'up' ? '▲' : (item.direcao === 'down' ? '▼' : '');
+            const setaHtml = seta ? `<i class="trend-seta">${seta}</i>` : '';
+            container.appendChild(criarElemento('div', `trend-card trend-${item.tom || 'neutral'}`, `<span>${item.rotulo || ''}</span>${nome}<b><em>${valorTela(item.valor)}</em>${setaHtml}</b>`));
+        });
+    }
+
+    function renderizarComponentes(componentes) {
+        if (!Array.isArray(componentes) || componentes.length === 0) componentes = [];
+        if (componentes.length === 0) {
+            colocarTexto('componenteDestaqueNome', '-');
+            colocarTexto('componenteDestaqueValor', '0');
+            desenharGraficoComponentes([]);
+            return;
+        }
+        const maior = componentes.reduce((atual, item) => item.alertas > atual.alertas ? item : atual, componentes[0]);
+        colocarTexto('componenteDestaqueNome', maior.nome);
+        colocarTexto('componenteDestaqueValor', maior.alertas);
+        desenharGraficoComponentes(componentes);
+    }
+
+    function renderizarDias(dados) {
+        colocarTexto('tituloAlertasDia', dados.tituloDia);
+        const maximo = Math.max(...dados.dias.map(item => item.valor), 1);
+        const barras = pegar('dailyBars');
+        barras.innerHTML = '';
+        dados.dias.forEach(item => {
+            const linha = criarElemento('div');
+            linha.className = item.ativo ? 'daily-row daily-row-active' : 'daily-row';
+            const label = criarElemento('span');
+            const trilha = criarElemento('div');
+            const barra = criarElemento('i');
+            const valor = criarElemento('strong');
+            const comparacao = criarElemento('span');
+            label.className = 'daily-label';
+            label.textContent = item.label;
+            trilha.className = 'daily-track';
+            barra.style.width = `${(item.valor / maximo) * 100}%`;
+            barra.style.background = item.cor;
+            if (item.ativo && item.valorBase) {
+                trilha.style.setProperty('--posicao-referencia', `${limitarNumero((item.valorBase / maximo) * 100, 0, 100)}%`);
+            }
+            valor.textContent = item.valor;
+            const classeComparacao = item.tomComparacao === 'green' ? 'daily-green' : (item.tomComparacao === 'red' ? 'daily-red' : 'daily-neutral');
+            comparacao.className = `daily-change ${item.comparacao ? classeComparacao : 'daily-base'}`;
+            comparacao.textContent = item.comparacao || 'base';
+            trilha.appendChild(barra);
+            linha.append(label, trilha, valor, comparacao);
+            barras.appendChild(linha);
+        });
+
+        const resumo = pegar('dailySummary');
+        resumo.innerHTML = '';
+        dados.resumoDia.forEach(item => {
+            resumo.appendChild(criarElemento('div', `summary-pill summary-${item.tom}`, `<strong>${item.valor}</strong><span>${item.rotulo}</span>`));
+        });
+    }
+
+    function renderizarListaAlertas(alertas) {
+        const lista = pegar('listaAlertas');
+        lista.innerHTML = '';
+        const alertasRecentesOrdenados = [...(Array.isArray(alertas) ? alertas : [])].sort((a, b) => {
+            const dataA = new Date(`${String(a.data || '01/01/1970').split('/').reverse().join('-')}T${a.hora || '00:00'}`);
+            const dataB = new Date(`${String(b.data || '01/01/1970').split('/').reverse().join('-')}T${b.hora || '00:00'}`);
+            return dataB - dataA;
+        });
+        alertasRecentesOrdenados.forEach(item => {
+            lista.appendChild(criarElemento('li', '', `<span>${item.texto}</span><strong>${item.data} ${item.hora}</strong>`));
+        });
+    }
+
+    function renderizarPainelAlertas(dados) {
+        prepararSelectPeriodo();
+        atualizarTextoUltimaAtualizacao();
+        colocarTexto('modalAlertasNome', dados.nome);
+        const status = pegar('modalAlertasInfo');
+        status.textContent = `• ${valorTela(dados.status)}`;
+        status.className = 'info-status';
+        status.classList.add(visualDoStatus(dados.status).info);
+
+        colocarTexto('labelPercentualAlertas', dados.medidor.percentual === null || dados.medidor.percentual === undefined ? '--' : `${dados.medidor.percentual}%`);
+        renderizarResumoMedidor(dados.medidor);
+        renderizarTendencias(dados.tendencias);
+        renderizarComponentes(dados.componentes);
+        renderizarDias(dados);
+        renderizarListaAlertas(dados.alertas);
+        desenharGraficoMedidor(dados.medidor.percentual);
+        desenharGraficoLinha(dados.linha);
+    }
+
+    function atualizarDadosDoPainel(novosDados) {
+        ultimaAtualizacaoModal = new Date();
+        const temDadosSeparados = novosDados.servidores || novosDados.metricas || novosDados.painel;
+        if (Array.isArray(novosDados.servidores)) {
+            dadosDosServidores = Object.fromEntries(novosDados.servidores.map(servidor => [servidor.nome, servidor.ip || null]));
+        } else if (novosDados.servidores) {
+            dadosDosServidores = { ...novosDados.servidores };
+        }
+        if (novosDados.metricas) metricasDosServidores = { ...novosDados.metricas };
+        if (novosDados.painel) Object.assign(dadosPainelAlertas, novosDados.painel);
+        if (!temDadosSeparados) Object.assign(dadosPainelAlertas, novosDados);
+        gerarCards();
+        atualizarKpisPagina();
+        atualizarKpisModalAlertas();
+        const select = pegar('periodoTempoSelect');
+        const servidorSelecionado = select?.dataset.servidorSelecionado;
+        const modalEstaAberto = pegar('modal-painel-alertas')?.style.display === 'flex';
+        if (modalEstaAberto && servidorSelecionado) renderizarPainelAlertas(pegarDadosDoPainel(servidorSelecionado));
+    }
+
+    function desenharGraficoLinha(dados) {
+        const canvas = pegar('graficoLinha');
+        if (!canvas) return;
+        destruirGrafico('linha');
+
+        graficos.linha = new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: dados.labels,
+                datasets: [{
+                    data: dados.valores,
+                    borderColor: '#ff3434',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 3,
+                    pointHoverRadius: 4,
+                    pointBackgroundColor: '#ffffff',
+                    pointBorderColor: '#ff3434',
+                    pointBorderWidth: 2,
+                    tension: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: true } },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 400,
+                        grid: { display: false },
+                        ticks: { color: '#41547a', stepSize: 100, font: { size: 10 } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#41547a', font: { size: 10 } }
+                    }
+                }
+            }
+        });
+    }
+
+    function desenharGraficoComponentes(componentes) {
+        const canvas = pegar('graficoComponentes');
+        if (!canvas) return;
+        destruirGrafico('componentes');
+
+        const componentesDoGrafico = Array.isArray(componentes) ? componentes : [];
+        const maiorValorDoGrafico = Math.max(...componentesDoGrafico.map(item => item.alertas), 1);
+        graficos.componentes = new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: componentesDoGrafico.map(item => item.nome),
+                datasets: [{
+                    data: componentesDoGrafico.map(item => item.alertas),
+                    backgroundColor: componentesDoGrafico.map(item => item.cor),
+                    borderWidth: 0,
+                    borderRadius: 3,
+                    barThickness: 12
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: true }
+                },
+                scales: {
+                    x: {
+                        min: 0,
+                        max: Math.max(8, maiorValorDoGrafico),
+                        grid: { color: 'rgba(255, 255, 255, 0.5)', lineWidth: 1 },
+                        border: { display: false },
+                        ticks: { color: 'rgba(255, 255, 255, 0.42)', stepSize: 2, font: { size: 9 } }
+                    },
+                    y: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { color: 'rgba(255, 255, 255, 0.32)', font: { size: 9 } }
+                    }
+                }
+            }
+        });
+    }
+
+    function desenharGraficoMedidor(percentual) {
+        const canvas = pegar('graficoMedidor');
+        if (!canvas) return;
+        destruirGrafico('medidor');
+        const percentualSeguro = Number(percentual) || 0;
+        const corDosAlertas = corPorAlerta(percentualSeguro);
+
+        graficos.medidor = new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [percentualSeguro, 100 - percentualSeguro],
+                    backgroundColor: [corDosAlertas, '#9b9b9b'],
+                    borderWidth: 0,
+                    cutout: '58%'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                resizeDelay: 100,
+                rotation: -90,
+                circumference: 180,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            }
+        });
+    }
+
+    function abrirModalAlertasPorCard(cartaoServidor) {
+        if (!cartaoServidor) return;
+        if (cartaoServidor instanceof Event) cartaoServidor = cartaoServidor.target;
+        if (cartaoServidor && cartaoServidor.closest) cartaoServidor = cartaoServidor.closest('.card') || cartaoServidor;
+        if (typeof cartaoServidor === 'string') cartaoServidor = document.querySelector(`.card[data-servidor="${cartaoServidor}"]`);
+        if (!cartaoServidor || !cartaoServidor.getAttribute) return;
+
+        const nome = cartaoServidor.dataset.servidor;
+        const select = pegar('periodoTempoSelect');
+        if (select) select.dataset.servidorSelecionado = nome;
+
+        atualizarKpisModalAlertas();
+        renderizarPainelAlertas(pegarDadosDoPainel(nome));
+        const overlay = pegar('modal-painel-alertas');
+        overlay.style.display = 'flex';
+        overlay.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function fecharModalAlertas() {
+        const overlay = pegar('modal-painel-alertas');
+        overlay.style.display = 'none';
+        overlay.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        ['linha', 'medidor', 'componentes'].forEach(destruirGrafico);
+    }
+
+    function fecharModalAlertasOverlay(event) {
+        if (event.target === pegar('modal-painel-alertas')) fecharModalAlertas();
+    }
+
+    window.abrirModalEditar = abrirModalEditar;
+    window.fecharModalEditar = fecharModalEditar;
+    window.salvarConfiguracoes = salvarConfiguracoes;
+    window.atualizarLimiar = atualizarLimiar;
+    window.fecharAlertaNovo = fecharAlertaNovo;
+    window.fecharModalAlertas = fecharModalAlertas;
+    window.fecharModalAlertasOverlay = fecharModalAlertasOverlay;
+    window.desenharGraficoLinha = desenharGraficoLinha;
+    window.verificarSessao = verificarSessao;
+    window.dadosDoPainel = dadosPainelAlertas;
+    window.dadosPainelAlertas = dadosPainelAlertas;
+    window.renderizarPainelAlertas = renderizarPainelAlertas;
+    window.atualizarDadosDoPainel = atualizarDadosDoPainel;
+
+    gerarCards();
+    verificarSessao();
+
 </script>
+</body>
+</html>
