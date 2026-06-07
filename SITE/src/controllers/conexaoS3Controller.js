@@ -38,4 +38,4 @@ function buscarRegistros(req,res){
 
 module.exports = {
     buscarRegistros
-}   
+};
