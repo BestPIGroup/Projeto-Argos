@@ -8,7 +8,6 @@
     <title> Argos | Componentes</title>
     <script src="./js/sessao.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src=".public/js/dash_ram.js"></script>
 
     <link rel="stylesheet" href="./css/dash_componentes_ram.css">
     <link rel="stylesheet" href="./css/dash_componentes.css">
@@ -30,7 +29,6 @@
 
             <div class="conteudo-dash">
 
-                <!-- KPIs -->
                 <div class="kpi-dash">
 
                     <div class="kpi-servidor">
@@ -50,9 +48,7 @@
                             <span>Maior valor coletado de RAM</span>
                         </div>
 
-                        <div class="valor-kpi-coleta">
-                            95%
-                        </div>
+                        <div class="valor-kpi-coleta" id="maior-valor-ram">_</div>
 
                         <div class="kpi-detecta">
                             <p>Coleta detectada às 22:00</p>
@@ -63,19 +59,17 @@
                         <div class="info-memoria">
                             <h3>Uso da Memória</h3>
 
-                            <div class="percentual-ram">
-                                75%
-                            </div>
+                            <div class="percentual-ram" id="percentual-ram">_</div>
 
                             <div class="legenda-ram">
                                 <div>
                                     <span class="cor-uso"></span>
-                                    <span>Em uso — 75%</span>
+                                    <span id="legenda-uso">Em uso — _</span>
                                 </div>
 
                                 <div>
                                     <span class="cor-livre"></span>
-                                    <span>Livre — 25%</span>
+                                    <span id="legenda-livre">Livre — _</span>
                                 </div>
                             </div>
                         </div>
@@ -116,7 +110,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody>
+                                <tbody id="corpo-alertas-ram">
                                     <tr>
                                         <td>Servidor 3</td>
                                         <td>22:00</td>
@@ -303,173 +297,138 @@
 
 </html>
 <script>
-
-    nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`
+    nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`;
 
     var todosDados = {};
 
-    // modal ram
-    const modal = document.getElementById('modal_ram');
-    const spanFechar = document.querySelector('.fechar');
+    const modal = document.getElementById("modal_ram");
+    const spanFechar = document.querySelector(".fechar");
 
+    let graficoUsoMemoria = null;
+    let graficoMonitoramentoRam = null;
 
-    spanFechar.addEventListener('click', function () {
-        modal.style.display = 'none';
+    spanFechar.addEventListener("click", function () {
+        modal.style.display = "none";
     });
 
     function carregarGraficos() {
-
         const componentes = [
             {
                 nome: "CPU",
                 status: "crit",
-                maxEixoY: 100, rotuloY: "Uso de CPU (%)",
-                valorAtencao: 85, valorCritico: 95,
-                minMadrugada: 20, maxMadrugada: 40,
-                minManha: 40, maxManha: 60,
-                minTardeNoite: 70, maxTardeNoite: 98
+                maxEixoY: 100,
+                rotuloY: "Uso de CPU (%)",
+                valorAtencao: 85,
+                valorCritico: 95,
+                dados: [30, 35, 42, 50, 68, 82, 95, 88, 72, 65]
             },
             {
                 nome: "RAM",
-                status: "ok",
-                maxEixoY: 100, rotuloY: "Uso de RAM (%)",
-                valorAtencao: 90, valorCritico: 98,
-                minMadrugada: 55, maxMadrugada: 65,
-                minManha: 65, maxManha: 75,
-                minTardeNoite: 70, maxTardeNoite: 85
+                status: "atencao",
+                maxEixoY: 100,
+                rotuloY: "Uso de RAM (%)",
+                valorAtencao: 75,
+                valorCritico: 90,
+                dados: [55, 60, 64, 69, 71, 75, 80, 84, 87, 90]
             },
             {
                 nome: "Disco",
                 status: "atencao",
-                maxEixoY: 100, rotuloY: "Uso de disco (%)",
-                valorAtencao: 85, valorCritico: 92,
-                minMadrugada: 70, maxMadrugada: 65,
-                minManha: 65, maxManha: 68,
-                minTardeNoite: 68, maxTardeNoite: 90
+                maxEixoY: 100,
+                rotuloY: "Uso de disco (%)",
+                valorAtencao: 85,
+                valorCritico: 92,
+                dados: [60, 64, 68, 70, 72, 76, 80, 84, 88, 91]
             },
             {
                 nome: "Rede",
                 status: "ok",
-                maxEixoY: 2000, rotuloY: "Tráfego de rede (Mbps)",
-                valorAtencao: 1200, valorCritico: 1800,
-                minMadrugada: 300, maxMadrugada: 600,
-                minManha: 100, maxManha: 250,
-                minTardeNoite: 500, maxTardeNoite: 900
+                maxEixoY: 2000,
+                rotuloY: "Tráfego de rede (Mbps)",
+                valorAtencao: 1200,
+                valorCritico: 1800,
+                dados: [300, 450, 600, 500, 700, 850, 900, 760, 680, 590]
             },
             {
                 nome: "Processos",
                 status: "ok",
-                maxEixoY: 2100, rotuloY: "Quantidade de processos",
-                valorAtencao: 1500, valorCritico: 2000,
-                minMadrugada: 250, maxMadrugada: 350,
-                minManha: 500, maxManha: 700,
-                minTardeNoite: 800, maxTardeNoite: 1200
-            },
+                maxEixoY: 7000,
+                rotuloY: "Quantidade de processos",
+                valorAtencao: 5000,
+                valorCritico: 6000,
+                dados: [3820, 4050, 4300, 4515, 4700, 4950, 5280, 5580, 5890, 6050]
+            }
         ];
 
         const containerCampo = document.querySelector(".campo");
         containerCampo.innerHTML = "";
         todosDados = {};
 
-        const rotuloDeHoras = ["0:00", "1:00", "2:00", "3:00", "4:00", "5:00", "6:00", "7:00", "8:00", "9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"];
+        const rotuloDeHoras = [
+            "03:50", "03:55", "04:00", "04:05", "04:10",
+            "04:15", "04:20", "04:25", "04:30", "04:35"
+        ];
 
-        componentes.forEach((componente, indice) => {
-            const medicoes = [];
-            for (var hora = 0; hora < 24; hora++) {
-                var minimo, maximo;
-                if (hora <= 6) { minimo = componente.minMadrugada; maximo = componente.maxMadrugada; }
-                else if (hora <= 12) { minimo = componente.minManha; maximo = componente.maxManha; }
-                else { minimo = componente.minTardeNoite; maximo = componente.maxTardeNoite; }
-                medicoes.push(Math.floor(Math.random() * (Math.max(minimo, maximo) - Math.min(minimo, maximo) + 1)) + Math.min(minimo, maximo));
-            }
+        componentes.forEach(function (componente, indice) {
+            const medicoes = componente.dados;
             todosDados[componente.nome] = medicoes;
 
             const valorAtual = medicoes[medicoes.length - 1];
             const picoDoDia = Math.max(...medicoes);
             const horaDoPico = rotuloDeHoras[medicoes.indexOf(picoDoDia)];
 
-            const formatar = valor => componente.maxEixoY === 100
-                ? valor + '%'
-                : Math.round((valor / componente.maxEixoY) * 100) + '%';
+            const classeStatus = componente.status === "crit" ? "status-crit"
+                : componente.status === "atencao" ? "status-atencao"
+                    : "status-ok";
 
-            const classeStatus = componente.status === 'crit' ? 'status-crit'
-                : componente.status === 'atencao' ? 'status-atencao'
-                    : 'status-ok';
-
-            const idCanvas = 'canvas-' + indice;
+            const idCanvas = "canvas-" + indice;
             const cartao = document.createElement("div");
             cartao.className = "card-componente";
-            if (componente.nome == "Rede") {
-                cartao.innerHTML =
-                    '<div class="card-grafico"><canvas id="' + idCanvas + '"></canvas></div>' +
-                    '<div class="card-painel">' +
-                    '<h2>' + componente.nome + '</h2>' +
-                    '<div class="pct-valor ' + classeStatus + '">' + (valorAtual) + '</div>' +
-                    '<div class="pico-valor" style="margin-top: -12px"><span>Mbps</span></div>' +
-                    '<div class="pico-bloco">' +
-                    '<div class="pico-label">PICO DO DIA:</div>' +
-                    '<div class="pico-valor">' + horaDoPico + ' | ' + (picoDoDia) + '</div>' +
-                    '</div>' +
-                    '</div>';
-            } else if (componente.nome == "Processos") {
-                cartao.innerHTML =
-                    '<div class="card-grafico"><canvas id="' + idCanvas + '"></canvas></div>' +
-                    '<div class="card-painel">' +
-                    '<h2>' + componente.nome + '</h2>' +
-                    '<div class="pct-valor ' + classeStatus + '">' + (valorAtual) + '</div>' +
-                    '<div class="pico-bloco">' +
-                    '<div class="pico-label">PICO DO DIA:</div>' +
-                    '<div class="pico-valor">' + horaDoPico + ' | ' + (picoDoDia) + '</div>' +
-                    '</div>' +
-                    '</div>';
+
+            let valorExibido = valorAtual;
+            let picoExibido = picoDoDia;
+
+            if (componente.nome !== "Rede" && componente.nome !== "Processos") {
+                valorExibido = valorAtual + "%";
+                picoExibido = horaDoPico + " | " + picoDoDia + "%";
             } else {
-                cartao.innerHTML =
-                    '<div class="card-grafico"><canvas id="' + idCanvas + '"></canvas></div>' +
-                    '<div class="card-painel">' +
-                    '<h2>' + componente.nome + '</h2>' +
-                    '<div class="pct-valor ' + classeStatus + '">' + formatar(valorAtual) + '</div>' +
-                    '<div class="pico-bloco">' +
-                    '<div class="pico-label">PICO DO DIA:</div>' +
-                    '<div class="pico-valor">' + horaDoPico + ' | ' + formatar(picoDoDia) + '</div>' +
-                    '</div>' +
-                    '</div>';
+                picoExibido = horaDoPico + " | " + picoDoDia;
             }
+
+            cartao.innerHTML =
+                '<div class="card-grafico"><canvas id="' + idCanvas + '"></canvas></div>' +
+                '<div class="card-painel">' +
+                '<h2>' + componente.nome + '</h2>' +
+                '<div class="pct-valor ' + classeStatus + '">' + valorExibido + '</div>' +
+                '<div class="pico-bloco">' +
+                '<div class="pico-label">PICO DO DIA:</div>' +
+                '<div class="pico-valor">' + picoExibido + '</div>' +
+                '</div>' +
+                '</div>';
+
             containerCampo.appendChild(cartao);
-            const canvasElemento = document.getElementById(idCanvas);
 
-            // Criado por conta de estar recursivo a criação do canvas id
-            let graficoMemoria = null;
-            let monitorRam = null;
-
-            if (componente.nome == "RAM") {
-                canvasElemento.addEventListener('click', function () {
-                    modal.style.display = 'flex';
-
-                    if (!graficoMemoria) {
-                        const ctx = document.getElementById('usoMemoria').getContext('2d');
-                        graficoMemoria = new Chart(ctx, config);
-                    }
-
-                    if (!monitoRam) {
-                        const ctz = document.getElementById('monitoramentoRam').getContext('2d');
-                        monitorRam = new Chart(ctz, configu);
-                    }
+            if (componente.nome === "RAM") {
+                document.getElementById(idCanvas).addEventListener("click", function () {
+                    modal.style.display = "flex";
+                    carregarDadosRam();
                 });
             }
 
-            const corDaLinha = componente.status === 'crit' ? '#ff3b3b'
-                : componente.status === 'atencao' ? '#f5a623'
-                    : '#12921C';
+            const corDaLinha = componente.status === "crit" ? "#ff3b3b"
+                : componente.status === "atencao" ? "#f5a623"
+                    : "#12921C";
 
-            const contexto = document.getElementById(idCanvas).getContext('2d');
+            const contexto = document.getElementById(idCanvas).getContext("2d");
+
             new Chart(contexto, {
-                type: 'line',
+                type: "line",
                 data: {
                     labels: rotuloDeHoras,
                     datasets: [{
                         data: medicoes,
                         borderColor: corDaLinha,
-                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        backgroundColor: "rgba(255,255,255,0.05)",
                         fill: true,
                         tension: 0.2,
                         pointRadius: 2,
@@ -483,36 +442,26 @@
                         legend: { display: false },
                         title: {
                             display: true,
-                            text: 'Histórico: ' + componente.nome,
-                            color: '#fff',
-                            font: { size: 11, weight: '600' }
-                        },
-                        annotation: {
-                            annotations: {
-                                linhaAtencao: {
-                                    type: 'line',
-                                    yMin: componente.valorAtencao, yMax: componente.valorAtencao,
-                                    borderColor: '#f5a623', borderWidth: 1.5, borderDash: [5, 5],
-                                    label: { display: true, content: 'Atenção', padding: 3, position: 'start', xAdjust: 50, backgroundColor: 'rgba(146,112,18,0.85)', color: '#fff', font: { size: 9 } }
-                                },
-                                linhaCritico: {
-                                    type: 'line',
-                                    yMin: componente.valorCritico, yMax: componente.valorCritico,
-                                    borderColor: '#ff3b3b', borderWidth: 1.5, borderDash: [5, 5],
-                                    label: { display: true, content: 'Crítico', padding: 3, position: 'start', backgroundColor: 'rgba(255,59,59,0.85)', color: '#fff', font: { size: 9 } }
-                                }
-                            }
+                            text: "Histórico: " + componente.nome,
+                            color: "#fff",
+                            font: { size: 11, weight: "600" }
                         }
                     },
                     scales: {
                         y: {
-                            min: 0, max: componente.maxEixoY,
-                            title: { display: true, text: componente.rotuloY, color: 'rgba(255,255,255,0.4)', font: { size: 8 } },
-                            ticks: { color: '#aaa', font: { size: 9 } },
-                            grid: { color: 'rgba(255,255,255,0.07)' }
+                            min: 0,
+                            max: componente.maxEixoY,
+                            title: {
+                                display: true,
+                                text: componente.rotuloY,
+                                color: "rgba(255,255,255,0.4)",
+                                font: { size: 8 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" }
                         },
                         x: {
-                            ticks: { color: '#aaa', font: { size: 9 }, maxTicksLimit: 8 },
+                            ticks: { color: "#aaa", font: { size: 9 }, maxTicksLimit: 8 },
                             grid: { display: false }
                         }
                     }
@@ -523,91 +472,287 @@
         gerarCorrelacoes(todosDados);
     }
 
+    function carregarDadosRam() {
+        fetch("/dash_ram/buscar_registros", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                MacServer: "bc:cd:99:c2:86:34",
+                QtdLinhas: 10
+            })
+        })
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (dados) {
+                console.log("Dados RAM:", dados);
+
+                const historico = dados.reverse();
+                const ultimo = historico[historico.length - 1];
+
+                atualizarKpisRam(ultimo, historico);
+                criarGraficoDonutRam(ultimo);
+                criarGraficoLinhaRam(historico);
+                renderizarAlertasRam(historico);
+            })
+            .catch(function (erro) {
+                console.log("Erro ao carregar RAM:", erro);
+            });
+    }
+
+    function atualizarKpisRam(ultimo, historico) {
+        const maiorValor = Math.max(...historico.map(item => Number(item.virtualMemoryUsage)));
+        const coletaMaior = historico.find(item => Number(item.virtualMemoryUsage) === maiorValor);
+
+        document.getElementById("maior-valor-ram").innerHTML = maiorValor + "%";
+        document.getElementById("percentual-ram").innerHTML = ultimo.virtualMemoryUsage + "%";
+
+        document.getElementById("legenda-uso").innerHTML = "Em uso — " + ultimo.virtualMemoryUsage + "%";
+        document.getElementById("legenda-livre").innerHTML = "Livre — " + (100 - ultimo.virtualMemoryUsage) + "%";
+
+        document.querySelector(".kpi-detecta p").innerHTML =
+            "Coleta detectada às " + coletaMaior.timestamp;
+    }
+
+    function criarGraficoDonutRam(ultimo) {
+        const uso = Number(ultimo.virtualMemoryUsage);
+        const livre = 100 - uso;
+
+        const ctx = document.getElementById("usoMemoria").getContext("2d");
+
+        if (graficoUsoMemoria) {
+            graficoUsoMemoria.destroy();
+        }
+
+        graficoUsoMemoria = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["Em uso", "Livre"],
+                datasets: [{
+                    label: "Uso de memória",
+                    data: [uso, livre],
+                    backgroundColor: ["#FFFFFF", "#8AC3FF"],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "80%",
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                }
+            }
+        });
+    }
+
+    function criarGraficoLinhaRam(historico) {
+        const labels = historico.map(item => {
+    return item.timestamp.split(" ")[1].substring(0,5);
+});
+        const valores = historico.map(item => Number(item.virtualMemoryUsage));
+
+        const ctx = document.getElementById("monitoramentoRam").getContext("2d");
+
+        if (graficoMonitoramentoRam) {
+            graficoMonitoramentoRam.destroy();
+        }
+
+        graficoMonitoramentoRam = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Uso da RAM (%)",
+                    data: valores,
+                    borderColor: "#8AC3FF",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                        labels: { color: "#ffffff" }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: { color: "#ffffff" }
+                    },
+                    x: {
+                        ticks: { color: "#ffffff" }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderizarAlertasRam(historico) {
+        const corpo = document.getElementById("corpo-alertas-ram");
+        corpo.innerHTML = "";
+
+        const limiteRam = 75;
+
+        historico
+            .filter(item => Number(item.virtualMemoryUsage) > limiteRam)
+            .forEach(item => {
+                const uso = Number(item.virtualMemoryUsage);
+                const acima = uso - limiteRam;
+
+                corpo.innerHTML += `
+                    <tr>
+                        <td>Servidor 3</td>
+                        <td>${item.timestamp}</td>
+                        <td>${uso}%</td>
+                        <td class="valor-acima-limite">${acima}%</td>
+                    </tr>
+                `;
+            });
+    }
+
     function gerarCorrelacoes(dadosComponentes) {
         const paresCorrelacao = [
-            { eixoX: 'CPU', eixoY: 'Processos', rotuloX: 'CPU Uso (%)', rotuloY: 'Nº Processos', corPonto: '#7ab8f5' },
-            { eixoX: 'CPU', eixoY: 'RAM', rotuloX: 'RAM Uso (%)', rotuloY: 'CPU Uso (%)', corPonto: '#7ab8f5' },
-            { eixoX: 'CPU', eixoY: 'Rede', rotuloX: 'CPU Uso (%)', rotuloY: 'Tráfego Rede (Mbps)', corPonto: '#f5c842' },
+            { eixoX: "CPU", eixoY: "Processos", rotuloX: "CPU Uso (%)", rotuloY: "Nº Processos", corPonto: "#7ab8f5" },
+            { eixoX: "CPU", eixoY: "RAM", rotuloX: "CPU Uso (%)", rotuloY: "RAM Uso (%)", corPonto: "#7ab8f5" },
+            { eixoX: "CPU", eixoY: "Rede", rotuloX: "CPU Uso (%)", rotuloY: "Tráfego Rede (Mbps)", corPonto: "#f5c842" }
         ];
 
-        const container = document.getElementById('correlacoes-lista');
+        const container = document.getElementById("correlacoes-lista");
         if (!container) return;
-        container.innerHTML = '';
+
+        container.innerHTML = "";
 
         paresCorrelacao.forEach(function (par, indice) {
             const valoresX = dadosComponentes[par.eixoX];
             const valoresY = dadosComponentes[par.eixoY];
+
             if (!valoresX || !valoresY) return;
 
             const maximoY = Math.max.apply(null, valoresY);
-            const valoresYNorm = valoresY.map(function (v) { return Math.round((v / maximoY) * 100); });
+            const valoresYNorm = valoresY.map(v => Math.round((v / maximoY) * 100));
 
             const quantidade = valoresX.length;
-            const mediaX = valoresX.reduce(function (a, b) { return a + b; }, 0) / quantidade;
-            const mediaY = valoresYNorm.reduce(function (a, b) { return a + b; }, 0) / quantidade;
-            const numerador = valoresX.reduce(function (soma, x, i) { return soma + (x - mediaX) * (valoresYNorm[i] - mediaY); }, 0);
-            const denominadorX = Math.sqrt(valoresX.reduce(function (soma, x) { return soma + (x - mediaX) * (x - mediaX); }, 0));
-            const denominadorY = Math.sqrt(valoresYNorm.reduce(function (soma, y) { return soma + (y - mediaY) * (y - mediaY); }, 0));
-            const correlacao = (denominadorX && denominadorY) ? +(numerador / (denominadorX * denominadorY)).toFixed(2) : 0;
+            const mediaX = valoresX.reduce((a, b) => a + b, 0) / quantidade;
+            const mediaY = valoresYNorm.reduce((a, b) => a + b, 0) / quantidade;
+
+            const numerador = valoresX.reduce((soma, x, i) => {
+                return soma + (x - mediaX) * (valoresYNorm[i] - mediaY);
+            }, 0);
+
+            const denominadorX = Math.sqrt(valoresX.reduce((soma, x) => {
+                return soma + (x - mediaX) * (x - mediaX);
+            }, 0));
+
+            const denominadorY = Math.sqrt(valoresYNorm.reduce((soma, y) => {
+                return soma + (y - mediaY) * (y - mediaY);
+            }, 0));
+
+            const correlacao = (denominadorX && denominadorY)
+                ? +(numerador / (denominadorX * denominadorY)).toFixed(2)
+                : 0;
 
             const inclinacao = numerador / (denominadorX * denominadorX || 1);
             const intercepto = mediaY - inclinacao * mediaX;
-            const xMinimo = Math.min.apply(null, valoresX), xMaximo = Math.max.apply(null, valoresX);
 
-            const idCanvas = 'corr-' + indice;
+            const xMinimo = Math.min.apply(null, valoresX);
+            const xMaximo = Math.max.apply(null, valoresX);
 
-            var tituloPar = par.eixoY + ' vs. ' + par.eixoX
+            let tituloPar = par.eixoY + " vs. " + par.eixoX;
 
             if (correlacao >= 0.8) {
-                var tituloPar = par.eixoY + ' vs. ' + par.eixoX + ' (Correlação: Forte | Atenção!)';
+                tituloPar += " (Correlação: Forte | Atenção!)";
             } else if (correlacao >= 0.6) {
-                var tituloPar = par.eixoY + ' vs. ' + par.eixoX + ' (Correlação: Média | Atenção!)';
+                tituloPar += " (Correlação: Média | Atenção!)";
             } else if (correlacao <= -0.8) {
-                var tituloPar = par.eixoY + ' vs. ' + par.eixoX + ' (Correlação: Média | Atenção!)';
+                tituloPar += " (Correlação: Forte | Atenção!)";
             } else if (correlacao <= -0.6) {
-                var tituloPar = par.eixoY + ' vs. ' + par.eixoX + ' (Correlação: Forte | Atenção!)';
+                tituloPar += " (Correlação: Média | Atenção!)";
             } else {
-                var tituloPar = par.eixoY + ' vs. ' + par.eixoX + ' (Correlação: Fraca | Atenção!)';
+                tituloPar += " (Correlação: Fraca | Atenção!)";
             }
 
-            const bloco = document.createElement('div');
-            bloco.className = 'corr-item';
+            const idCanvas = "corr-" + indice;
+            const bloco = document.createElement("div");
+            bloco.className = "corr-item";
+
             bloco.innerHTML =
                 '<div class="corr-titulo">' + tituloPar + '</div>' +
                 '<div class="corr-canvas-wrap"><canvas id="' + idCanvas + '"></canvas></div>';
+
             container.appendChild(bloco);
 
-            const pontos = valoresX.map(function (x, i) { return { x: x, y: valoresYNorm[i] }; });
+            const pontos = valoresX.map((x, i) => ({ x: x, y: valoresYNorm[i] }));
             const tendencia = [
                 { x: xMinimo, y: +(inclinacao * xMinimo + intercepto).toFixed(1) },
                 { x: xMaximo, y: +(inclinacao * xMaximo + intercepto).toFixed(1) }
             ];
 
-            const contexto = document.getElementById(idCanvas).getContext('2d');
+            const contexto = document.getElementById(idCanvas).getContext("2d");
+
             new Chart(contexto, {
-                type: 'scatter',
+                type: "scatter",
                 data: {
                     datasets: [
-                        { label: 'Dados', data: pontos, backgroundColor: par.corPonto + 'cc', pointRadius: 4, pointHoverRadius: 6 },
-                        { label: 'Tendência', data: tendencia, type: 'line', borderColor: par.corPonto, borderWidth: 2, pointRadius: 0, fill: false, tension: 0 }
+                        {
+                            label: "Dados",
+                            data: pontos,
+                            backgroundColor: par.corPonto + "cc",
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: "Tendência",
+                            data: tendencia,
+                            type: "line",
+                            borderColor: par.corPonto,
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            tension: 0
+                        }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, title: { display: false } },
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
                     scales: {
                         x: {
-                            title: { display: true, text: par.rotuloX, color: 'rgba(255,255,255,0.5)', font: { size: 9 } },
-                            ticks: { color: '#aaa', font: { size: 9 } },
-                            grid: { color: 'rgba(255,255,255,0.07)' },
-                            min: 0, max: 100
+                            title: {
+                                display: true,
+                                text: par.rotuloX,
+                                color: "rgba(255,255,255,0.5)",
+                                font: { size: 9 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" },
+                            min: 0,
+                            max: 100
                         },
                         y: {
-                            title: { display: true, text: par.rotuloY, color: 'rgba(255,255,255,0.5)', font: { size: 9 } },
-                            ticks: { color: '#aaa', font: { size: 9 } },
-                            grid: { color: 'rgba(255,255,255,0.07)' },
-                            min: 0, max: 100
+                            title: {
+                                display: true,
+                                text: par.rotuloY,
+                                color: "rgba(255,255,255,0.5)",
+                                font: { size: 9 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" },
+                            min: 0,
+                            max: 100
                         }
                     }
                 }
@@ -616,8 +761,10 @@
     }
 
     const servidor = JSON.parse(sessionStorage.getItem("servidor"));
+
     if (servidor) {
         document.getElementById("titulo-kpi-servidor").innerText = servidor.nome;
+
         if (servidor.status == "crit") {
             document.getElementById("kpi-servidor").style.color = "#ff3b3b";
             document.getElementById("kpi-servidor").innerHTML = "Crítico";
@@ -628,94 +775,7 @@
             document.getElementById("kpi-servidor").style.color = "#12921C";
             document.getElementById("kpi-servidor").innerHTML = "Normal";
         }
-
     }
-    document.getElementById("nome_usuario").innerHTML = sessionStorage.NOME_USUARIO
 
-    // gráfico donuts uso de memória
-    const ctx = document.getElementById('usoMemoria').getContext('2d');
-    const data = {
-        labels: [
-            'Em uso',
-            'Livre'
-        ],
-        datasets: [{
-            label: 'Uso de memória',
-            data: [75, 25],
-            backgroundColor: [
-                '#FFFFFF',
-                '#8AC3FF'
-            ],
-            hoverOffset: 4
-        }]
-    };
-
-    const config = {
-        type: 'doughnut',
-        data: data,
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-
-            cutout: '80%',
-
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: false
-                }
-            }
-        }
-    };
-
-    new Chart(ctx, config);
-
-    // gráfico de monitoramento de ram
-    const ctz = document.getElementById('monitoramentoRam').getContext('2d');
-    const meuGrafico = new Chart(ctz, {
-        type: 'line',
-        data: {
-            labels: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00'],
-            datasets: [{
-                label: 'Pico de utilização da RAM',
-                data: [0, 20, 50, 100],
-                borderColor: '#8AC3FF',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 2,
-                tension: 0.3,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#ffffff'
-                    }
-                },
-                title: {
-                    display: true,
-                    color: '#ffffff'
-                }
-
-            },
-            scales: {
-                y: {
-                    ticks: {
-                        color: '#ffffff'
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: '#ffffff'
-                    }
-                }
-            }
-        }
-    });
-
+    document.getElementById("nome_usuario").innerHTML = sessionStorage.NOME_USUARIO;
 </script>
