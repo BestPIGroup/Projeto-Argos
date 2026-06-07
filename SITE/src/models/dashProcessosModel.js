@@ -44,10 +44,11 @@ async function buscarRegistros(mac, linhas) {
                     usuario: rowSep[1],
                     timestamp: rowSep[2],
 
-                    top3ProcessosCpu: rowSep[6],
-                    top3ProcessosDisco: rowSep[7],
                     totalProcessos: Number(rowSep[8]),
-                    totalArquivosAbertos: Number(rowSep[24])
+                    totalArquivosAbertos: Number(rowSep[24]),
+                    cpuCtxSwitches: Number(rowSep[5]),
+                    top3ProcessosCpu: rowSep[6],
+                    top3ProcessosDisco: rowSep[7]
                 });
 
                 count++;

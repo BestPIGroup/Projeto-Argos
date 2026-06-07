@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="./css/pagina_proc.css">
 </head>
 
-<body onload="carregarGraficos()">
+<body onload="iniciarDashboard()">
 
     <div class="pagina-dashboard">
 
@@ -86,12 +86,9 @@
 
 
                 <div class="graficos"></div>
-                <!-- <h3>TROCAS DE CONTEXTO</h3>
+                 <h3>TROCAS DE CONTEXTO</h3>
+                <canvas id="grafico-contexto"></canvas>
 
-
-                <div class="tabela-body" id="corpo-tabrla">
-                     <canvas id="myChart2"></canvas> 
-                </div> -->
 
 
             </div>
@@ -109,39 +106,7 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-
-                        <tr>
-                            <td>80</td>
-                            <td>python</td>
-                            <td>210</td>
-                        </tr>
-
-                        <tr>
-                            <td>54</td>
-                            <td>chrome</td>
-                            <td>120</td>
-                        </tr>
-
-                        <tr>
-                            <td>23</td>
-                            <td>InstallService</td>
-                            <td>53</td>
-                        </tr>
-
-                        <tr>
-                            <td>23</td>
-                            <td>mpssvc</td>
-                            <td>42</td>
-                        </tr>
-
-                        <tr>
-                            <td>23</td>
-                            <td>MySQL80</td>
-                            <td>31</td>
-                        </tr>
-
-                    </tbody>
+                    <tbody id="corpo-tabela-processos"></tbody>
 
                 </table>
             </div>
@@ -158,27 +123,8 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr>
-                            <td>chrome.exe</td>
-                            <td>C:\Users\Admin\Downloads\relatorio.pdf</td>
-                        </tr>
-
-                        <tr>
-                            <td>python.exe</td>
-                            <td>C:\Projetos\Argos\monitoramento.py</td>
-                        </tr>
-
-                        <tr>
-                            <td>mysqld.exe</td>
-                            <td>C:\ProgramData\MySQL\data\argos.ibd</td>
-                        </tr>
-
-                        <tr>
-                            <td>java.exe</td>
-                            <td>C:\SPTech\ProjetoArgos\app.jar</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="corpo-tabela-arquivos"></tbody>
+                        
                 </table>
 
             </div>
@@ -196,19 +142,78 @@
 
 <script>
 
-    const ctx = document.getElementById('myChart');
+let graficoProcessos = null;
 
-    new Chart(ctx, {
-        type: 'line',
+let graficoContexto = null;
+
+function carregarGraficos() {
+    fetch("/dashProcessos/buscar_registros", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            MacServer: "bc:cd:99:c2:86:34",
+            QtdLinhas: 10
+        })
+    })
+    .then(resposta => resposta.json())
+    .then(dados => {
+        console.log(dados);
+
+        if (!dados || dados.length === 0) {
+            console.log("Nenhum dado encontrado para esse MAC.");
+            return;
+        }
+
+        const ultimo = dados[0];
+
+        atualizarKPI(ultimo, dados);
+        criarGraficoProcessos(dados);
+        criarGraficoContexto(dados);
+        renderizarTabelaProcessos(dados);
+    })
+    .catch(erro => {
+        console.log("Erro ao carregar dashboard:", erro);
+    });
+}
+
+function atualizarKPI(ultimo, historico) {
+    document.getElementById("server-user").innerHTML = ultimo.usuario;
+    document.getElementById("kpi-total-processos").innerHTML = ultimo.totalProcessos;
+
+    document.getElementById("kpi-maximo-processos").innerHTML =
+        Math.max(...historico.map(linha => Number(linha.totalProcessos)));
+
+    document.getElementById("kpi-usuarios-logados").innerHTML = ultimo.usuariosLogados;
+}
+
+function criarGraficoProcessos(historico) {
+    const labels = historico.map(item => {
+    const hora = item.timestamp.split(" ")[1];
+    return hora.substring(0, 5);
+});
+    const valores = historico.map(linha => Number(linha.totalProcessos)).reverse();
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+
+    if (graficoProcessos) {
+        graficoProcessos.destroy();
+    }
+
+    graficoProcessos = new Chart(ctx, {
+        type: "line",
         data: {
-            labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+            labels: labels,
             datasets: [{
-                label: 'Processos',
-                data: [12, 19, 3, 5, 2, 3, 8],
-                borderWidth: 1
+                label: "Total de processos",
+                data: valores,
+                borderWidth: 2,
+                tension: 0.3
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 y: {
                     beginAtZero: true
@@ -216,101 +221,99 @@
             }
         }
     });
+}
 
-    const ctx2 = document.getElementById('myChart2');
+function criarGraficoContexto(historico) {
+    const labels = historico.map(item => {
+    const hora = item.timestamp.split(" ")[1];
+    return hora.substring(0, 5);
+});
+    const valores = historico.map(linha => Number(linha.cpuCtxSwitches)).reverse();
 
-    new Chart(ctx2, {
-        type: 'line',
+    const ctx = document.getElementById("grafico-contexto").getContext("2d");
+
+    if (graficoContexto) {
+        graficoContexto.destroy();
+    }
+
+    graficoContexto = new Chart(ctx, {
+        type: "line",
         data: {
-            labels: ['11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30'],
+            labels: labels,
             datasets: [{
-                label: 'Troca de Contexto',
-                data: [12, 19, 3, 5, 2, 3, 6],
-                borderWidth: 1
+                label: "Trocas de contexto",
+                data: valores,
+                borderWidth: 2,
+                tension: 0.3
             }]
         },
         options: {
+            responsive: true,
             scales: {
                 y: {
-
+                    beginAtZero: true
                 }
             }
         }
     });
+}
 
-    function carregarGraficos() {
 
-        fetch("/dashboard/processos")
-            .then(function (resposta) {
+function renderizarTabelaProcessos(historico) {
+    const corpo = document.getElementById("corpo-tabela-processos");
+    corpo.innerHTML = "";
 
-                return resposta.json();
-            })
-            .then(function (dadosJson) {
+    const contagem = {};
 
-                console.log(dadosJson);
+    historico.forEach(function (linha) {
+        const processosTexto = linha.top3ProcessosCpu;
 
-                var servidor = dadosJson.servidor;
+        if (!processosTexto) return;
 
-                var limites = dadosJson.limites;
+        const processos = processosTexto
+            .replaceAll("[[", "")
+            .replaceAll("]]", "")
+            .split("], [");
 
-                var historico = dadosJson.historico;
+        processos.forEach(function (processo) {
+            const dados = processo
+                .replaceAll("[", "")
+                .replaceAll("]", "")
+                .replaceAll("'", "")
+                .split(",");
 
-                atualizarKPI(servidor, limites);
+            const pid = dados[0]?.trim();
+            const nome = dados[1]?.trim();
 
-                renderizarTabelaProcessos(servidor, total_processos);
+            if (!nome) return;
 
-                criarGraficos(historico, limites);
-            })
-            .catch(function (erro) {
-
-                console.log("Erro ao carregar dashboard: ", erro);
-            })
-    }
-
-    function atualizarKPI(servidor, limites) {
-
-        document.getElementById("server-user").innerHTML = servidor.user;
-    }
-
-    function renderizarTabelaProcessos(processosTexto){
-
-        var corpo = document.getElementById("corpo-tabela");
-
-        corpo.innerHTML = "";
-
-        if(!processosTexto){
-            return;
-        }
-
-        var linhas = processosTexto.split("],");
-
-        linhas.forEach(function (processo){
-
-            processo = processo
-            .replaceAll("[", "")
-            .replaceAll("]", "")
-            .replaceAll("'", "");
-
-            var dados = processo.split(",");
-
-             if (dados.length >= 3) {
-
-                corpo.innerHTML += `
-                    <div class="tabela-row">
-
-                        <span class="col-pid">${dados[0]}</span>
-
-                        <span class="col-proc">${dados[1]}</span>
-
-                        <span class="col-escrita">
-                            ${Number(dados[2]).toFixed(0)}
-                        </span>
-
-                    </div>
-                `;
+            if (!contagem[nome]) {
+                contagem[nome] = {
+                    pid: pid,
+                    nome: nome,
+                    quantidade: 0
+                };
             }
+
+            contagem[nome].quantidade++;
         });
-    }
+    });
+
+    const top5 = Object.values(contagem)
+        .sort((a, b) => b.quantidade - a.quantidade)
+        .slice(0, 5);
+
+    top5.forEach(function (processo) {
+        corpo.innerHTML += `
+            <tr>
+                <td>${processo.pid}</td>
+                <td>${processo.nome}</td>
+                <td>${processo.quantidade}</td>
+            </tr>
+        `;
+    });
+}
+    
 
     function criarGraficos(historico, limites){
 
@@ -399,4 +402,15 @@
             })
         })
     }
+
+
+let intervaloDashboard = null;
+
+function iniciarDashboard() {
+    carregarGraficos();
+
+    intervaloDashboard = setInterval(function () {
+        carregarGraficos();
+    }, 10000);
+}
 </script>
