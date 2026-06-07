@@ -20,9 +20,8 @@ var usuarioRouter = require("./src/routes/usuarios");
 var unidadeRouter = require("./src/routes/unidade");
 var servidorRouter = require("./src/routes/servidores");
 var conexaoS3Router = require("./src/routes/conexaoS3");
+var dash_cpuRouter = require("./src/routes/dash_cpu");
 var ransomwareRouter  = require("./src/routes/ransomware");
-
-const s3 = new S3Client({ region: process.env.AWS_REGION });
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +34,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dash_cpu", dash_cpuRouter);
 app.use("/ransomware", ransomwareRouter);
 
 app.listen(PORTA_APP, function () {
