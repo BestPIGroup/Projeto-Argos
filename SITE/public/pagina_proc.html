@@ -20,7 +20,7 @@
             <!-- SERVIDOR -->
             <div class="card-servidor-topo">
 
-                <img src="./assets/server.png">
+                <img src="./assets/server2.png">
 
                 <div class="servidor-topo-info">
                     <h2>Servidor 3</h2>
@@ -172,6 +172,7 @@ function carregarGraficos() {
         criarGraficoProcessos(dados);
         criarGraficoContexto(dados);
         renderizarTabelaProcessos(dados);
+        renderizarTabelaArquivosSimulados();
     })
     .catch(erro => {
         console.log("Erro ao carregar dashboard:", erro);
@@ -309,6 +310,35 @@ function renderizarTabelaProcessos(historico) {
                 <td>${processo.pid}</td>
                 <td>${processo.nome}</td>
                 <td>${processo.quantidade}</td>
+            </tr>
+        `;
+    });
+}
+
+const arquivosSimulados = [
+    ["chrome.exe", "C:\\Users\\Admin\\Downloads\\relatorio.pdf"],
+    ["python.exe", "C:\\Projetos\\Argos\\monitoramento.py"],
+    ["mysqld.exe", "C:\\ProgramData\\MySQL\\data\\argos.ibd"],
+    ["java.exe", "C:\\SPTech\\ProjetoArgos\\app.jar"],
+    ["Code.exe", "C:\\Users\\Gamer\\Desktop\\Argos\\pagina_proc.html"],
+    ["node.exe", "C:\\Users\\Gamer\\Desktop\\Argos\\server.js"],
+    ["explorer.exe", "C:\\Users\\Gamer\\Documents\\planilha.xlsx"]
+];
+
+function renderizarTabelaArquivosSimulados() {
+    const corpo = document.getElementById("corpo-tabela-arquivos");
+
+    corpo.innerHTML = "";
+
+    const embaralhados = arquivosSimulados
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 5);
+
+    embaralhados.forEach(item => {
+        corpo.innerHTML += `
+            <tr>
+                <td>${item[0]}</td>
+                <td>${item[1]}</td>
             </tr>
         `;
     });
