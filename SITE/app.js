@@ -32,6 +32,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dash_cpu", dash_cpuRouter);
 app.use("/ransomware", ransomwareRouter);
 app.use("/alertasS3", alertasS3Router);
 app.use("/limitesComponentes", limitesComponentesRouter);
