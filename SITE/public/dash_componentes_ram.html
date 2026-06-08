@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Argos | Componentes</title>
+    <script src="./js/sessao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="./css/dash_componentes_ram.css">
+    <link rel="stylesheet" href="./css/dash_componentes.css">
+    <link rel="icon" href="./assets/LogoArgos.png">
+</head>
+
+<body onload="carregarGraficos()">
+    <div id="modal_ram" style="display: none;">
+
+        <div class="conteudo-modal-ram">
+
+            <div class="div-fechar">
+                <div class="titulo-monitor-ram">
+                    <h1>Monitoramento de Memória RAM</h1>
+                </div>
+
+                <span class="fechar">X</span>
+            </div>
+
+            <div class="conteudo-dash">
+
+                <div class="kpi-dash">
+
+                    <div class="kpi-servidor">
+                        <div class="icone-servidor">
+                            <img src="./assets/server2.png" alt="Servidor">
+                        </div>
+
+                        <div class="titulo-servidor">
+                            <h2 id="servidorAcesso">Servidor</h2>
+                            <span class="badge-atencao">Atenção</span>
+                        </div>
+                    </div>
+
+                    <div class="kpi-coleta">
+                        <div class="titulo-coleta">
+                            <img src="./assets/icone_ram.png" alt="Memória RAM">
+                            <span>Maior valor coletado de RAM</span>
+                        </div>
+
+                        <div class="valor-kpi-coleta" id="maior-valor-ram">_</div>
+
+                        <div class="kpi-detecta">
+                            <p>Coleta detectada às 22:00</p>
+                        </div>
+                    </div>
+
+                    <div class="kpi-grafico">
+                        <div class="info-memoria">
+                            <h3>Uso da Memória</h3>
+
+                            <div class="percentual-ram" id="percentual-ram">_</div>
+
+                            <div class="legenda-ram">
+                                <div>
+                                    <span class="cor-uso"></span>
+                                    <span id="legenda-uso">Em uso — _</span>
+                                </div>
+
+                                <div>
+                                    <span class="cor-livre"></span>
+                                    <span id="legenda-livre">Livre — _</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grafico-memoria">
+                            <canvas id="usoMemoria"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Gráfico principal -->
+                <div class="alerta-grafico">
+
+                    <div class="grafico-monitoramento">
+                        <h3>Monitoramento de RAM</h3>
+
+                        <div class="area-grafico-monitoramento">
+                            <canvas id="monitoramentoRam"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="alertas-ram">
+
+                        <div class="componente-titulo">
+                            <img src="./assets/warningRed.png" alt="Alerta">
+                            <h3>Alertas de Componente RAM</h3>
+                        </div>
+
+                        <div class="area-tabela-alertas">
+                            <table class="tabela-alertas">
+                                <thead>
+                                    <tr>
+                                        <th>Servidor</th>
+                                        <th>Horário do alerta</th>
+                                        <th>Valor captura</th>
+                                        <th>Acima do limite</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody id="corpo-alertas-ram">
+                                    <tr>
+                                        <td>Servidor 3</td>
+                                        <td>22:00</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">15%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 4</td>
+                                        <td>19:00</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">20%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 2</td>
+                                        <td>18:45</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">5%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 4</td>
+                                        <td>20:00</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">12%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 1</td>
+                                        <td>13:00</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">8%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 2</td>
+                                        <td>15:15</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">3%</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Servidor 4</td>
+                                        <td>16:00</td>
+                                        <td>30,4 GB</td>
+                                        <td class="valor-acima-limite">17%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    </div>
+
+    </div>
+    <header class="sidebar">
+
+        <div class="logo" href="index.html">
+            <img src="./assets/LogoArgosIcon.png">
+        </div>
+
+        <ul class="listaOpcoes">
+            <li>
+                <a href="servidores.html">
+                    <div class="item">
+                        <img src="./assets/server2.png" alt="Servidores">
+                        <p>Servidores</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="https://app.slack.com/client/T0AQPJR7JUU/C0AUV58TYET">
+                    <div class="item">
+                        <img src="./assets/slack.png" alt="Servidores">
+                        <p>Slack</p>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a
+                    href="https://sptech-argos-support.atlassian.net/jira/software/projects/KAN/list?jql=project%20%3D%20KAN%20AND%20status%20%3D%20%22A%20fazer%22%20ORDER%20BY%20cf%5B10019%5D%20ASC">
+                    <div class="item">
+                        <img src="./assets/jira.png" alt="Servidores">
+                        <p>Jira</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
+
+        <div class="saida">
+            <div class="item">
+                <img src="./assets/user3.png" alt="Perfil">
+                <p>Analista</p>
+                <p id="nome_usuario">Perfil</p>
+            </div>
+            <a href="index.html">
+                <div class="item">
+                    <img src="./assets/saida.png" alt="Sair" onclick="logout()">
+                    <p>Sair</p>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <!-- <div id="modalGrafico" class="modal-overlay" style="display: none;">
+        <div class="modal-conteudo">
+            <span class="btn-fechar" onclick="fecharModal()">X</span>
+            <div class="modal-header">
+                <h2 id="tituloComponente">Nome do Componente</h2>
+            </div>
+            <div class="modal-grid">
+                <div class="grafico-container"><canvas id="grafico1"></canvas></div>
+                <div class="grafico-container"><canvas id="grafico2"></canvas></div>
+                <div class="grafico-container"><canvas id="grafico3"></canvas></div>
+                <div class="grafico-container">
+                    <div class="display-porcentagem">
+                        <p class="titulo-porcentagem">Porcentagem Utilizada Atualmente</p>
+                        <h1 id="valorPorcentagem" style="color: brown;">82%</h1>
+                        <div class="limite-box">
+                            <span>Limite Ideal</span>
+                            <h2 id="limiteIdeal">80%</h2>
+                        </div>
+                    </div>
+                    <canvas id="grafico4" style="display: none;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+
+
+    <div class="conteudo">
+
+        <div class="box">
+            <div class="kpis">
+                <div class="kpi">
+                    <img src="./assets/server2.png" alt="">
+                    <span id="titulo-kpi-servidor">Servidor</span>
+                    <h2 id="kpi-servidor">—</h2>
+                </div>
+                <div class="kpi card-erro">
+                    <img src="./assets/warningRed.png" alt="">
+                    Estado Crítico<h2 id="kpi-crit">1</h2>
+                </div>
+                <div class="kpi card-atencao">
+                    <img src="./assets/warningOrange.png" alt="">
+                    Estado de Alerta<h2 id="kpi-alerta">1</h2>
+                </div>
+                <div class="kpi kpi-alerta-sino" id="card-alerta-sino">
+                    <button class="btn-fechar-alerta"
+                        onclick="document.getElementById('card-alerta-sino').style.display='none'">✕</button>
+                    <img src="./assets/bellWhite.png" alt="">
+                    Alerta novo!<h2 id="kpi-sino">CPU</h2>
+                </div>
+            </div>
+            <div class="retangulo">
+                <a href="servidores.html">
+                    <img src="./assets/arrow 2.png" class="btn-voltar" alt="Voltar">
+                </a>
+                <p>Componentes</p>
+            </div>
+        </div>
+        <div class="dashboard-layout">
+            <div class="campo"></div>
+            <div class="correlacoes-painel">
+                <div class="correlacoes-titulo">Diagnóstico de Correlação de Componentes</div>
+                <div class="correlacoes-lista" id="correlacoes-lista"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+</body>
+
+</html>
+<script>
+    nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`;
+
+    var todosDados = {};
+
+    const modal = document.getElementById("modal_ram");
+    const spanFechar = document.querySelector(".fechar");
+
+    let graficoUsoMemoria = null;
+    let graficoMonitoramentoRam = null;
+
+    spanFechar.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    function carregarGraficos() {
+        const componentes = [
+            {
+                nome: "CPU",
+                status: "crit",
+                maxEixoY: 100,
+                rotuloY: "Uso de CPU (%)",
+                valorAtencao: 85,
+                valorCritico: 95,
+                dados: [30, 35, 42, 50, 68, 82, 95, 88, 72, 65]
+            },
+            {
+                nome: "RAM",
+                status: "atencao",
+                maxEixoY: 100,
+                rotuloY: "Uso de RAM (%)",
+                valorAtencao: 75,
+                valorCritico: 90,
+                dados: [55, 60, 64, 69, 71, 75, 80, 84, 87, 90]
+            },
+            {
+                nome: "Disco",
+                status: "atencao",
+                maxEixoY: 100,
+                rotuloY: "Uso de disco (%)",
+                valorAtencao: 85,
+                valorCritico: 92,
+                dados: [60, 64, 68, 70, 72, 76, 80, 84, 88, 91]
+            },
+            {
+                nome: "Rede",
+                status: "ok",
+                maxEixoY: 2000,
+                rotuloY: "Tráfego de rede (Mbps)",
+                valorAtencao: 1200,
+                valorCritico: 1800,
+                dados: [300, 450, 600, 500, 700, 850, 900, 760, 680, 590]
+            },
+            {
+                nome: "Processos",
+                status: "ok",
+                maxEixoY: 7000,
+                rotuloY: "Quantidade de processos",
+                valorAtencao: 5000,
+                valorCritico: 6000,
+                dados: [3820, 4050, 4300, 4515, 4700, 4950, 5280, 5580, 5890, 6050]
+            }
+        ];
+
+        const containerCampo = document.querySelector(".campo");
+        containerCampo.innerHTML = "";
+        todosDados = {};
+
+        const rotuloDeHoras = [
+            "03:50", "03:55", "04:00", "04:05", "04:10",
+            "04:15", "04:20", "04:25", "04:30", "04:35"
+        ];
+
+        componentes.forEach(function (componente, indice) {
+            const medicoes = componente.dados;
+            todosDados[componente.nome] = medicoes;
+
+            const valorAtual = medicoes[medicoes.length - 1];
+            const picoDoDia = Math.max(...medicoes);
+            const horaDoPico = rotuloDeHoras[medicoes.indexOf(picoDoDia)];
+
+            const classeStatus = componente.status === "crit" ? "status-crit"
+                : componente.status === "atencao" ? "status-atencao"
+                    : "status-ok";
+
+            const idCanvas = "canvas-" + indice;
+            const cartao = document.createElement("div");
+            cartao.className = "card-componente";
+
+            let valorExibido = valorAtual;
+            let picoExibido = picoDoDia;
+
+            if (componente.nome !== "Rede" && componente.nome !== "Processos") {
+                valorExibido = valorAtual + "%";
+                picoExibido = horaDoPico + " | " + picoDoDia + "%";
+            } else {
+                picoExibido = horaDoPico + " | " + picoDoDia;
+            }
+
+            cartao.innerHTML =
+                '<div class="card-grafico"><canvas id="' + idCanvas + '"></canvas></div>' +
+                '<div class="card-painel">' +
+                '<h2>' + componente.nome + '</h2>' +
+                '<div class="pct-valor ' + classeStatus + '">' + valorExibido + '</div>' +
+                '<div class="pico-bloco">' +
+                '<div class="pico-label">PICO DO DIA:</div>' +
+                '<div class="pico-valor">' + picoExibido + '</div>' +
+                '</div>' +
+                '</div>';
+
+            containerCampo.appendChild(cartao);
+
+            if (componente.nome === "RAM") {
+                document.getElementById(idCanvas).addEventListener("click", function () {
+                    modal.style.display = "flex";
+                    carregarDadosRam();
+                });
+            }
+
+            const corDaLinha = componente.status === "crit" ? "#ff3b3b"
+                : componente.status === "atencao" ? "#f5a623"
+                    : "#12921C";
+
+            const contexto = document.getElementById(idCanvas).getContext("2d");
+
+            new Chart(contexto, {
+                type: "line",
+                data: {
+                    labels: rotuloDeHoras,
+                    datasets: [{
+                        data: medicoes,
+                        borderColor: corDaLinha,
+                        backgroundColor: "rgba(255,255,255,0.05)",
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: 2,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: {
+                            display: true,
+                            text: "Histórico: " + componente.nome,
+                            color: "#fff",
+                            font: { size: 11, weight: "600" }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: componente.maxEixoY,
+                            title: {
+                                display: true,
+                                text: componente.rotuloY,
+                                color: "rgba(255,255,255,0.4)",
+                                font: { size: 8 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" }
+                        },
+                        x: {
+                            ticks: { color: "#aaa", font: { size: 9 }, maxTicksLimit: 8 },
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        });
+
+        gerarCorrelacoes(todosDados);
+    }
+
+    function carregarDadosRam() {
+        fetch("/dash_ram/buscar_registros", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                MacServer: "bc:cd:99:c2:86:34",
+                QtdLinhas: 10
+            })
+        })
+            .then(function (resposta) {
+                return resposta.json();
+            })
+            .then(function (dados) {
+                console.log("Dados RAM:", dados);
+
+                const historico = dados.reverse();
+                const ultimo = historico[historico.length - 1];
+
+                atualizarKpisRam(ultimo, historico);
+                criarGraficoDonutRam(ultimo);
+                criarGraficoLinhaRam(historico);
+                renderizarAlertasRam(historico);
+            })
+            .catch(function (erro) {
+                console.log("Erro ao carregar RAM:", erro);
+            });
+    }
+
+    function atualizarKpisRam(ultimo, historico) {
+        const maiorValor = Math.max(...historico.map(item => Number(item.virtualMemoryUsage)));
+        const coletaMaior = historico.find(item => Number(item.virtualMemoryUsage) === maiorValor);
+
+        document.getElementById("maior-valor-ram").innerHTML = maiorValor + "%";
+        document.getElementById("percentual-ram").innerHTML = ultimo.virtualMemoryUsage + "%";
+
+        document.getElementById("legenda-uso").innerHTML = "Em uso — " + ultimo.virtualMemoryUsage + "%";
+        document.getElementById("legenda-livre").innerHTML = "Livre — " + (100 - ultimo.virtualMemoryUsage) + "%";
+
+        document.querySelector(".kpi-detecta p").innerHTML =
+            "Coleta detectada às " + coletaMaior.timestamp;
+    }
+
+    function criarGraficoDonutRam(ultimo) {
+        const uso = Number(ultimo.virtualMemoryUsage);
+        const livre = 100 - uso;
+
+        const ctx = document.getElementById("usoMemoria").getContext("2d");
+
+        if (graficoUsoMemoria) {
+            graficoUsoMemoria.destroy();
+        }
+
+        graficoUsoMemoria = new Chart(ctx, {
+            type: "doughnut",
+            data: {
+                labels: ["Em uso", "Livre"],
+                datasets: [{
+                    label: "Uso de memória",
+                    data: [uso, livre],
+                    backgroundColor: ["#FFFFFF", "#8AC3FF"],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: "80%",
+                plugins: {
+                    legend: { display: false },
+                    title: { display: false }
+                }
+            }
+        });
+    }
+
+    function criarGraficoLinhaRam(historico) {
+        const labels = historico.map(item => {
+    return item.timestamp.split(" ")[1].substring(0,5);
+});
+        const valores = historico.map(item => Number(item.virtualMemoryUsage));
+
+        const ctx = document.getElementById("monitoramentoRam").getContext("2d");
+
+        if (graficoMonitoramentoRam) {
+            graficoMonitoramentoRam.destroy();
+        }
+
+        graficoMonitoramentoRam = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Uso da RAM (%)",
+                    data: valores,
+                    borderColor: "#8AC3FF",
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderWidth: 2,
+                    tension: 0.3,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: "top",
+                        labels: { color: "#ffffff" }
+                    }
+                },
+                scales: {
+                    y: {
+                        min: 0,
+                        max: 100,
+                        ticks: { color: "#ffffff" }
+                    },
+                    x: {
+                        ticks: { color: "#ffffff" }
+                    }
+                }
+            }
+        });
+    }
+
+    function renderizarAlertasRam(historico) {
+        const corpo = document.getElementById("corpo-alertas-ram");
+        corpo.innerHTML = "";
+
+        const limiteRam = 75;
+
+        historico
+            .filter(item => Number(item.virtualMemoryUsage) > limiteRam)
+            .forEach(item => {
+                const uso = Number(item.virtualMemoryUsage);
+                const acima = uso - limiteRam;
+
+                corpo.innerHTML += `
+                    <tr>
+                        <td>Servidor 3</td>
+                        <td>${item.timestamp}</td>
+                        <td>${uso}%</td>
+                        <td class="valor-acima-limite">${acima}%</td>
+                    </tr>
+                `;
+            });
+    }
+
+    function gerarCorrelacoes(dadosComponentes) {
+        const paresCorrelacao = [
+            { eixoX: "CPU", eixoY: "Processos", rotuloX: "CPU Uso (%)", rotuloY: "Nº Processos", corPonto: "#7ab8f5" },
+            { eixoX: "CPU", eixoY: "RAM", rotuloX: "CPU Uso (%)", rotuloY: "RAM Uso (%)", corPonto: "#7ab8f5" },
+            { eixoX: "CPU", eixoY: "Rede", rotuloX: "CPU Uso (%)", rotuloY: "Tráfego Rede (Mbps)", corPonto: "#f5c842" }
+        ];
+
+        const container = document.getElementById("correlacoes-lista");
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        paresCorrelacao.forEach(function (par, indice) {
+            const valoresX = dadosComponentes[par.eixoX];
+            const valoresY = dadosComponentes[par.eixoY];
+
+            if (!valoresX || !valoresY) return;
+
+            const maximoY = Math.max.apply(null, valoresY);
+            const valoresYNorm = valoresY.map(v => Math.round((v / maximoY) * 100));
+
+            const quantidade = valoresX.length;
+            const mediaX = valoresX.reduce((a, b) => a + b, 0) / quantidade;
+            const mediaY = valoresYNorm.reduce((a, b) => a + b, 0) / quantidade;
+
+            const numerador = valoresX.reduce((soma, x, i) => {
+                return soma + (x - mediaX) * (valoresYNorm[i] - mediaY);
+            }, 0);
+
+            const denominadorX = Math.sqrt(valoresX.reduce((soma, x) => {
+                return soma + (x - mediaX) * (x - mediaX);
+            }, 0));
+
+            const denominadorY = Math.sqrt(valoresYNorm.reduce((soma, y) => {
+                return soma + (y - mediaY) * (y - mediaY);
+            }, 0));
+
+            const correlacao = (denominadorX && denominadorY)
+                ? +(numerador / (denominadorX * denominadorY)).toFixed(2)
+                : 0;
+
+            const inclinacao = numerador / (denominadorX * denominadorX || 1);
+            const intercepto = mediaY - inclinacao * mediaX;
+
+            const xMinimo = Math.min.apply(null, valoresX);
+            const xMaximo = Math.max.apply(null, valoresX);
+
+            let tituloPar = par.eixoY + " vs. " + par.eixoX;
+
+            if (correlacao >= 0.8) {
+                tituloPar += " (Correlação: Forte | Atenção!)";
+            } else if (correlacao >= 0.6) {
+                tituloPar += " (Correlação: Média | Atenção!)";
+            } else if (correlacao <= -0.8) {
+                tituloPar += " (Correlação: Forte | Atenção!)";
+            } else if (correlacao <= -0.6) {
+                tituloPar += " (Correlação: Média | Atenção!)";
+            } else {
+                tituloPar += " (Correlação: Fraca | Atenção!)";
+            }
+
+            const idCanvas = "corr-" + indice;
+            const bloco = document.createElement("div");
+            bloco.className = "corr-item";
+
+            bloco.innerHTML =
+                '<div class="corr-titulo">' + tituloPar + '</div>' +
+                '<div class="corr-canvas-wrap"><canvas id="' + idCanvas + '"></canvas></div>';
+
+            container.appendChild(bloco);
+
+            const pontos = valoresX.map((x, i) => ({ x: x, y: valoresYNorm[i] }));
+            const tendencia = [
+                { x: xMinimo, y: +(inclinacao * xMinimo + intercepto).toFixed(1) },
+                { x: xMaximo, y: +(inclinacao * xMaximo + intercepto).toFixed(1) }
+            ];
+
+            const contexto = document.getElementById(idCanvas).getContext("2d");
+
+            new Chart(contexto, {
+                type: "scatter",
+                data: {
+                    datasets: [
+                        {
+                            label: "Dados",
+                            data: pontos,
+                            backgroundColor: par.corPonto + "cc",
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        },
+                        {
+                            label: "Tendência",
+                            data: tendencia,
+                            type: "line",
+                            borderColor: par.corPonto,
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false,
+                            tension: 0
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: par.rotuloX,
+                                color: "rgba(255,255,255,0.5)",
+                                font: { size: 9 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" },
+                            min: 0,
+                            max: 100
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: par.rotuloY,
+                                color: "rgba(255,255,255,0.5)",
+                                font: { size: 9 }
+                            },
+                            ticks: { color: "#aaa", font: { size: 9 } },
+                            grid: { color: "rgba(255,255,255,0.07)" },
+                            min: 0,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        });
+    }
+
+    const servidor = JSON.parse(sessionStorage.getItem("servidor"));
+
+    if (servidor) {
+        document.getElementById("titulo-kpi-servidor").innerText = servidor.nome;
+
+        if (servidor.status == "crit") {
+            document.getElementById("kpi-servidor").style.color = "#ff3b3b";
+            document.getElementById("kpi-servidor").innerHTML = "Crítico";
+        } else if (servidor.status == "atencao") {
+            document.getElementById("kpi-servidor").style.color = "#f5a623";
+            document.getElementById("kpi-servidor").innerHTML = "Atenção";
+        } else {
+            document.getElementById("kpi-servidor").style.color = "#12921C";
+            document.getElementById("kpi-servidor").innerHTML = "Normal";
+        }
+    }
+
+    document.getElementById("nome_usuario").innerHTML = sessionStorage.NOME_USUARIO;
+</script>
