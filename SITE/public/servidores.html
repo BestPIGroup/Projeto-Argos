@@ -11,7 +11,7 @@
     <link rel="icon" href="./assets/LogoArgos.png">
 </head>
 
-<body onload="teste()">
+<body onload="buscarServidores()">
     <header class="sidebar">
 
         <div class="logo" href="index.html">
@@ -104,7 +104,7 @@
 <script>
 
 
-    async function teste() {
+    async function buscarServidores() {
 
         try {
 
@@ -124,29 +124,31 @@
 
                 servers.map(async (server) => {
 
-                    const respostaRegistro = await fetch("conexaoS3/buscar_registros", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            MacServer: server.endereco_mac,
-                            QtdLinhas: 1
-                        })
-                    });
+                    const respostaRegistro =
+                        await fetch("conexaoS3/buscar_registros", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                MacServer: server.endereco_mac,
+                                QtdLinhas: 1
+                            })
+                        });
 
                     const registros = await respostaRegistro.json();
                     server.ultimoRegistro = registros[0];
 
-                    const respostaLimites = await fetch("servidores/buscar_limites", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({
-                            id: server.id_servidor
-                        })
-                    });
+                    const respostaLimites =
+                        await fetch("servidores/buscar_limites", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                id: server.id_servidor
+                            })
+                        });
 
                     const limites = await respostaLimites.json();
 
@@ -154,66 +156,56 @@
                     server.nivelAlerta = 0;
 
                     server.limites.push({
+
                         id_servidor: server.id_servidor,
                         id_componente: 99,
-                        limite_componente:
-                            server.limites[3].limite_componente +
-                            server.limites[4].limite_componente,
+                        limite_componente: server.limites[3].limite_componente + server.limites[4].limite_componente,
                         exibir: 1
+
                     });
 
                     server.limites.splice(3, 2);
 
-                    if (
-                        server.limites[0].limite_componente <=
-                        server.ultimoRegistro[3]
-                    ) {
+                    if (server.limites[0].limite_componente <= server.ultimoRegistro[3]) {
+
                         server.nivelAlerta += 2;
-                    } else if (
-                        server.limites[0].limite_componente <=
-                        server.ultimoRegistro[3] * 0.8
-                    ) {
+
+                    } else if (server.limites[0].limite_componente <= server.ultimoRegistro[3] * 0.8) {
+
                         server.nivelAlerta++;
+
                     }
 
-                    if (
-                        server.limites[1].limite_componente <=
-                        server.ultimoRegistro[9]
-                    ) {
+                    if (server.limites[1].limite_componente <= server.ultimoRegistro[9]) {
+
                         server.nivelAlerta += 2;
-                    } else if (
-                        server.limites[1].limite_componente <=
-                        server.ultimoRegistro[9] * 0.8
-                    ) {
+
+                    } else if (server.limites[1].limite_componente <= server.ultimoRegistro[9] * 0.8) {
+
                         server.nivelAlerta++;
+
                     }
 
-                    if (
-                        server.limites[2].limite_componente <=
-                        server.ultimoRegistro[11]
-                    ) {
+                    if (server.limites[2].limite_componente <= server.ultimoRegistro[11]) {
+
                         server.nivelAlerta += 2;
-                    } else if (
-                        server.limites[2].limite_componente <=
-                        server.ultimoRegistro[11] * 0.8
-                    ) {
+
+                    } else if (server.limites[2].limite_componente <= server.ultimoRegistro[11] * 0.8) {
+
                         server.nivelAlerta++;
+
                     }
 
-                    const pacotes =
-                        Number(server.ultimoRegistro[15]) +
-                        Number(server.ultimoRegistro[16]);
+                    const pacotes = Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16]);
 
-                    if (
-                        server.limites[3].limite_componente <=
-                        pacotes
-                    ) {
+                    if (server.limites[3].limite_componente <= pacotes) {
+
                         server.nivelAlerta += 2;
-                    } else if (
-                        server.limites[3].limite_componente <=
-                        pacotes * 0.8
-                    ) {
+
+                    } else if (server.limites[3].limite_componente <= pacotes * 0.8) {
+
                         server.nivelAlerta++;
+
                     }
 
                 })
@@ -235,13 +227,13 @@
                 seguranca = "Normal"
                 corTexto = "sec-ok"
 
-                if(server.nivelAlerta >= 4){
+                if (server.nivelAlerta >= 4) {
 
                     classeAdicional = "card-erro"
                     nvAlerta = "Crítico"
                     seguranca = "Comprometida"
 
-                }else if(server.nivelAlerta >= 2){
+                } else if (server.nivelAlerta >= 2) {
 
                     classeAdicional = "card-atencao"
                     nvAlerta = "Atenção"
@@ -254,73 +246,73 @@
                 propDISCO = 0
                 propPACKS = 0
 
-                if((server.ultimoRegistro[3]/server.limites[0].limite_componente)*100 > 100){
+                if ((server.ultimoRegistro[3] / server.limites[0].limite_componente) * 100 > 100) {
 
                     propCPU = 100
 
-                }else{
+                } else {
 
-                    propCPU = (server.ultimoRegistro[3]/server.limites[0].limite_componente)*100;
+                    propCPU = (server.ultimoRegistro[3] / server.limites[0].limite_componente) * 100;
 
                 }
 
-                if((server.ultimoRegistro[9]/server.limites[1].limite_componente)*100 > 100){
+                if ((server.ultimoRegistro[9] / server.limites[1].limite_componente) * 100 > 100) {
 
                     propRAM = 100
 
-                }else{
+                } else {
 
-                    propRAM = (server.ultimoRegistro[9]/server.limites[9].limite_componente)*100;
+                    propRAM = (server.ultimoRegistro[9] / server.limites[9].limite_componente) * 100;
 
                 }
 
-                if((server.ultimoRegistro[11]/server.limites[2].limite_componente)*100 > 100){
+                if ((server.ultimoRegistro[11] / server.limites[2].limite_componente) * 100 > 100) {
 
                     propDISCO = 100
 
-                }else{
+                } else {
 
-                    propDISCO = (server.ultimoRegistro[11]/server.limites[2].limite_componente)*100;
+                    propDISCO = (server.ultimoRegistro[11] / server.limites[2].limite_componente) * 100;
 
                 }
 
-                if((Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16])/server.limites[3].limite_componente)*100 > 100){
+                if ((Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16]) / server.limites[3].limite_componente) * 100 > 100) {
 
                     propPACKS = 100
 
-                }else{
+                } else {
 
-                    propPACKS = (Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16])/server.limites[3].limite_componente)*100;
+                    propPACKS = (Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16]) / server.limites[3].limite_componente) * 100;
 
                 }
 
                 box.innerHTML +=
-                                `<a href="./dash_componentes.html">
+                    `<div onclick="redirecionar('${server.endereco_mac}')">
                                     <div class="card ${classeAdicional}">
                                         <div class="header">
                                             <strong>${server.alias}</strong>
                                             <span>● ${nvAlerta}</span>
                                         </div>
                                         <div class="metric">
-                                            CPU ${Math.round(server.ultimoRegistro[3],2)}%
+                                            CPU ${Math.round(server.ultimoRegistro[3], 2)}%
                                             <div class="bar">
                                                 <div class="fill cpu" style="width:${propCPU}%"></div>
                                             </div>
                                         </div>
                                         <div class="metric">
-                                            RAM ${Math.round(server.ultimoRegistro[9],2)}%
+                                            RAM ${Math.round(server.ultimoRegistro[9], 2)}%
                                             <div class="bar">
                                                 <div class="fill ram" style="width:${propRAM}%"></div>
                                             </div>
                                         </div>
                                         <div class="metric">
-                                            Disco ${Math.round(server.ultimoRegistro[11],2)}%
+                                            Disco ${Math.round(server.ultimoRegistro[11], 2)}%
                                             <div class="bar">
                                                 <div class="fill disk" style="width:${propDISCO}%"></div>
                                             </div>
                                         </div>
                                         <div class="metric">
-                                            Pacotes ${Math.round(Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16]),2)}
+                                            Pacotes ${Math.round(Number(server.ultimoRegistro[15]) + Number(server.ultimoRegistro[16]), 2)}
                                             <div class="bar">
                                                 <div class="fill net" style="width:${propPACKS}%"></div>
                                             </div>
@@ -338,7 +330,7 @@
                                             Ameaças: ${server.nivelAlerta}
                                         </div>
                                     </div>
-                                </a>`;
+                                </div>`;
 
             });
 
@@ -349,8 +341,16 @@
         }
 
     }
-    
 
+    function redirecionar(mac) {
+
+        sessionStorage.setItem("MAC", mac);
+
+        window.location.href = "./dash_componentes.html";
+
+    }
+
+    /*
     const data = [
         { nome: "Servidor 1", link: "./dash_componentes.html", status: "ok", cpu: 45, ram: 68, disk: 72, net: 120, processos: 128, alertas: 0, seguranca: "ok", ameacas: 0 },
         { nome: "Servidor 2", link: "./dash_componentes.html", status: "crit", cpu: 90, ram: 85, disk: 95, net: 320, processos: 342, alertas: 3, seguranca: "bad", ameacas: 5 },
@@ -415,5 +415,6 @@
         link.appendChild(card);
         document.getElementById("servers").appendChild(link);
     });
+    */
 
 </script>
