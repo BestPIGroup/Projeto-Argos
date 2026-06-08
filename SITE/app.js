@@ -21,6 +21,7 @@ const conexaoS3Router = require("./src/routes/conexaoS3");
 const ransomwareRouter = require("./src/routes/ransomware");
 const alertasS3Router = require("./src/routes/alertasS3");
 const limitesComponentesRouter = require("./src/routes/limitesComponentes");
+var dashProcessosRouter = require("./src/routes/dashProcessos");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +33,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dashProcessos", dashProcessosRouter);
 app.use("/dash_cpu", dash_cpuRouter);
 app.use("/ransomware", ransomwareRouter);
 app.use("/alertasS3", alertasS3Router);
