@@ -24,6 +24,7 @@ const limitesComponentesRouter = require("./src/routes/limitesComponentes");
 const dash_cpuRouter = require("./src/routes/dash_cpu");
 const dash_ramRouter = require("./src/routes/dash_ram");
 const dash_ramsomware = require("./src/routes/ransomware")
+var dashProcessosRouter = require("./src/routes/dashProcessos");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dashProcessos", dashProcessosRouter);
 app.use("/dash_cpu", dash_cpuRouter);
 app.use("/ransomware", ransomwareRouter);
 app.use("/alertasS3", alertasS3Router);
