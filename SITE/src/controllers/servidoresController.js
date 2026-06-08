@@ -31,6 +31,72 @@ function cadastrar_servidor(req, res) {
             );
     }
 }
+
+function buscar_servidores(req,res){
+
+    var unidade = req.body.fkUnidade;
+
+    if(unidade == null){
+        res.status(400).send("Unidade inexistente");
+    }else{
+
+        servidoresModel.buscar_servidores(unidade)
+        .then(
+            function(resultado){
+                console.log(resultado)
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro){
+
+                console.log("Erro na busca dos servidores"+erro)
+                res.status(500).json(erro.sqlMessage);
+            
+            }
+        )
+
+    }
+
+}
+
+function buscar_limites(req,res){
+
+    var id = req.body.id;
+    
+    if(id == undefined){
+
+        res.status(400).send("mac inexiste")
+
+    }else{
+
+        servidoresModel.buscar_limites(id)
+        .then(
+
+            function (resultado){
+
+                console.log("dsklfnsdfbsdfnsdkjfsdkjfsdfjksdf");
+                res.json(resultado);
+
+            }
+
+        )
+        .catch(
+
+            function(erro){
+
+                console.log("Erro na busca dos limites: ", erro);
+                res.status(500).json(erro.sqlMessage);
+
+            }            
+
+        )
+
+    }
+
+}
+
 module.exports = {
-    cadastrar_servidor
+    cadastrar_servidor,
+    buscar_servidores,
+    buscar_limites
 }
