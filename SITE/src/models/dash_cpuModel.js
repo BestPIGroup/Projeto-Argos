@@ -35,7 +35,7 @@ async function buscarRegistros(mac, linhas) {
                     idMac: rowSep[0],
                     usuario: rowSep[1],
                     timestamp: rowSep[2],
-                    cpuPercent = parseFloat(rowSep[3]) || 0,
+                    cpuPercent : parseFloat(rowSep[3]) || 0,
                     cpuCtxSwitches: Number(rowSep[5]),
                     top3ProcessosCpu: rowSep[6],
                     totalProcessos: Number(rowSep[8]),

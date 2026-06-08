@@ -306,10 +306,10 @@
 
         renderizarRecomendacoes();
 
-        var macServidor = "bc:cd:99:c2:86:34"; //mac_address mockado
+        var macServidor = sessionStorage.MAC; //mac_address mockado
         var qtdLinhas = Number(document.getElementById("selectTempo").value);
 
-        fetch("/ransomware/dados", {
+        fetch("ransomware/dados", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ MacServer: macServidor, QtdLinhas: qtdLinhas })
