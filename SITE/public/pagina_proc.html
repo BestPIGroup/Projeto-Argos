@@ -153,7 +153,7 @@ function carregarGraficos() {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            MacServer: "bc:cd:99:c2:86:34",
+            MacServer: sessionStorage.MAC,
             QtdLinhas: 10
         })
     })
