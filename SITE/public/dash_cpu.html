@@ -331,10 +331,10 @@
 
             const percCPU = (atualCpu / (limiteCPU || 80)) * 100;
             let statusTexto, badgeClasse;
-            if (percCPU > 100) {
+            if (servidor.status == "crit") {
                 statusTexto = 'CRÍTICO';
                 badgeClasse = 'badge-critico';
-            } else if (percCPU > 75) {
+            } else if (servidor.status == "atencao") {
                 statusTexto = 'ATENÇÃO';
                 badgeClasse = 'badge-atencao';
             } else {
