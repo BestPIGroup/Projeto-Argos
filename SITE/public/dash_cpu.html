@@ -132,7 +132,6 @@
     </div>
 
     <script>
-        // ===================== OBTENÇÃO DO SERVIDOR (FLUXO REAL) =====================
         const servidor = JSON.parse(sessionStorage.getItem("servidor"));
 
         if (!servidor || !servidor.mac) {
@@ -141,9 +140,8 @@
         }
 
         const macServidor = servidor.mac;
-        const idServidor = servidor.id_servidor;   // Ajuste conforme a propriedade real
+        const idServidor = servidor.id_servidor;   
 
-        // ===================== VARIÁVEIS GLOBAIS =====================
         let limiteCPU = null;
         let limiteCS = null;
 

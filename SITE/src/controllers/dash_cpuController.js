@@ -42,7 +42,6 @@ function buscarRegistros(req, res) {
                 const cpu = row.cpuPercent || 0;
                 cpuPercent.push(cpu);
 
-                // Converter para milhares
                 const cs = row.cpuCtxSwitches || 0;
                 ctxSwitches.push(Number((cs / 1000).toFixed(1)));
 
