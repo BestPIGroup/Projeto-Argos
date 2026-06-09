@@ -42,6 +42,7 @@ function buscarRegistros(req, res) {
                 const cpu = row.cpuPercent || 0;
                 cpuPercent.push(cpu);
 
+                // Converter para milhares
                 const cs = row.cpuCtxSwitches || 0;
                 ctxSwitches.push(Number((cs / 1000).toFixed(1)));
 
@@ -137,28 +138,19 @@ function buscarLimites(req, res) {
 
     dash_cpuModel.buscarLimites(id)
         .then(function (resultado) {
-            console.log('Resultado bruto do banco:', resultado);
-
             const limites = {};
             resultado.forEach(row => {
-                const componenteId = row.id_componente;
-                const valorLimite = Number(row.limite_componente);
-
-                if (componenteId == 1) {        
-                    limites.cpu = valorLimite;
-                } else if (componenteId == 3) { 
-                    limites.cs = valorLimite;
+                if (row.id_componente == 1) {        
+                    limites.cpu = Number(row.limite_componente);         
+                } else if (row.id_componente == 3) {  
+                    limites.cs = Number(row.limite_componente);
                 }
             });
-
-            console.log('Limites processados:', limites);
-            res.json(limites);
+            res.json(limites);   
         })
         .catch(function (erro) {
-            console.error("Erro ao buscar limites:", erro);
-            res.status(500).json({ 
-                erro: erro.sqlMessage || erro.message || "Erro interno no servidor" 
-            });
+            console.log("Erro na busca dos limites: ", erro);
+            res.status(500).json({ erro: erro.sqlMessage || "Erro interno" });
         });
 }
 
