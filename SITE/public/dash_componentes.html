@@ -23,7 +23,9 @@
     <header class="sidebar">
 
         <div class="logo" href="index.html">
-            <img src="./assets/LogoArgosIcon.png">
+            <a href="./index.html">
+                <img src="./assets/LogoArgosIcon.png">
+            </a>
         </div>
 
         <ul class="listaOpcoes">
@@ -171,6 +173,7 @@
             {
                 nome: "Disco",
                 status: obterStatus(dados[ultimoIndice][11], Number(limites[2].limite_componente) * 0.8, Number(limites[2].limite_componente)),
+
                 maxEixoY: 100, rotuloY: "Uso de disco (%)",
                 valorAtencao: Number(Number(limites[2].limite_componente) * 0.8), valorCritico: Number(limites[2].limite_componente),
             },
