@@ -7,7 +7,7 @@
     <link rel="icon" href="./assets/LogoArgos.png">
     <title>Dashboard Servidor</title>
 
-    <link rel="stylesheet" href="./css/pagina_proc.css">
+    <link rel="stylesheet" href="./css/teste.css">
 </head>
 
 <body onload="iniciarDashboard()">
@@ -46,6 +46,11 @@
                 <div class="kpi-card">
                     <p>Trocas por Segundo</p>
                     <h3 id="kpi-contexto-segundo">_</h3>
+                </div>
+
+                <div class="kpi-card">
+                    <p>Horário da última captura</p>
+                    <h3 id="kpi-ultima-captura"></h3>
                 </div>
 
 
@@ -133,8 +138,8 @@
     let graficoProcessos = null;
 
     let graficoContexto = null;
-    
-    const macServer = "";
+
+    const macServer = "bc:cd:99:c2:86:34";
 
     function carregarGraficos() {
         fetch("/dashProcessos/buscar_registros", {
@@ -172,22 +177,25 @@
             });
     }
 
-function atualizarKPI(ultimo, historico) {
-    document.getElementById("server-name").innerHTML = ultimo.usuario;
+    function atualizarKPI(ultimo, historico) {
+        document.getElementById("server-name").innerHTML = ultimo.usuario;
 
-    document.getElementById("kpi-maximo-processos").innerHTML =
-        Math.max(...historico.map(linha => Number(linha.totalProcessos)));
+        document.getElementById("kpi-maximo-processos").innerHTML =
+            Math.max(...historico.map(linha => Number(linha.totalProcessos)));
 
-    const deltaContexto = calcularDeltaContexto(historico);
+        const deltaContexto = calcularDeltaContexto(historico);
 
-    document.getElementById("kpi-context-switches").innerHTML =
-        deltaContexto.toLocaleString("pt-BR");
+        document.getElementById("kpi-context-switches").innerHTML =
+            deltaContexto.toLocaleString("pt-BR");
 
-    const trocasPorSegundo = calcularTrocasPorSegundo(historico);
+        const trocasPorSegundo = calcularTrocasPorSegundo(historico);
 
-    document.getElementById("kpi-contexto-segundo").innerHTML =
-        trocasPorSegundo.toLocaleString("pt-BR") + "/s";
-}
+        document.getElementById("kpi-contexto-segundo").innerHTML =
+            trocasPorSegundo.toLocaleString("pt-BR") + "/s";
+
+        const horaUltimaCaptura = ultimo.timestamp.split(" ")[1].substring(0, 5);
+            document.getElementById("kpi-ultima-captura").innerHTML = ultimo.timestamp;
+    }
 
     function converterTimestamp(timestamp) {
         const partes = timestamp.split(" ");
@@ -227,8 +235,8 @@ function atualizarKPI(ultimo, historico) {
             return 0;
         }
 
-        const atual = dados[0];     // mais recente
-        const anterior = dados[1];  // coleta anterior
+        const atual = dados[0];
+        const anterior = dados[1];
 
         const valorAtual = Number(atual.cpuCtxSwitches);
         const valorAnterior = Number(anterior.cpuCtxSwitches);
@@ -254,69 +262,128 @@ function atualizarKPI(ultimo, historico) {
             data: {
                 labels: labels,
                 datasets: [{
-                    label: "Total de processos",
+                    label: "Trocas de Contexto",
                     data: valores,
+
+                    fill: true,
+
+                    borderColor: "#F54927",
+                    backgroundColor: "rgba(241,196,15,0.15)",
+                    pointBackgroundColor: "#F54927",
+                    pointBorderColor: "#F54927",
+
                     borderWidth: 2,
-                    tension: 0.3
+                    tension: 0.4
                 }]
             },
             options: {
                 responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#FFFFFF",
+                            font: {
+                                size: 14,
+                                weight: "bold"
+                            }
+                        }
+                    }
+                },
                 scales: {
+                    x: {
+                        ticks: {
+                            color: "#FFFFFF"
+                        }
+                    },
                     y: {
-                        beginAtZero: true
+                        ticks: {
+                            color: "#FFFFFF"
+                        }
+                    }
+                }
+            }
+
+
+
+
+        });
+    }
+
+    function criarGraficoContexto(historico) {
+        const historicoOrdenado = [...historico].reverse();
+
+        const labels = [];
+        const valores = [];
+
+        for (let i = 1; i < historicoOrdenado.length; i++) {
+            const atual = historicoOrdenado[i];
+            const anterior = historicoOrdenado[i - 1];
+
+            const hora = atual.timestamp.split(" ")[1].substring(0, 5);
+
+            const delta = Math.max(
+                0,
+                Number(atual.cpuCtxSwitches) - Number(anterior.cpuCtxSwitches)
+            );
+
+            labels.push(hora);
+            valores.push(delta);
+        }
+
+        const ctx = document.getElementById("grafico-contexto").getContext("2d");
+
+        if (graficoContexto) {
+            graficoContexto.destroy();
+        }
+
+        graficoContexto = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "Trocas de Contexto",
+                    data: valores,
+
+                    fill: true,
+
+                    borderColor: "#F1C40F",
+                    backgroundColor: "rgba(241,196,15,0.15)",
+
+                    pointBackgroundColor: "#F1C40F",
+                    pointBorderColor: "#F1C40F",
+
+                    borderWidth: 2,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: "#FFFFFF",
+                            font: {
+                                size: 14,
+                                weight: "bold"
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: "#FFFFFF"
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: "#FFFFFF"
+                        }
                     }
                 }
             }
         });
     }
-
-function criarGraficoContexto(historico) {
-    const historicoOrdenado = [...historico].reverse();
-
-    const labels = [];
-    const valores = [];
-
-    for (let i = 1; i < historicoOrdenado.length; i++) {
-        const atual = historicoOrdenado[i];
-        const anterior = historicoOrdenado[i - 1];
-
-        const hora = atual.timestamp.split(" ")[1].substring(0, 5);
-
-        const delta =
-            Number(atual.cpuCtxSwitches) - Number(anterior.cpuCtxSwitches);
-
-        labels.push(hora);
-        valores.push(delta);
-    }
-
-    const ctx = document.getElementById("grafico-contexto").getContext("2d");
-
-    if (graficoContexto) {
-        graficoContexto.destroy();
-    }
-
-    graficoContexto = new Chart(ctx, {
-        type: "line",
-        data: {
-            labels: labels,
-            datasets: [{
-                label: "Trocas de contexto desde a última coleta",
-                data: valores,
-                borderWidth: 2,
-                tension: 0.3
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-}
 
 
     function renderizarTabelaProcessos(historico) {
@@ -474,7 +541,7 @@ function criarGraficoContexto(historico) {
                             label: componente.nome,
                             data: valores,
                             borderColor: componente.cor,
-                            backgroundColor: "rgba(255,255,255,0.05)",
+                            backgroundColor: "rgba(245, 73, 39,0.05)",
                             fill: true,
                             tension: 0.3,
                             borderWidth: 2,
