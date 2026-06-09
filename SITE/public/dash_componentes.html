@@ -22,7 +22,9 @@
     <header class="sidebar">
 
         <div class="logo" href="index.html">
-            <img src="./assets/LogoArgosIcon.png">
+            <a href="./index.html">
+                <img src="./assets/LogoArgosIcon.png">
+            </a>
         </div>
 
         <ul class="listaOpcoes">
@@ -118,10 +120,17 @@
 <script>
 
     nome_usuario.innerHTML = `${sessionStorage.NOME_USUARIO}`
+    kpiServidor = document.getElementById("kpi_servidor")
+    kpiCrit = document.getElementById("kpi_crit")
+    kpiAlerta = document.getElementById("kpi_alerta")
 
     var todosDados = {};
 
     function carregarGraficos() {
+
+        kpiServidor.textContent = sessionStorage.ALIAS;
+        kpiCrit.textContent = sessionStorage.TOTAL_CRITICOS;
+        kpialerta.textContent = sessionStorage.TOTAL_CRITICOS;
 
         const componentes = [
             {
@@ -143,7 +152,7 @@
                 minTardeNoite: 70, maxTardeNoite: 85
             },
             {
-                nome: "Disco e Ramsomwarw",
+                nome: "Disco e Ramsomware",
                 status: "atencao",
                 maxEixoY: 100, rotuloY: "Uso de disco (%)",
                 valorAtencao: 85, valorCritico: 92,
