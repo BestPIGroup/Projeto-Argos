@@ -1,5 +1,5 @@
-// const ambiente_processo = "producao";
-const ambiente_processo = "desenvolvimento";
+const ambiente_processo = "producao";
+//const ambiente_processo = "desenvolvimento";
 const caminho_env = ambiente_processo === "producao" ? ".env" : ".env.dev";
 
 require("dotenv").config({ path: caminho_env });
@@ -21,6 +21,10 @@ const conexaoS3Router = require("./src/routes/conexaoS3");
 const ransomwareRouter = require("./src/routes/ransomware");
 const alertasS3Router = require("./src/routes/alertasS3");
 const limitesComponentesRouter = require("./src/routes/limitesComponentes");
+const dash_cpuRouter = require("./src/routes/dash_cpu");
+const dash_ramRouter = require("./src/routes/dash_ram");
+const dash_ramsomware = require("./src/routes/ransomware")
+var dashProcessosRouter = require("./src/routes/dashProcessos");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,9 +36,14 @@ app.use("/usuarios", usuarioRouter);
 app.use("/unidade", unidadeRouter);
 app.use("/servidores", servidorRouter);
 app.use("/conexaoS3", conexaoS3Router);
+app.use("/dashProcessos", dashProcessosRouter);
+app.use("/dash_cpu", dash_cpuRouter);
 app.use("/ransomware", ransomwareRouter);
 app.use("/alertasS3", alertasS3Router);
 app.use("/limitesComponentes", limitesComponentesRouter);
+app.use("/conexaoS3", conexaoS3Router)
+app.use("/dash_ram", dash_ramRouter)
+app.use("/ramsomware",dash_ramsomware)
 
 app.listen(PORTA_APP, function () {
     console.log(`
