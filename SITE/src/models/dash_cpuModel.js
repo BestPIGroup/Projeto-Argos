@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const database = require("../database/config");
 
 async function buscarRegistros(mac, linhas) {
     try {
@@ -35,7 +36,7 @@ async function buscarRegistros(mac, linhas) {
                     idMac: rowSep[0],
                     usuario: rowSep[1],
                     timestamp: rowSep[2],
-                    cpuPercent = parseFloat(rowSep[3]) || 0,
+                    cpuPercent: parseFloat(rowSep[3]) || 0, 
                     cpuCtxSwitches: Number(rowSep[5]),
                     top3ProcessosCpu: rowSep[6],
                     totalProcessos: Number(rowSep[8]),
@@ -54,4 +55,14 @@ async function buscarRegistros(mac, linhas) {
     }
 }
 
-module.exports = { buscarRegistros };
+function buscarLimites(id) {
+    console.log("ACESSEI O MODEL DA UNIDADE ...");
+    var instrucaoSql = `SELECT * FROM componente_servidor WHERE id_servidor = ${id} AND (id_componente = 1 OR id_componente = 3);`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
+module.exports = {
+    buscarLimites,
+    buscarRegistros
+};

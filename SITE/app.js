@@ -18,6 +18,7 @@ const usuarioRouter = require("./src/routes/usuarios");
 const unidadeRouter = require("./src/routes/unidade");
 const servidorRouter = require("./src/routes/servidores");
 const conexaoS3Router = require("./src/routes/conexaoS3");
+const dash_cpuRouter = require("./src/routes/dash_cpu");
 const ransomwareRouter = require("./src/routes/ransomware");
 const alertasS3Router = require("./src/routes/alertasS3");
 const limitesComponentesRouter = require("./src/routes/limitesComponentes");

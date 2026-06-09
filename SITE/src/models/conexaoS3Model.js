@@ -60,7 +60,4 @@ async function buscarRegistros(mac, linhas) {
 
 module.exports = {
     buscarRegistros,
-    separarLinhaCsv,
-    filtrarPorPeriodo,
-    colunasClient
 };

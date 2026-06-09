@@ -132,208 +132,244 @@
     </div>
 
     <script>
-        const servidor = JSON.parse(sessionStorage.getItem("servidor"));
-        const macServidor = "bc:cd:99:c2:86:34"; // temporário para testes
+    const servidor = JSON.parse(sessionStorage.getItem("servidor"));
+    const macServidor = servidor?.mac || "bc:cd:99:c2:86:34";
+    const idServidor = servidor?.id_servidor;
 
-        let labels = [];
-        let cpuData = [];
-        let csData = [];
-        let topProcessoCPUData = [];
-        let totalProcessosData = [];
-        let topProcessos = [];
-        let media3hCpu, media3hCs, media3hProcessos;
-        let alertasQuantidade, ultimoAlertaMinutos;
+    let limiteCPU = null;
+    let limiteCS = null;
 
-        let graficos = [];
+    let labels = [];
+    let cpuData = [];
+    let csData = [];
+    let topProcessoCPUData = [];
+    let totalProcessosData = [];
+    let topProcessos = [];
+    let media3hCpu, media3hCs, media3hProcessos;
+    let alertasQuantidade, ultimoAlertaMinutos;
 
-        function getClasseCPU(valor) {
-            if (valor <= 40) return 'uso-verde';
-            if (valor <= 70) return 'uso-amarelo';
-            if (valor <= 90) return 'uso-laranja';
-            return 'uso-vermelho';
+    let graficos = [];
+
+    function getClasseCPU(valor) {
+        if (valor <= 40) return 'uso-verde';
+        if (valor <= 70) return 'uso-amarelo';
+        if (valor <= 90) return 'uso-laranja';
+        return 'uso-vermelho';
+    }
+
+    function getClasseCS(valor) {
+        if (valor <= 150) return 'uso-verde';
+        if (valor <= 300) return 'uso-amarelo';
+        if (valor <= 500) return 'uso-laranja';
+        return 'uso-vermelho';
+    }
+
+    function destruirGraficos() {
+        graficos.forEach(g => g.destroy());
+        graficos = [];
+    }
+
+    function atualizarTimestamp() {
+        const now = new Date();
+        const formatted = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        document.getElementById('updateTime').textContent = formatted;
+    }
+
+    function criarGraficoLinha(ctx, label, dataArr, borderColor, yLabel = '', limite = null) {
+        const datasets = [{
+            label: label,
+            data: dataArr,
+            borderColor: borderColor,
+            backgroundColor: `rgba(${parseInt(borderColor.slice(1,3),16)}, ${parseInt(borderColor.slice(3,5),16)}, ${parseInt(borderColor.slice(5,7),16)}, 0.15)`,
+            tension: 0.2,
+            fill: true,
+            pointRadius: 3,
+            pointBackgroundColor: borderColor,
+            pointBorderColor: '#fff',
+            pointBorderWidth: 1,
+            borderWidth: 2.5
+        }];
+
+        if (limite !== null && limite !== undefined && limite > 0) {
+            const limiteData = new Array(dataArr.length).fill(limite);
+            datasets.push({
+                label: 'Limite',
+                data: limiteData,
+                borderColor: '#ff3b3b',     
+                borderWidth: 2,
+                borderDash: [5, 5],          
+                pointRadius: 0,
+                fill: false,
+                tension: 0
+            });
         }
 
-        function getClasseCS(valor) {
-            if (valor <= 150) return 'uso-verde';
-            if (valor <= 300) return 'uso-amarelo';
-            if (valor <= 500) return 'uso-laranja';
-            return 'uso-vermelho';
-        }
-
-        function criarGraficoLinha(ctx, label, dataArr, borderColor, yLabel = '') {
-            return new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: label,
-                        data: dataArr,
-                        borderColor: borderColor,
-                        backgroundColor: `rgba(${parseInt(borderColor.slice(1,3),16)}, ${parseInt(borderColor.slice(3,5),16)}, ${parseInt(borderColor.slice(5,7),16)}, 0.15)`,
-                        tension: 0.2,
-                        fill: true,
-                        pointRadius: 3,
-                        pointBackgroundColor: borderColor,
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 1,
-                        borderWidth: 2.5
-                    }]
+        return new Chart(ctx, {
+            type: 'line',
+            data: { labels: labels, datasets: datasets },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { labels: { color: '#ddd', font: { size: 11 } } },
+                    tooltip: { mode: 'index', intersect: false }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#ddd', font: { size: 11 } } },
-                        tooltip: { mode: 'index', intersect: false }
+                scales: {
+                    y: {
+                        grid: { color: 'rgba(255,255,255,0.08)' },
+                        title: { display: true, text: yLabel, color: '#aaa', font: { size: 10 } },
+                        ticks: { color: '#ccc' }
                     },
-                    scales: {
-                        y: {
-                            grid: { color: 'rgba(255,255,255,0.08)' },
-                            title: { display: true, text: yLabel, color: '#aaa', font: { size: 10 } },
-                            ticks: { color: '#ccc' }
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#ccc', maxRotation: 45, autoSkip: true, maxTicksLimit: 6 }
-                        }
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#ccc', maxRotation: 45, autoSkip: true, maxTicksLimit: 6 }
                     }
                 }
-            });
-        }
-
-        function destruirGraficos() {
-            graficos.forEach(g => g.destroy());
-            graficos = [];
-        }
-
-        function atualizarTimestamp() {
-            const now = new Date();
-            const formatted = `${now.getDate().toString().padStart(2,'0')}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
-            document.getElementById('updateTime').textContent = formatted;
-        }
-
-        async function atualizarDashboard() {
-            const qtdLinhas = Number(document.getElementById('selectTempo').value);
-
-            try {
-                const resposta = await fetch('/dash_cpu/buscar_registros', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ MacServer: macServidor, QtdLinhas: qtdLinhas })
-                });
-
-                if (!resposta.ok) throw new Error('Erro na resposta da API');
-                
-                const dados = await resposta.json();
-
-                labels = dados.labels;
-                cpuData = dados.cpu_percent;
-                csData = dados.ctx_switches;
-                topProcessoCPUData = dados.top_process_cpu;
-                totalProcessosData = dados.total_processos;
-                topProcessos = dados.top_3_processos || [];
-                media3hCpu = dados.medias_3h.cpu;
-                media3hCs = dados.medias_3h.cs;
-                media3hProcessos = dados.medias_3h.processos;
-
-                alertasQuantidade = dados.alertas_cpu.quantidade;
-                ultimoAlertaMinutos = dados.ultimo_alerta.minutos;
-
-                document.getElementById('picoCpu').textContent = dados.picos_30min.cpu + '%';
-                document.getElementById('picoCs').textContent = dados.picos_30min.cs + 'k';
-                document.getElementById('picoProcessos').textContent = dados.picos_30min.processos;
-
-                const kpiAlertas = document.getElementById('kpiAlertas');
-                kpiAlertas.textContent = alertasQuantidade;
-
-                const ultimoAlertaElem = document.getElementById('ultimoAlertaTexto');
-                if (ultimoAlertaMinutos === null) {
-                    ultimoAlertaElem.textContent = 'Nenhum';
-                } else {
-                    ultimoAlertaElem.textContent = 'Há ' + ultimoAlertaMinutos + ' min';
-                }
-
-                if (ultimoAlertaMinutos !== null && ultimoAlertaMinutos < 30) {
-                    kpiAlertas.classList.add('alerta-recente');
-                } else {
-                    kpiAlertas.classList.remove('alerta-recente');
-                }
-
-            } catch (erro) {
-                console.error('Falha ao buscar dados da API:', erro);
-                return;
             }
+        });
+    }
 
-            const atualCpu = cpuData[cpuData.length - 1] || 0;
-            const atualCs = csData[csData.length - 1] || 0;
-            const atualProcessos = totalProcessosData[totalProcessosData.length - 1] || 0;
+    async function buscarLimites() {
+        if (!idServidor) return;
+        try {
+            const resp = await fetch('/dash_cpu/buscarLimites', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: idServidor })
+            });
+            if (resp.ok) {
+                const limites = await resp.json();
+                limiteCPU = limites.cpu;
+                limiteCS = limites.cs;
+            }
+        } catch (e) {
+            console.warn('Falha ao obter limites:', e);
+        }
+    }
 
-            document.getElementById('kpiCpu').textContent = atualCpu + '%';
-            document.getElementById('kpiCs').textContent = atualCs + 'k';
-            document.getElementById('kpiProcessos').textContent = atualProcessos;
+    async function atualizarDashboard() {
+        const qtdLinhas = Number(document.getElementById('selectTempo').value);
 
-            document.getElementById('media3hCpu').textContent = media3hCpu.toFixed(1) + '%';
-            document.getElementById('media3hCs').textContent = media3hCs.toFixed(1) + 'k';
-            document.getElementById('media3hProcessos').textContent = Math.round(media3hProcessos);
+        try {
+            const resposta = await fetch('/dash_cpu/buscarRegistros', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ MacServer: macServidor, QtdLinhas: qtdLinhas })
+            });
 
-            const nomeServidor = servidor?.nome || servidor?.apelido || 'Servidor';
-            document.getElementById('nome-servidor').textContent = nomeServidor.toUpperCase();
+            if (!resposta.ok) throw new Error('Erro na resposta da API');
+            
+            const dados = await resposta.json();
 
-            let statusTexto, badgeClasse;
-            if (atualCpu > 90) {
-                statusTexto = 'CRÍTICO';
-                badgeClasse = 'badge-critico';
-            } else if (atualCpu > 70) {
-                statusTexto = 'ATENÇÃO';
-                badgeClasse = 'badge-atencao';
+            labels = dados.labels;
+            cpuData = dados.cpu_percent;
+            csData = dados.ctx_switches;
+            topProcessoCPUData = dados.top_process_cpu;
+            totalProcessosData = dados.total_processos;
+            topProcessos = dados.top_3_processos || [];
+            media3hCpu = dados.medias_3h.cpu;
+            media3hCs = dados.medias_3h.cs;
+            media3hProcessos = dados.medias_3h.processos;
+
+            alertasQuantidade = dados.alertas_cpu.quantidade;
+            ultimoAlertaMinutos = dados.ultimo_alerta.minutos;
+
+            document.getElementById('picoCpu').textContent = dados.picos_30min.cpu + '%';
+            document.getElementById('picoCs').textContent = dados.picos_30min.cs + 'k';
+            document.getElementById('picoProcessos').textContent = dados.picos_30min.processos;
+
+            const kpiAlertas = document.getElementById('kpiAlertas');
+            kpiAlertas.textContent = alertasQuantidade;
+
+            const ultimoAlertaElem = document.getElementById('ultimoAlertaTexto');
+            if (ultimoAlertaMinutos === null) {
+                ultimoAlertaElem.textContent = 'Nenhum';
             } else {
-                statusTexto = 'NORMAL';
-                badgeClasse = 'badge-normal';
+                ultimoAlertaElem.textContent = 'Há ' + ultimoAlertaMinutos + ' min';
             }
-            document.getElementById('status-servidor').textContent = statusTexto;
-            const badge = document.getElementById('badge-servidor');
-            badge.textContent = statusTexto;
-            badge.className = badgeClasse;
 
-            const h2Cpu = document.getElementById('kpiCpu');
-            h2Cpu.className = getClasseCPU(atualCpu);
-            const h2Cs = document.getElementById('kpiCs');
-            h2Cs.className = getClasseCS(atualCs);
+            if (ultimoAlertaMinutos !== null && ultimoAlertaMinutos < 30) {
+                kpiAlertas.classList.add('alerta-recente');
+            } else {
+                kpiAlertas.classList.remove('alerta-recente');
+            }
 
-            const tabelaBody = document.getElementById('tabelaTopBody');
-            tabelaBody.innerHTML = '';
-            topProcessos.forEach(p => {
-                const uso = p.uso;
-                const classeCor = getClasseCPU(uso);
-                const row = document.createElement('div');
-                row.className = 'tabela-row';
-                row.innerHTML = `
-                    <span class="col-pid">${p.pid}</span>
-                    <span class="col-proc">${p.nome}</span>
-                    <span class="col-escrita ${classeCor}">${uso}%</span>
-                `;
-                tabelaBody.appendChild(row);
-            });
-
-            destruirGraficos();
-
-            const ctx1 = document.getElementById('cpuChart').getContext('2d');
-            graficos.push(criarGraficoLinha(ctx1, 'Uso CPU (%)', cpuData, '#f5a623', 'Percentual (%)'));
-            const ctx2 = document.getElementById('csChart').getContext('2d');
-            graficos.push(criarGraficoLinha(ctx2, 'Context Switches (k)', csData, '#3ed64b', 'milhares'));
-            const ctx3 = document.getElementById('topProcessChart').getContext('2d');
-            graficos.push(criarGraficoLinha(ctx3, 'Processo mais pesado (%)', topProcessoCPUData, '#ff8c5a', 'Uso CPU (%)'));
-            const ctx4 = document.getElementById('totalProcChart').getContext('2d');
-            graficos.push(criarGraficoLinha(ctx4, 'Total de processos ativos', totalProcessosData, '#7ab8f5', 'Quantidade'));
-
-            atualizarTimestamp();
+        } catch (erro) {
+            console.error('Falha ao buscar dados da API:', erro);
+            return;
         }
 
-        window.onload = function () {
-            atualizarDashboard();
-            setInterval(atualizarDashboard, 30000);
-        };
-    </script>
+        const atualCpu = cpuData[cpuData.length - 1] || 0;
+        const atualCs = csData[csData.length - 1] || 0;
+        const atualProcessos = totalProcessosData[totalProcessosData.length - 1] || 0;
+
+        document.getElementById('kpiCpu').textContent = atualCpu + '%';
+        document.getElementById('kpiCs').textContent = atualCs + 'k';
+        document.getElementById('kpiProcessos').textContent = atualProcessos;
+
+        document.getElementById('media3hCpu').textContent = media3hCpu.toFixed(1) + '%';
+        document.getElementById('media3hCs').textContent = media3hCs.toFixed(1) + 'k';
+        document.getElementById('media3hProcessos').textContent = Math.round(media3hProcessos);
+
+        const nomeServidor = servidor?.nome || servidor?.apelido || 'Servidor';
+        document.getElementById('nome-servidor').textContent = nomeServidor.toUpperCase();
+
+        let statusTexto, badgeClasse;
+        if (atualCpu > 90) {
+            statusTexto = 'CRÍTICO';
+            badgeClasse = 'badge-critico';
+        } else if (atualCpu > 70) {
+            statusTexto = 'ATENÇÃO';
+            badgeClasse = 'badge-atencao';
+        } else {
+            statusTexto = 'NORMAL';
+            badgeClasse = 'badge-normal';
+        }
+        document.getElementById('status-servidor').textContent = statusTexto;
+        const badge = document.getElementById('badge-servidor');
+        badge.textContent = statusTexto;
+        badge.className = badgeClasse;
+
+        const h2Cpu = document.getElementById('kpiCpu');
+        h2Cpu.className = getClasseCPU(atualCpu);
+        const h2Cs = document.getElementById('kpiCs');
+        h2Cs.className = getClasseCS(atualCs);
+
+        const tabelaBody = document.getElementById('tabelaTopBody');
+        tabelaBody.innerHTML = '';
+        topProcessos.forEach(p => {
+            const uso = p.uso;
+            const classeCor = getClasseCPU(uso);
+            const row = document.createElement('div');
+            row.className = 'tabela-row';
+            row.innerHTML = `
+                <span class="col-pid">${p.pid}</span>
+                <span class="col-proc">${p.nome}</span>
+                <span class="col-escrita ${classeCor}">${uso}%</span>
+            `;
+            tabelaBody.appendChild(row);
+        });
+
+        destruirGraficos();
+
+        const ctx1 = document.getElementById('cpuChart').getContext('2d');
+        graficos.push(criarGraficoLinha(ctx1, 'Uso CPU (%)', cpuData, '#f5a623', 'Percentual (%)', limiteCPU));
+        const ctx2 = document.getElementById('csChart').getContext('2d');
+        graficos.push(criarGraficoLinha(ctx2, 'Context Switches (k)', csData, '#3ed64b', 'milhares', limiteCS));
+        const ctx3 = document.getElementById('topProcessChart').getContext('2d');
+        graficos.push(criarGraficoLinha(ctx3, 'Processo mais pesado (%)', topProcessoCPUData, '#ff8c5a', 'Uso CPU (%)'));
+        const ctx4 = document.getElementById('totalProcChart').getContext('2d');
+        graficos.push(criarGraficoLinha(ctx4, 'Total de processos ativos', totalProcessosData, '#7ab8f5', 'Quantidade'));
+
+        atualizarTimestamp();
+    }
+
+    window.onload = async function () {
+        await buscarLimites();         
+        atualizarDashboard();
+        setInterval(atualizarDashboard, 30000);
+    };
+</script>
 
 </body>
 </html>

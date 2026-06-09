@@ -128,6 +128,41 @@ function buscarRegistros(req, res) {
         });
 }
 
+function buscarLimites(req, res) {
+    var id = req.body.id;
+
+    if (!id) {
+        return res.status(400).send("ID do servidor não fornecido");
+    }
+
+    dash_cpuModel.buscarLimites(id)
+        .then(function (resultado) {
+            console.log('Resultado bruto do banco:', resultado);
+
+            const limites = {};
+            resultado.forEach(row => {
+                const componenteId = row.id_componente;
+                const valorLimite = Number(row.limite_componente);
+
+                if (componenteId == 1) {        
+                    limites.cpu = valorLimite;
+                } else if (componenteId == 3) { 
+                    limites.cs = valorLimite;
+                }
+            });
+
+            console.log('Limites processados:', limites);
+            res.json(limites);
+        })
+        .catch(function (erro) {
+            console.error("Erro ao buscar limites:", erro);
+            res.status(500).json({ 
+                erro: erro.sqlMessage || erro.message || "Erro interno no servidor" 
+            });
+        });
+}
+
 module.exports = {
+    buscarLimites,
     buscarRegistros
 };
