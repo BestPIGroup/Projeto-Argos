@@ -63,9 +63,5 @@ async function buscarRegistros(mac,linhas){
 }
 
 module.exports = {
-<<<<<<< HEAD
-    buscarRegistros,
-=======
     buscarRegistros
->>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
 };

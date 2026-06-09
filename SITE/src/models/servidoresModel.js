@@ -1,26 +1,5 @@
 const database = require("../database/config");
 
-<<<<<<< HEAD
-function cadastrar_servidor(alias, Mac, status, fk_unidade) {
-    console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
-    var instrucaoSql = `INSERT INTO servidor(alias,endereco_mac, status_servidor, fk_unidade) VALUES('${alias}','${Mac}', '${status}', '${fk_unidade}');`;
-    const componentesPadraoCadastro = [
-        { id: 1, limite: 85 },
-        { id: 3, limite: 85 },
-        { id: 6, limite: 80 },
-        { id: 7, limite: 100 },
-        { id: 8, limite: 100 },
-        { id: 9, limite: 80 },
-        { id: 10, limite: 85 },
-        { id: 11, limite: 85 },
-        { id: 12, limite: 85 },
-        { id: 13, limite: 85 },
-        { id: 18, limite: 85 },
-        { id: 20, limite: 85 },
-        { id: 21, limite: 85 },
-        { id: 22, limite: 85 }
-    ];
-=======
 const componentesPadraoCadastro = [
     { id: 1, limite: 85 },
     { id: 3, limite: 85 },
@@ -28,14 +7,13 @@ const componentesPadraoCadastro = [
     { id: 7, limite: 100 },
     { id: 8, limite: 100 }
 ];
->>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
 
-    function limparValorSql(valor) {
-        return String(valor || "").replace(/'/g, "''");
-    }
+function limparValorSql(valor) {
+    return String(valor || "").replace(/'/g, "''");
+}
 
-    function cadastrar_servidor(alias, mac, status, fk_unidade) {
-        const instrucaoSql = `
+function cadastrar_servidor(alias, mac, status, fk_unidade) {
+    const instrucaoSql = `
         INSERT INTO servidor(alias, endereco_mac, status_servidor, fk_unidade)
         VALUES (
             '${limparValorSql(alias)}',
@@ -45,61 +23,49 @@ const componentesPadraoCadastro = [
         );
     `;
 
-        console.log("Executando a instrução SQL: \n" + instrucaoSql);
-        return database.executar(instrucaoSql);
-    }
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
-    function buscar_servidores(unidade) {
+function buscar_servidores(unidade) {
 
-        console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
-        var instrucaoSql = `select * from servidor where fk_unidade = ${unidade};`;
-        console.log("Executando a instrução SQL: \n" + instrucaoSql);
-        return database.executar(instrucaoSql);
+    console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
+    var instrucaoSql = `select * from servidor where fk_unidade = ${unidade};`;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 
-    }
+}
 
-    function buscar_limites(id) {
+function buscar_limites(id) {
 
-<<<<<<< HEAD
-        console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
-        var instrucaoSql = `select * from componente_servidor where id_servidor = ${id} and (id_componente = 1 or id_componente = 6 or id_componente = 9 or id_componente = 12 or id_componente = 13);`;
-        console.log("Executando a instrução SQL: \n" + instrucaoSql);
-        return database.executar(instrucaoSql);
-    }
-
-    function cadastrar_componentes_servidor(mac) {
-        const macLimpo = limparValorSql(mac);
-        const valores = componentesPadraoCadastro.map(componente => `
-=======
     console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
     var instrucaoSql = `select * from componente_servidor where id_servidor = ${id} and (id_componente = 1 or id_componente = 6 or id_componente = 9 or id_componente = 12 or id_componente = 13);`;
-    console.log("Executando a instrução SQL: \n" +   instrucaoSql);
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
 function cadastrar_componentes_servidor(mac) {
     const macLimpo = limparValorSql(mac);
     const valores = componentesPadraoCadastro.map(componente => `
->>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
         (
             (SELECT id_servidor FROM servidor WHERE endereco_mac = '${macLimpo}'),
             ${componente.id},
             ${componente.limite},
             1
         )`
-        ).join(",");
+    ).join(",");
 
-        const instrucaoSql = `
+    const instrucaoSql = `
         INSERT INTO componente_servidor(id_servidor, id_componente, limite_componente, exibir)
         VALUES ${valores};
     `;
 
-        console.log("Executando a instrução SQL: \n" + instrucaoSql);
-        return database.executar(instrucaoSql);
-    }
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
 
-    function listar_servidores(fk_unidade) {
-        const filtroUnidade = fk_unidade ? ` WHERE fk_unidade = '${limparValorSql(fk_unidade)}'` : "";
-        const instrucaoSql = `
+function listar_servidores(fk_unidade) {
+    const filtroUnidade = fk_unidade ? ` WHERE fk_unidade = '${limparValorSql(fk_unidade)}'` : "";
+    const instrucaoSql = `
         SELECT
             id_servidor AS idServidor,
             alias,
@@ -111,15 +77,15 @@ function cadastrar_componentes_servidor(mac) {
         ORDER BY alias;
     `;
 
-        console.log("Executando a instrução SQL: \n" + instrucaoSql);
-        return database.executar(instrucaoSql);
-    }
-
-    module.exports = {
-        cadastrar_servidor,
-        buscar_servidores,
-        buscar_limites,
-        cadastrar_componentes_servidor,
-        listar_servidores
-    }
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
 }
+
+module.exports = {
+    cadastrar_servidor,
+    buscar_servidores,
+    buscar_limites,
+    cadastrar_componentes_servidor,
+    listar_servidores
+}
+
