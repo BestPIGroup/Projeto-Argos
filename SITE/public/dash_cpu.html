@@ -132,9 +132,14 @@
     </div>
 
     <script>
+<<<<<<< HEAD
     const servidor = JSON.parse(sessionStorage.getItem("servidor"));
     const macServidor = servidor?.mac || "bc:cd:99:c2:86:34";
     const idServidor = servidor?.id_servidor;
+=======
+        const servidor = JSON.parse(sessionStorage.getItem("servidor"));
+        const macServidor = sessionStorage.MAC;
+>>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
 
     let limiteCPU = null;
     let limiteCS = null;

@@ -1,5 +1,6 @@
 const database = require("../database/config");
 
+<<<<<<< HEAD
 function cadastrar_servidor(alias, Mac, status, fk_unidade) {
     console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
     var instrucaoSql = `INSERT INTO servidor(alias,endereco_mac, status_servidor, fk_unidade) VALUES('${alias}','${Mac}', '${status}', '${fk_unidade}');`;
@@ -19,6 +20,15 @@ function cadastrar_servidor(alias, Mac, status, fk_unidade) {
         { id: 21, limite: 85 },
         { id: 22, limite: 85 }
     ];
+=======
+const componentesPadraoCadastro = [
+    { id: 1, limite: 85 },
+    { id: 3, limite: 85 },
+    { id: 6, limite: 80 },
+    { id: 7, limite: 100 },
+    { id: 8, limite: 100 }
+];
+>>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
 
     function limparValorSql(valor) {
         return String(valor || "").replace(/'/g, "''");
@@ -50,6 +60,7 @@ function cadastrar_servidor(alias, Mac, status, fk_unidade) {
 
     function buscar_limites(id) {
 
+<<<<<<< HEAD
         console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
         var instrucaoSql = `select * from componente_servidor where id_servidor = ${id} and (id_componente = 1 or id_componente = 6 or id_componente = 9 or id_componente = 12 or id_componente = 13);`;
         console.log("Executando a instrução SQL: \n" + instrucaoSql);
@@ -59,6 +70,16 @@ function cadastrar_servidor(alias, Mac, status, fk_unidade) {
     function cadastrar_componentes_servidor(mac) {
         const macLimpo = limparValorSql(mac);
         const valores = componentesPadraoCadastro.map(componente => `
+=======
+    console.log("ACESSEI O MODEL DA UNIDADE \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar_Unidade(): ")
+    var instrucaoSql = `select * from componente_servidor where id_servidor = ${id} and (id_componente = 1 or id_componente = 6 or id_componente = 9 or id_componente = 12 or id_componente = 13);`;
+    console.log("Executando a instrução SQL: \n" +   instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+function cadastrar_componentes_servidor(mac) {
+    const macLimpo = limparValorSql(mac);
+    const valores = componentesPadraoCadastro.map(componente => `
+>>>>>>> 92c3531a45f20e93b7d0aa9fb86377c58f305e35
         (
             (SELECT id_servidor FROM servidor WHERE endereco_mac = '${macLimpo}'),
             ${componente.id},
